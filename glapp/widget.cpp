@@ -27,7 +27,7 @@ void Widget::initializeGL() {
     Texture *treeTex, *twigTex;
     treeTex = new Texture();
     twigTex = new Texture();
-    treeTex->loadFromImage("C:/Users/al/Desktop/Dyplom/glapp_z7/glapp/tree.png");
+    treeTex->loadFromImage("C:/Users/al/Desktop/Dyplom/glapp_z7/glapp/tree1.jpg");
     twigTex->loadFromImage("C:/Users/al/Desktop/Dyplom/glapp_z7/glapp/twig1.png");
     textures.push_back(treeTex);
     textures.push_back(twigTex);
@@ -68,8 +68,8 @@ void Widget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     program->use();
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    //glEnable(GL_BLEND);
+    //glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
     program->setUniform("ViewMat", camera->matrix());
     program->setUniform("ProjMat", projMat);
@@ -92,7 +92,7 @@ void Widget::paintGL() {
         mesh->render();
         texture->unbind();
     }
-    glDisable(GL_BLEND);
+    //glDisable(GL_BLEND);
 }
 void Widget::resizeGL(int w, int h) {
     glViewport(0, 0, w, h);

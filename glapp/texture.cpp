@@ -13,10 +13,10 @@ Texture::Texture()
 
 bool Texture::loadFromImage(const char *path)
 {
-    QImage image(path, "png");
+    QImage image(path);
     if( !image.isNull() )
     {
-        //image = QGLWidget::convertToGLFormat(image);
+        image = QGLWidget::convertToGLFormat(image);
         bind(0);
         textsize++;
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
