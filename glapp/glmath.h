@@ -7,6 +7,10 @@ struct vec3 {
     float x, y, z;
 };
 
+struct vec2 {
+    float x, y;
+};
+
 struct mat4 {
     float m[16];
 };
@@ -117,6 +121,31 @@ inline vec3 operator*(const vec3 &v, const mat4 &mat) {
     result.y = v.x*mat.m[1] + v.y*mat.m[5] + v.z*mat.m[9]  + mat.m[13];
     result.z = v.x*mat.m[2] + v.y*mat.m[6] + v.z*mat.m[10] + mat.m[14];
     return result;
+}
+
+
+inline float len(const vec3& v) {
+    return std::sqrt(v.x*v.x+v.y*v.y+v.z*v.z);
+}
+
+
+inline vec3 normal(const vec3& v) {
+    float l = len(v);
+    return vec3{v.x/l, v.y/l, v.z/l};
+}
+
+inline vec3& normalize(vec3& v) {
+    float l = len(v);
+    v.x = v.x/l;
+    v.y = v.y/l;
+    v.z = v.z/l;
+    return v;
+}
+
+inline void reflect(vec3& v) {
+    v.x = -v.x;
+    v.y = -v.y;
+    v.z = -v.z;
 }
 
 

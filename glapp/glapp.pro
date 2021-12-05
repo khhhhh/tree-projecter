@@ -2,8 +2,9 @@ QT       += core gui opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++11
-# LIBS += -lGLU
+CONFIG += c++17
+#LIBS += -lGLU
+#LIBS +=  -lglew32 -lopengl32
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -15,8 +16,9 @@ SOURCES += \
     glslprogram.cpp \
     main.cpp \
     mesh.cpp \
-    proctree.cpp \
-    widget.cpp
+    texture.cpp \
+    widget.cpp \
+    proctree.cpp
 
 HEADERS += \
     camera.h \
@@ -25,8 +27,9 @@ HEADERS += \
     glmath.h \
     glslprogram.h \
     mesh.h \
-    proctree.h \
-    widget.h
+    texture.h \
+    widget.h \
+    proctree.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

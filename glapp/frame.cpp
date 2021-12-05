@@ -1,10 +1,14 @@
 #include "frame.h"
 
 Frame::Frame() {
+    parent =  nullptr;
     pos = {0,0,0};
     up = {0,1,0};
     forward = {0,0,1};
+}
 
+void Frame::attachTo(Frame *parent) {
+    this->parent = parent;
 }
 
 vec3 Frame::x() const{
@@ -23,6 +27,9 @@ mat4 Frame::matrix() const
     result.m[12] = pos.x;
     result.m[13] = pos.y;
     result.m[14] = pos.z;
+
+    if(parent)
+        result = mul(result, parent->matrix());
 
     return result;
 }

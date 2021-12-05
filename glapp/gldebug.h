@@ -6,8 +6,8 @@
 
 // odczytywanie błędów ze stosu, glGetError zwraca błąd i usuwa go ze stosu
 inline void PRINT_GL_ERRORS(const char* mess) {
+    /*
   GLenum err;
-  /*
   while( (err=glGetError()) != GL_NO_ERROR) {
       qDebug() << "ERROR in: " << mess << (const char*)gluErrorString(err);
   }

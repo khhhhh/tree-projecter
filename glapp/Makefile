@@ -16,7 +16,7 @@ CC            = gcc
 CXX           = g++
 DEFINES       = -DQT_QML_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -g -std=gnu++11 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -g -std=gnu++1z -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 INCPATH       = -I. -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/lib/qt/mkspecs/linux-g++
 QMAKE         = /usr/bin/qmake
 DEL_FILE      = rm -f
@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = glapp1.0.0
-DISTDIR = /home/kadmi/dydaktyka/seminarium/glapp/.tmp/glapp1.0.0
+DISTDIR = /home/kadmi/dydaktyka/gl/glapp/.tmp/glapp1.0.0
 LINK          = g++
 LFLAGS        = 
 LIBS          = $(SUBLIBS) -lGLU /usr/lib/libQt5OpenGL.so /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Core.so -lGL -lpthread   
@@ -57,7 +57,7 @@ SOURCES       = camera.cpp \
 		glslprogram.cpp \
 		main.cpp \
 		mesh.cpp \
-		proctree.cpp \
+		texture.cpp \
 		widget.cpp qrc_shaders.cpp \
 		moc_widget.cpp
 OBJECTS       = camera.o \
@@ -65,7 +65,7 @@ OBJECTS       = camera.o \
 		glslprogram.o \
 		main.o \
 		mesh.o \
-		proctree.o \
+		texture.o \
 		widget.o \
 		qrc_shaders.o \
 		moc_widget.o
@@ -410,13 +410,13 @@ DIST          = fshader.fsh \
 		glmath.h \
 		glslprogram.h \
 		mesh.h \
-		proctree.h \
+		texture.h \
 		widget.h camera.cpp \
 		frame.cpp \
 		glslprogram.cpp \
 		main.cpp \
 		mesh.cpp \
-		proctree.cpp \
+		texture.cpp \
 		widget.cpp
 QMAKE_TARGET  = glapp
 DESTDIR       = 
@@ -1112,8 +1112,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents shaders.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents camera.h frame.h gldebug.h glmath.h glslprogram.h mesh.h proctree.h widget.h $(DISTDIR)/
-	$(COPY_FILE) --parents camera.cpp frame.cpp glslprogram.cpp main.cpp mesh.cpp proctree.cpp widget.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents camera.h frame.h gldebug.h glmath.h glslprogram.h mesh.h texture.h widget.h $(DISTDIR)/
+	$(COPY_FILE) --parents camera.cpp frame.cpp glslprogram.cpp main.cpp mesh.cpp texture.cpp widget.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -1153,7 +1153,7 @@ compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
 moc_predefs.h: /usr/lib/qt/mkspecs/features/data/dummy.cpp
-	g++ -pipe -g -std=gnu++11 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/qt/mkspecs/features/data/dummy.cpp
+	g++ -pipe -g -std=gnu++1z -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/qt/mkspecs/features/data/dummy.cpp
 
 compiler_moc_header_make_all: moc_widget.cpp
 compiler_moc_header_clean:
@@ -1166,7 +1166,7 @@ moc_widget.cpp: widget.h \
 		camera.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/kadmi/dydaktyka/seminarium/glapp/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kadmi/dydaktyka/seminarium/glapp -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include widget.h -o moc_widget.cpp
+	/usr/bin/moc $(DEFINES) --include /home/kadmi/dydaktyka/gl/glapp/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/kadmi/dydaktyka/gl/glapp -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include widget.h -o moc_widget.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1208,12 +1208,11 @@ main.o: main.cpp widget.h \
 mesh.o: mesh.cpp mesh.h \
 		glmath.h \
 		frame.h \
-		gldebug.h \
-		proctree.h
+		gldebug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mesh.o mesh.cpp
 
-proctree.o: proctree.cpp proctree.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o proctree.o proctree.cpp
+texture.o: texture.cpp texture.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o texture.o texture.cpp
 
 widget.o: widget.cpp widget.h \
 		mesh.h \
