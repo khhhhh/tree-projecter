@@ -2,7 +2,12 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include <QMouseEvent>
+#include <QFile>
 #include <algorithm>
+#include <iostream>
+#include <fstream>
+#include "json.hpp"
+using json = nlohmann::json;
 
 Widget::~Widget()
 {
@@ -21,14 +26,13 @@ void Widget::initializeGL() {
 
     camera = new Camera();
 
-    Mesh *meshTree, *meshTwig;
     meshTwig = new Mesh(GL_TRIANGLES);
 
     Texture *treeTex, *twigTex;
     treeTex = new Texture();
     twigTex = new Texture();
-    treeTex->loadFromImage("C:/Users/al/Desktop/Dyplom/glapp_z7/glapp/tree1.jpg");
-    twigTex->loadFromImage("C:/Users/al/Desktop/Dyplom/glapp_z7/glapp/twig1.png");
+    treeTex->loadFromImage(":/pics/tree1.jpg");
+    twigTex->loadFromImage(":/pics/twig1.png");
     textures.push_back(treeTex);
     textures.push_back(twigTex);
 
@@ -38,21 +42,23 @@ void Widget::initializeGL() {
     meshes.push_back(meshTree);
     meshes.push_back(meshTwig);
 
+    /*
     meshTree->material.ambient = vec3{ 0.329412f, 0.223529f, 0.027451f };
     meshTree->material.diffuse = vec3{ 0.780392f, 0.568627f, 0.113725f };
     meshTree->material.specular = vec3{ 0.992157f, 0.941176f, 0.807843f };
     meshTree->material.shiness = 27.8974f;
+    */
 
     meshTwig->material.shiness = 27.8974f;
 
     gourardProgram = new GLSLProgram();
-    gourardProgram->compileShaderFromFile("C:/Users/al/Desktop/Dyplom/glapp_z7/glapp/vshader.vert", GL_VERTEX_SHADER);
-    gourardProgram->compileShaderFromFile("C:/Users/al/Desktop/Dyplom/glapp_z7/glapp/fshader.fsh", GL_FRAGMENT_SHADER);
+    gourardProgram->compileShaderFromFile(":/shaders/vshader.vert", GL_VERTEX_SHADER);
+    gourardProgram->compileShaderFromFile(":/shaders/fshader.fsh", GL_FRAGMENT_SHADER);
     gourardProgram->link();
 
     phongProgram = new GLSLProgram();
-    phongProgram->compileShaderFromFile("C:/Users/al/Desktop/Dyplom/glapp_z7/glapp/phong.vert", GL_VERTEX_SHADER);
-    phongProgram->compileShaderFromFile("C:/Users/al/Desktop/Dyplom/glapp_z7/glapp/phong.fsh", GL_FRAGMENT_SHADER);
+    phongProgram->compileShaderFromFile(":/shaders/phong.vert", GL_VERTEX_SHADER);
+    phongProgram->compileShaderFromFile(":/shaders/phong.fsh", GL_FRAGMENT_SHADER);
     phongProgram->link();
 
     program = phongProgram; //gourardProgram;
@@ -79,13 +85,13 @@ void Widget::paintGL() {
 
     for(size_t i=0; i< meshes.size(); i++) {
         Mesh *mesh = meshes[i];
-        Texture *texture = textures[i];
+        int texInd = i % 2;
+        Texture *texture = textures[texInd];
         program->setUniform("ModelMat", mesh->matrix());
         texture->bind(0);
-
-//        program->setUniform("MaterialAmbient", mesh->material.ambient);
-//        program->setUniform("MaterialDiffuse", mesh->material.diffuse);
-//        program->setUniform("MaterialSpecular", mesh->material.specular);
+        //        program->setUniform("MaterialAmbient", mesh->material.ambient);
+        //        program->setUniform("MaterialDiffuse", mesh->material.diffuse);
+        //        program->setUniform("MaterialSpecular", mesh->material.specular);
         program->setUniform("MaterialShiness", mesh->material.shiness);
         program->setUniform("ColorTexture", 1);
 
@@ -101,8 +107,9 @@ void Widget::resizeGL(int w, int h) {
 
 void Widget::keyPressEvent(QKeyEvent *event) {
     switch(event->key()) {
-        case Qt::Key_Tab: switchProgram(); break;
-        default: keys.insert(event->key());
+    case Qt::Key_Tab: switchProgram(); break;
+    case Qt::Key_L: loadFromJSON(); break;
+    default: keys.insert(event->key());
     }
 }
 
@@ -120,6 +127,27 @@ void Widget::switchProgram() {
         program = gourardProgram;
         qDebug() << "gourard";
     }
+}
+
+void Widget::loadFromJSON()
+{
+    /*
+    QFile file("file.json");
+    if(file.open(QFile::ReadOnly)) {
+        QTextStream stream(&file);
+        std::string shader_src =  stream.readAll().toStdString();
+        json j;
+        j = json::parse(shader_src);
+        Proctree::Properties props(j);
+        Mesh::changeTree(*meshTree, *meshTwig, props);
+    }
+    */
+    std::ifstream file("C:\\Users\\al\\Desktop\\Dyplom\\glapp1\\glapp\\file.json");
+    json j;
+    file >> j;
+    Proctree::Properties props(j);
+
+    Mesh::changeTree(*meshTree, *meshTwig, props);
 }
 
 void Widget::mousePressEvent(QMouseEvent * e) {
@@ -155,7 +183,6 @@ void Widget::processCamera() {
         camera->pos = camera->pos + camera->up*dv;
     else if(keys.find(Qt::Key_Z) != keys.end())
         camera->pos = camera->pos - camera->up*dv;
-
 
     camera->forward = {0,0,-1};
     camera->forward = camera->forward * rotationMat(dax, 0, 1, 0);

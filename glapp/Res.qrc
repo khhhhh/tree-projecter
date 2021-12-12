@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/shaders">
+        <file>fshader.fsh</file>
+        <file>vshader.vert</file>
+        <file>phong.fsh</file>
+        <file>phong.vert</file>
+    </qresource>
+    <qresource prefix="/pics">
+        <file>tree1.jpg</file>
+        <file>twig1.png</file>
+    </qresource>
+    <qresource prefix="/json">
+        <file>file.json</file>
+    </qresource>
+</RCC>

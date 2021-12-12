@@ -26,6 +26,7 @@ HEADERS += \
     gldebug.h \
     glmath.h \
     glslprogram.h \
+    json.hpp \
     mesh.h \
     texture.h \
     widget.h \
@@ -37,10 +38,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    fshader.fsh \
-    phong.fsh \
-    phong.vert \
-    vshader.vert
+    file.json
 
 RESOURCES += \
-    shaders.qrc
+    Res.qrc

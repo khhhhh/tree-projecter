@@ -4,6 +4,7 @@
 #include <QOpenGLFunctions_3_3_Core>
 #include "glmath.h"
 #include "frame.h"
+#include "proctree.h"
 
 class Mesh : public Frame, protected QOpenGLFunctions_3_3_Core{
 public:
@@ -39,6 +40,7 @@ public:
 
     static Mesh *loadFromObj(const char *filename);
     static Mesh *generateTree(Mesh& meshTwig);
+    static void changeTree(Mesh& meshTree, Mesh &meshTwig, Proctree::Properties props);
 
     static Mesh *createTerrain(QImage img, vec3 scale);
 

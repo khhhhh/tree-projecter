@@ -25,6 +25,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#include "json.hpp"
+using json = nlohmann::json;
 namespace Proctree
 {
 	typedef struct
@@ -71,6 +73,7 @@ namespace Proctree
 		int mSeed;
 		int mRseed;
 
+        Properties(json j);
 		Properties();
 		Properties(
 			float aClumpMax,

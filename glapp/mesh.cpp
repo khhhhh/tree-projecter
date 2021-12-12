@@ -1,6 +1,5 @@
 #include "mesh.h"
 #include "gldebug.h"
-#include "proctree.h"
 #include <QFile>
 #include <QImage>
 
@@ -352,3 +351,52 @@ Mesh *Mesh::generateTree(Mesh &meshTwig) {
     return mesh;
 }
 
+void Mesh::changeTree(Mesh &meshTree, Mesh &meshTwig, Proctree::Properties props) {
+    Proctree::Tree tree;
+    tree.mProperties = props;
+    tree.generate();
+    std::vector<vec3> vertices, normals;
+    std::vector<vec2> UVs;
+    std::vector<uint> indices;
+
+    std::vector<vec3> verticesTwig, normalsTwig;
+    std::vector<vec2> UVsTwig;
+    std::vector<uint> indicesTwig;
+
+    for (int i = 0; i < tree.mVertCount; i++) {
+        vec3 vertex = {tree.mVert[i].x, tree.mVert[i].y, tree.mVert[i].z};
+        vec3 normal = {tree.mNormal[i].x, tree.mNormal[i].y, tree.mNormal[i].z};
+        vec2 UV = {tree.mUV[i].u, tree.mUV[i].v};
+        vertices.push_back(vertex);
+        normals.push_back(normal);
+        UVs.push_back(UV);
+    }
+    for(int i = 0; i < tree.mTwigVertCount; i++) {
+        vec3 vertexTwig = {tree.mTwigVert[i].x, tree.mTwigVert[i].y,tree.mTwigVert[i].z};
+        vec3 normalTwig = {tree.mTwigNormal[i].x, tree.mTwigNormal[i].y, tree.mTwigNormal[i].z};
+        vec2 UV = {tree.mTwigUV[i].u, tree.mTwigUV[i].v};
+        verticesTwig.push_back(vertexTwig);
+        normalsTwig.push_back(normalTwig);
+        UVsTwig.push_back(UV);
+    }
+    for (int i = 0; i < tree.mFaceCount; i++) {
+        indices.push_back(tree.mFace[i].x);
+        indices.push_back(tree.mFace[i].y);
+        indices.push_back(tree.mFace[i].z);
+    }
+    for (int i = 0; i < tree.mTwigFaceCount; i++) {
+        indicesTwig.push_back(tree.mTwigFace[i].x);
+        indicesTwig.push_back(tree.mTwigFace[i].y);
+        indicesTwig.push_back(tree.mTwigFace[i].z);
+    }
+
+    meshTree.setVertices(vertices.data(), vertices.size());
+    meshTree.setIndices(indices.data(), indices.size());
+    meshTree.setAttribute(Mesh::Normals, normals.data(), normals.size());
+    meshTree.setAttribute(Mesh::UV, UVs.data(), UVs.size());
+
+    meshTwig.setVertices(verticesTwig.data(), verticesTwig.size());
+    meshTwig.setIndices(indicesTwig.data(), indicesTwig.size());
+    meshTwig.setAttribute(Mesh::Normals, normalsTwig.data(), normals.size());
+    meshTwig.setAttribute(Mesh::UV, UVsTwig.data(), UVsTwig.size());
+}

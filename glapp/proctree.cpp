@@ -29,6 +29,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <cmath>
 #include <string.h>
 #include "proctree.h"
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 #ifndef M_PI
 #define M_PI 3.1415926535897932384626433832795f
@@ -172,6 +175,32 @@ namespace Proctree
 		mTwistRate = aTwistRate;
 		mTrunkLength = aTrunkLength;
 	}
+    Properties::Properties(json j)
+    {
+        mSeed = j["mSeed"];
+        mSegments = j["mSegments"];
+        mLevels = j["mLevels"];
+        mVMultiplier = j["mVMultiplier"];
+        mTwigScale = j["mTwigScale"];
+        mInitialBranchLength = j["mInitialBranchLength"];
+        mLengthFalloffFactor = j["mLengthFalloffFactor"];
+        mLengthFalloffPower = j["mLengthFalloffPower"];
+        mClumpMax = j["mClumpMax"];
+        mClumpMin = j["mClumpMin"];
+        mBranchFactor = j["mBranchFactor"];
+        mDropAmount = j["mDropAmount"];
+        mGrowAmount = j["mGrowAmount"];
+        mSweepAmount = j["mSweepAmount"];
+        mMaxRadius = j["mMaxRadius"];
+        mClimbRate = j["mClimbRate"];
+        mTrunkKink = j["mTrunkKink"];
+        mTreeSteps = j["mTreeSteps"];
+        mTaperRate = j["mTaperRate"];
+        mRadiusFalloffRate = j["mRadiusFalloffRate"];
+        mTwistRate = j["mTwistRate"];
+        mTrunkLength = j["mTrunkLength"];
+    }
+
 
 	Properties::Properties()
 	{

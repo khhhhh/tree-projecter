@@ -20,6 +20,7 @@ class Widget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     std::vector<Mesh *> meshes;
     GLSLProgram *program, *gourardProgram, *phongProgram;
     std::vector<Texture *> textures;
+    Mesh *meshTree, *meshTwig;
 
     mat4 projMat;
 
@@ -36,6 +37,7 @@ class Widget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void processCamera();
     void rotateLight();
     void switchProgram();
+    void loadFromJSON();
 
 protected:
     void initializeGL();
