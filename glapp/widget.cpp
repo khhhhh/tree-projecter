@@ -37,8 +37,8 @@ void OpenGlWidget::initializeGL() {
     textures.push_back(twigTex);
 
     meshTree = Mesh::generateTree(*meshTwig);
-    meshTree->pos = {2, 0, -1};
-    meshTwig->pos = {2, 0, -1};
+    meshTree->pos = {0, 0, -1};
+    meshTwig->pos = {0, 0, -1};
     meshes.push_back(meshTree);
     meshes.push_back(meshTwig);
 
@@ -148,6 +148,19 @@ void OpenGlWidget::loadFromJSON()
     Proctree::Properties props(j);
 
     Mesh::changeTree(*meshTree, *meshTwig, props);
+}
+
+void OpenGlWidget::loadFromPath(QString path)
+{
+    QFile file(path);
+    if(file.open(QFile::ReadOnly)) {
+        QTextStream stream(&file);
+        std::string shader_src =  stream.readAll().toStdString();
+        json j;
+        j = json::parse(shader_src);
+        Proctree::Properties props(j);
+        Mesh::changeTree(*meshTree, *meshTwig, props);
+    }
 }
 
 void OpenGlWidget::loadFromJSON(json j)

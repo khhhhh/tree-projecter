@@ -51,6 +51,7 @@ protected:
 public:
     void loadFromJSON();
     void loadFromJSON(json j);
+    void loadFromPath(QString path);
     ~OpenGlWidget();
 };
 #endif // WIDGET_H
