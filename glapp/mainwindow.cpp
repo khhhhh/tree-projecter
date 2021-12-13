@@ -12,8 +12,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     openGlWidget = new OpenGlWidget();
 
+    ui->slider_seed->setValue(462);
+    ui->slider_levels->setValue(5);
     connect(ui->slider_seed, SIGNAL(sliderReleased()), this, SLOT(slider_valueChanged()));
-    connect(ui->slider_segments, SIGNAL(sliderReleased()), this, SLOT(slider_valueChanged()));
+    connect(ui->slider_levels, SIGNAL(sliderReleased()), this, SLOT(slider_valueChanged()));
     ui->horizontalLayout->addWidget(openGlWidget, 66);
 }
 
@@ -28,7 +30,7 @@ void MainWindow::slider_valueChanged()
     {
         {"mSeed" , ui->slider_seed->value()},
         {"mSegments" , 6},
-        {"mLevels" , ui->slider_segments->value()},
+        {"mLevels" , ui->slider_levels->value()},
         {"mVMultiplier" , 0.36f},
         {"mTwigScale" , 0.7f},
         {"mInitialBranchLength" , 0.5f},

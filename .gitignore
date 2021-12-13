@@ -1,5 +1,3 @@
-build-glapp-Desktop*
-
 # C++ objects and libs
 *.slo
 *.lo
