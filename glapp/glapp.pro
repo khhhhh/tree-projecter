@@ -15,6 +15,7 @@ SOURCES += \
     frame.cpp \
     glslprogram.cpp \
     main.cpp \
+    mainwindow.cpp \
     mesh.cpp \
     texture.cpp \
     widget.cpp \
@@ -27,6 +28,7 @@ HEADERS += \
     glmath.h \
     glslprogram.h \
     json.hpp \
+    mainwindow.h \
     mesh.h \
     texture.h \
     widget.h \
@@ -42,3 +44,6 @@ DISTFILES += \
 
 RESOURCES += \
     Res.qrc
+
+FORMS += \
+    mainwindow.ui

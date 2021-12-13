@@ -11,7 +11,7 @@
 #include <set>
 #include "texture.h"
 
-class Widget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
+class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 {
     Q_OBJECT
 
@@ -37,7 +37,6 @@ class Widget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void processCamera();
     void rotateLight();
     void switchProgram();
-    void loadFromJSON();
 
 protected:
     void initializeGL();
@@ -50,6 +49,8 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
 
 public:
-    ~Widget();
+    void loadFromJSON();
+    void loadFromJSON(json j);
+    ~OpenGlWidget();
 };
 #endif // WIDGET_H

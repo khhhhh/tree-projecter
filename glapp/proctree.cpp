@@ -205,7 +205,7 @@ namespace Proctree
 	Properties::Properties()
 	{
 		mSeed = 262;
-		mSegments = 6;
+        mSegments = 6;
 		mLevels = 5;
 		mVMultiplier = 0.36f;
 		mTwigScale = 0.39f;

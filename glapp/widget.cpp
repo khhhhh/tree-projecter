@@ -9,11 +9,11 @@
 #include "json.hpp"
 using json = nlohmann::json;
 
-Widget::~Widget()
+OpenGlWidget::~OpenGlWidget()
 {
 }
 
-void Widget::initializeGL() {
+void OpenGlWidget::initializeGL() {
     //frame = 0;
     de = 0;
     angle = 0.0f;
@@ -67,7 +67,7 @@ void Widget::initializeGL() {
     timer.setInterval(10);
     timer.start();
 }
-void Widget::paintGL() {
+void OpenGlWidget::paintGL() {
     processCamera();
     rotateLight();
     glClearColor(0.5, 0.5, 0.5, 1);
@@ -100,12 +100,12 @@ void Widget::paintGL() {
     }
     //glDisable(GL_BLEND);
 }
-void Widget::resizeGL(int w, int h) {
+void OpenGlWidget::resizeGL(int w, int h) {
     glViewport(0, 0, w, h);
     projMat = perspectiveMat(60.0f, w/(float)h, 0.01f, 150.0f);
 }
 
-void Widget::keyPressEvent(QKeyEvent *event) {
+void OpenGlWidget::keyPressEvent(QKeyEvent *event) {
     switch(event->key()) {
     case Qt::Key_Tab: switchProgram(); break;
     case Qt::Key_L: loadFromJSON(); break;
@@ -114,11 +114,11 @@ void Widget::keyPressEvent(QKeyEvent *event) {
 }
 
 
-void Widget::keyReleaseEvent(QKeyEvent *event) {
+void OpenGlWidget::keyReleaseEvent(QKeyEvent *event) {
     keys.erase(event->key());
 }
 
-void Widget::switchProgram() {
+void OpenGlWidget::switchProgram() {
     if(program == gourardProgram) {
         program = phongProgram;
         qDebug() << "phong";
@@ -129,7 +129,7 @@ void Widget::switchProgram() {
     }
 }
 
-void Widget::loadFromJSON()
+void OpenGlWidget::loadFromJSON()
 {
     /*
     QFile file("file.json");
@@ -150,7 +150,13 @@ void Widget::loadFromJSON()
     Mesh::changeTree(*meshTree, *meshTwig, props);
 }
 
-void Widget::mousePressEvent(QMouseEvent * e) {
+void OpenGlWidget::loadFromJSON(json j)
+{
+    Proctree::Properties props(j);
+    Mesh::changeTree(*meshTree, *meshTwig, props);
+}
+
+void OpenGlWidget::mousePressEvent(QMouseEvent * e) {
     if(e->button() == Qt::LeftButton){
         e->pos().x();
         ax = e->pos().x();
@@ -158,7 +164,7 @@ void Widget::mousePressEvent(QMouseEvent * e) {
     }
 }
 
-void Widget::mouseMoveEvent(QMouseEvent * e) {
+void OpenGlWidget::mouseMoveEvent(QMouseEvent * e) {
     if(e->buttons() == Qt::LeftButton) {
         dax += ax-e->pos().x();
         day += ay-e->pos().y();
@@ -168,7 +174,7 @@ void Widget::mouseMoveEvent(QMouseEvent * e) {
     }
 }
 
-void Widget::processCamera() {
+void OpenGlWidget::processCamera() {
     float dv = 0.1f;
 
     if(keys.find(Qt::Key_W) != keys.end())
@@ -190,7 +196,7 @@ void Widget::processCamera() {
     camera->forward = camera->forward * rotationMat(std::clamp<float>(day,-89.9,89.9), cx.x, cx.y, cx.z);
 }
 
-void Widget::rotateLight() {
+void OpenGlWidget::rotateLight() {
     //lightPosition = lightPosition * rotationMat(1, 0,1,0);
     //lightPosition = lightPosition * rotationMat(1, 0, 1, 0);
 }
