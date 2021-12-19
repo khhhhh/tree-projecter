@@ -12,24 +12,20 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    openGlWidget = new OpenGlWidget();
-
-    ui->slider_seed->setValue(462);
-    ui->slider_levels->setValue(5);
     j =
     {
-        {"mSeed" , 462},
+        {"mSeed" , 262},
         {"mSegments" , 6},
         {"mLevels" , 5},
         {"mVMultiplier" , 0.36f},
-        {"mTwigScale" , 0.7f},
-        {"mInitialBranchLength" , 0.5f},
+        {"mTwigScale" , 0.39f},
+        {"mInitialBranchLength" , 0.49f},
         {"mLengthFalloffFactor" , 0.85f},
         {"mLengthFalloffPower" , 0.99f},
         {"mClumpMax" , 0.454f},
         {"mClumpMin" , 0.404f},
         {"mBranchFactor" , 2.45f},
-        {"mDropAmount" , 0},
+        {"mDropAmount" , -0.1f},
         {"mGrowAmount" , 0.235f},
         {"mSweepAmount" , 0.01f},
         {"mMaxRadius" , 0.139f},
@@ -41,8 +37,39 @@ MainWindow::MainWindow(QWidget *parent) :
         {"mTwistRate" , 3.02f},
         {"mTrunkLength" , 2.4f}
     };
-    connect(ui->slider_seed, SIGNAL(sliderReleased()), this, SLOT(slider_valueChanged()));
-    connect(ui->slider_levels, SIGNAL(sliderReleased()), this, SLOT(slider_valueChanged()));
+
+    openGlWidget = new OpenGlWidget();
+
+    set_sliders();
+
+    std::vector<QSlider *> sliders;
+
+    sliders.push_back(ui->slider_seed);
+    sliders.push_back(ui->slider_treeSteps);
+    sliders.push_back(ui->slider_levels);
+    sliders.push_back(ui->slBranchFac);
+    sliders.push_back(ui->slVMul);
+    sliders.push_back(ui->slClumpMin);
+    sliders.push_back(ui->slClumpMax);
+    sliders.push_back(ui->slClumbRate);
+    sliders.push_back(ui->slTwigScale);
+    sliders.push_back(ui->slInitBranch);
+    sliders.push_back(ui->slLenFallFac);
+    sliders.push_back(ui->slLenFallPow);
+    sliders.push_back(ui->slDrop);
+    sliders.push_back(ui->slSweep);
+    sliders.push_back(ui->slGrow);
+    sliders.push_back(ui->slMaxRad);
+    sliders.push_back(ui->slRadFall);
+    sliders.push_back(ui->slSeg);
+    sliders.push_back(ui->slTaper);
+    sliders.push_back(ui->slTrunkKink);
+    sliders.push_back(ui->slTrunkLen);
+    sliders.push_back(ui->slTwistRate);
+
+    for (const QSlider* i : sliders) {
+        connect(i, SIGNAL(valueChanged(int)), this, SLOT(slider_valueChanged()));
+     }
     ui->horizontalLayout->addWidget(openGlWidget, 66);
 }
 
@@ -55,6 +82,29 @@ void MainWindow::slider_valueChanged()
 {
     j["mSeed"] = ui->slider_seed->value();
     j["mLevels"] = ui->slider_levels->value();
+    j["mTreeSteps"] = ui->slider_treeSteps->value();
+    j["mBranchFactor"] = ui->slBranchFac->value() / 100.0f;
+    j["mVMultiplier"] = ui->slVMul->value() / 100.0f;
+    j["mClumpMax"] = ui->slClumpMax->value() / 100.0f;
+    j["mClumpMin"] = ui->slClumpMin->value() / 100.0f;
+    j["mClimbRate"] = ui->slClumbRate->value() / 100.0f;
+    j["mTwigScale"] = ui->slTwigScale->value() / 100.0f;
+    j["mInitialBranchLength"] = ui->slInitBranch->value() / 100.0f;
+    j["mLengthFalloffFactor"] = ui->slLenFallFac->value() / 100.0f;
+    j["mLengthFalloffPower"] = ui->slLenFallPow->value()/ 100.0f;
+    j["mDropAmount"] = ui->slDrop->value() / 100.0f;
+    j["mGrowAmount"] = ui->slGrow->value() / 100.0f;
+    j["mSweepAmount"] = ui->slSweep->value() / 100.0f;
+    j["mSegments"] = ui->slSeg->value();
+    j["mMaxRadius"] = ui->slMaxRad->value() / 100.0f;
+    j["mTrunkKink"] = ui->slTrunkKink->value() / 1000.0f;
+    j["mTaperRate"] = ui->slTaper->value() / 100.0f;
+    j["mRadiusFalloffRate"] = ui->slRadFall->value() / 100.0f;
+    j["mTwistRate"] = ui->slTwistRate->value() / 100.0f;
+    j["mTrunkLength"] = ui->slTrunkLen->value() / 10.0f;
+
+    /*
+    */
     openGlWidget->loadFromJSON(j);
 }
 
@@ -71,7 +121,7 @@ void MainWindow::on_actionOpen_triggered()
             j = json::parse(shader_src);
             openGlWidget->loadFromJSON(j);
             set_sliders();
-    }
+        }
     }
 }
 
@@ -92,8 +142,68 @@ void MainWindow::on_actionSave_triggered()
 
 void MainWindow::set_sliders()
 {
+    float VMul = j["mVMultiplier"],
+          TwigScale = j["mTwigScale"],
+          InitBranch = j["mInitialBranchLength"],
+          LenFallFac = j["mLengthFalloffFactor"],
+          LenFallPow = j["mLengthFalloffPower"],
+          ClumpMax = j["mClumpMax"],
+          ClumpMin = j["mClumpMin"],
+          BranchFac = j["mBranchFactor"],
+          Drop = j["mDropAmount"],
+          Grow = j["mGrowAmount"],
+          Sweep = j["mSweepAmount"],
+          MaxRad = j["mMaxRadius"],
+          ClimbRate = j["mClimbRate"],
+          TrunkKink = j["mTrunkKink"],
+          Taper = j["mTaperRate"],
+          RadFall = j["mRadiusFalloffRate"],
+          TwistRate = j["mTwistRate"],
+          TrunkLen = j["mTrunkLength"];
+
+    VMul *= 100;
+    TwigScale *= 100;
+    InitBranch *= 100;
+    LenFallFac *= 100;
+    LenFallPow *= 100;
+    ClumpMax *= 100;
+    ClumpMin *= 100;
+    BranchFac *= 100;
+    Drop *= 100;
+    Grow *= 100;
+    Sweep *= 100;
+    MaxRad *= 100;
+    ClimbRate *= 100;
+    TrunkKink *= 1000;
+    Taper *= 100;
+    RadFall *= 100;
+    TwistRate *= 100;
+    TrunkLen *= 10;
+
     ui->slider_seed->setValue(j["mSeed"]);
     ui->slider_levels->setValue(j["mLevels"]);
+    ui->slider_treeSteps->setValue(j["mTreeSteps"]);
+    ui->slSeg->setValue(j["mSegments"]);
+    ui->slVMul->setValue(VMul);
+    ui->slTwigScale->setValue(TwigScale);
+    ui->slInitBranch->setValue(InitBranch);
+    ui->slLenFallFac->setValue(LenFallFac);
+    ui->slLenFallPow->setValue(LenFallPow);
+    ui->slClumpMax->setValue(ClumpMax);
+    ui->slClumpMin->setValue(ClumpMin);
+    ui->slBranchFac->setValue(BranchFac);
+    ui->slDrop->setValue(Drop);
+    ui->slGrow->setValue(Grow);
+    ui->slSweep->setValue(Sweep);
+    //ui->slSweep->setValue(1);
+    ui->slMaxRad->setValue(MaxRad);
+    ui->slClumbRate->setValue(ClimbRate);
+    ui->slTrunkKink->setValue(TrunkKink);
+    ui->slTaper->setValue(Taper);
+    ui->slRadFall->setValue(RadFall);
+    ui->slTwistRate->setValue(TwistRate);
+    ui->slTrunkLen->setValue(TrunkLen);
+
 }
 
 
@@ -110,4 +220,3 @@ void MainWindow::on_actionSaveAs_triggered()
         }
     }
 }
-

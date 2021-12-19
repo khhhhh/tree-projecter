@@ -37,8 +37,8 @@ void OpenGlWidget::initializeGL() {
     textures.push_back(twigTex);
 
     meshTree = Mesh::generateTree(*meshTwig);
-    meshTree->pos = {0, 0, -1};
-    meshTwig->pos = {0, 0, -1};
+    meshTree->pos = {0, -1, -1};
+    meshTwig->pos = {0, -1, -1};
     meshes.push_back(meshTree);
     meshes.push_back(meshTwig);
 
@@ -108,7 +108,6 @@ void OpenGlWidget::resizeGL(int w, int h) {
 void OpenGlWidget::keyPressEvent(QKeyEvent *event) {
     switch(event->key()) {
     case Qt::Key_Tab: switchProgram(); break;
-    case Qt::Key_L: loadFromJSON(); break;
     default: keys.insert(event->key());
     }
 }
@@ -129,26 +128,6 @@ void OpenGlWidget::switchProgram() {
     }
 }
 
-void OpenGlWidget::loadFromJSON()
-{
-    /*
-    QFile file("file.json");
-    if(file.open(QFile::ReadOnly)) {
-        QTextStream stream(&file);
-        std::string shader_src =  stream.readAll().toStdString();
-        json j;
-        j = json::parse(shader_src);
-        Proctree::Properties props(j);
-        Mesh::changeTree(*meshTree, *meshTwig, props);
-    }
-    */
-    std::ifstream file("C:\\Users\\al\\Desktop\\Dyplom\\glapp1\\glapp\\file.json");
-    json j;
-    file >> j;
-    Proctree::Properties props(j);
-
-    Mesh::changeTree(*meshTree, *meshTwig, props);
-}
 
 void OpenGlWidget::loadFromPath(QString path)
 {

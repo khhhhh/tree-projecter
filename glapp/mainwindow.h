@@ -26,6 +26,7 @@ private slots:
 
     void on_actionSaveAs_triggered();
 
+
 private:
     QString opened_file_path;
     Ui::MainWindow *ui;

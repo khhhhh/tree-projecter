@@ -49,7 +49,6 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
 
 public:
-    void loadFromJSON();
     void loadFromJSON(json j);
     void loadFromPath(QString path);
     ~OpenGlWidget();
