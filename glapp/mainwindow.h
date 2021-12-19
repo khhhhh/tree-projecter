@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSlider>
 #include "widget.h"
 #include "json.hpp"
 
@@ -20,6 +21,7 @@ public:
 
 private slots:
     void slider_valueChanged();
+    void growTree();
 
     void on_actionOpen_triggered();
     void on_actionSave_triggered();
@@ -27,12 +29,19 @@ private slots:
     void on_actionSaveAs_triggered();
 
 
+    void on_spinBox_valueChanged(int arg1);
+
 private:
+    std::vector<QSlider *> sliders;
     QString opened_file_path;
     Ui::MainWindow *ui;
     OpenGlWidget *openGlWidget;
     json j;
     void set_sliders();
+    void delay(int secs);
+    float round(float var);
+
+    int growSteps = 12;
 };
 
 #endif // MAINWINDOW_H

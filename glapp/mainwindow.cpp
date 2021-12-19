@@ -5,6 +5,7 @@
 #include <QLayout>
 #include <QFileDialog>
 #include <QTextStream>
+#include <QTime>
 using jsos = nlohmann::json;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -42,8 +43,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     set_sliders();
 
-    std::vector<QSlider *> sliders;
-
     sliders.push_back(ui->slider_seed);
     sliders.push_back(ui->slider_treeSteps);
     sliders.push_back(ui->slider_levels);
@@ -70,6 +69,7 @@ MainWindow::MainWindow(QWidget *parent) :
     for (const QSlider* i : sliders) {
         connect(i, SIGNAL(valueChanged(int)), this, SLOT(slider_valueChanged()));
      }
+    connect(ui->buttonGrow, SIGNAL(clicked()), this, SLOT(growTree()));
     ui->horizontalLayout->addWidget(openGlWidget, 66);
 }
 
@@ -206,6 +206,98 @@ void MainWindow::set_sliders()
 
 }
 
+void MainWindow::growTree()
+{
+    for (QSlider* i : sliders) {
+        disconnect(i, SIGNAL(valueChanged(int)), this, SLOT(slider_valueChanged()));
+     }
+    ui->buttonGrow->setEnabled(false);
+    int growSteps = ui->spinBox->value();
+
+    double level =  j["mLevels"];
+    double treeSteps = j["mTreeSteps"];
+    double InitBranchLen =  j["mInitialBranchLength"];
+    double maxRad = j["mMaxRadius"];
+    double trunkLen = j["mTrunkLength"];
+    double twigScale =  j["mTwigScale"];
+    double drop = j["mDropAmount"];
+    double grow = j["mGrowAmount"];
+
+    /*
+    ui->slider_levels->setValue(1);
+    ui->slider_treeSteps->setValue(1);
+    ui->slInitBranch->setValue(1);
+    ui->slMaxRad->setValue(2);
+    ui->slTrunkLen->setValue(1);
+    ui->slTwigScale->setValue(1);
+    */
+
+    j["mInitialBranchLength"] = 0.01;
+    j["mMaxRadius"] = 0.02;
+    j["mTrunkLength"] = 0.1;
+    j["mTwigScale"] = 0.01;
+    j["mDropAmount"] = 0.2;
+    j["mGrowAmount"] = 0.9;
+
+    double mInitialBranchLength = j["mInitialBranchLength"];
+    double mMaxRadius = j["mMaxRadius"];
+    double mTrunkLength = j["mTrunkLength"];
+    double mTwigScale = j["mTwigScale"];
+    double mDropAmount = j["mDropAmount"];
+    double mGrowAmount = j["mGrowAmount"];
+
+    double initBranchLenStep = (double)(InitBranchLen - mInitialBranchLength) / growSteps;
+    double maxRadStep = (double)(maxRad - mMaxRadius) / growSteps;
+    double trunkLenStep = (double)(trunkLen - mTrunkLength) / growSteps;
+    double twigScaleStep = (double)(twigScale - mTwigScale) / growSteps;
+    double dropStep = (double)(drop - mDropAmount) / growSteps;
+    double growStep = (double)(grow - mGrowAmount) / growSteps;
+
+
+    double delayMSec = (double)1000/growSteps;
+    for(int i = 0; i < growSteps; i++)
+    {
+        mInitialBranchLength += initBranchLenStep;
+        mMaxRadius += maxRadStep;
+        mTrunkLength += trunkLenStep;
+        mTwigScale += twigScaleStep;
+        mDropAmount += dropStep;
+        mGrowAmount += growStep;
+
+        j["mInitialBranchLength"] = mInitialBranchLength;
+        j["mMaxRadius"] = mMaxRadius;
+        j["mTrunkLength"] = mTrunkLength;
+        j["mTwigScale"] = mTwigScale;
+        j["mDropAmount"] = mDropAmount;
+        j["mGrowAmount"] = mGrowAmount;
+
+        set_sliders();
+        openGlWidget->loadFromJSON(j);
+        delay(delayMSec);
+    }
+    ui->buttonGrow->setEnabled(true);
+
+    for (QSlider* i : sliders) {
+        connect(i, SIGNAL(valueChanged(int)), this, SLOT(slider_valueChanged()));
+    }
+}
+
+float MainWindow::round(float var)
+{
+    // 37.66666 * 100 =3766.66
+    // 3766.66 + .5 =3767.16    for rounding off value
+    // then type cast to int so value is 3767
+    // then divided by 100 so the value converted into 37.67
+    float value = (int)(var * 100 + .5);
+    return (float)value / 100;
+}
+
+void MainWindow::delay(int secs)
+{
+    QTime dieTime = QTime::currentTime().addMSecs(secs);
+    while (QTime::currentTime() < dieTime)
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+}
 
 void MainWindow::on_actionSaveAs_triggered()
 {
@@ -220,3 +312,9 @@ void MainWindow::on_actionSaveAs_triggered()
         }
     }
 }
+
+void MainWindow::on_spinBox_valueChanged(int arg1)
+{
+    growSteps = arg1;
+}
+
