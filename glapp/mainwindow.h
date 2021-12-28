@@ -41,7 +41,11 @@ private:
     void delay(int secs);
     float round(float var);
 
+
     int growSteps = 12;
+protected:
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
 };
 
 #endif // MAINWINDOW_H

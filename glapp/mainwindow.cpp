@@ -6,6 +6,8 @@
 #include <QFileDialog>
 #include <QTextStream>
 #include <QTime>
+#include <QKeyEvent>
+
 using jsos = nlohmann::json;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -214,8 +216,8 @@ void MainWindow::growTree()
     ui->buttonGrow->setEnabled(false);
     int growSteps = ui->spinBox->value();
 
-    double level =  j["mLevels"];
-    double treeSteps = j["mTreeSteps"];
+    //double level =  j["mLevels"];
+    //double treeSteps = j["mTreeSteps"];
     double InitBranchLen =  j["mInitialBranchLength"];
     double maxRad = j["mMaxRadius"];
     double trunkLen = j["mTrunkLength"];
@@ -290,6 +292,15 @@ float MainWindow::round(float var)
     // then divided by 100 so the value converted into 37.67
     float value = (int)(var * 100 + .5);
     return (float)value / 100;
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    openGlWidget->keys.insert(event->key());
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent *event) {
+    openGlWidget->keys.erase(event->key());
 }
 
 void MainWindow::delay(int secs)

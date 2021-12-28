@@ -26,7 +26,6 @@ class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 
     QPoint refPoint;
 
-    std::set<int> keys;
 
     int de;
     float angle;
@@ -49,6 +48,8 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
 
 public:
+    std::set<int> keys;
+
     void loadFromJSON(json j);
     void loadFromPath(QString path);
     ~OpenGlWidget();

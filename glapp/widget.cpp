@@ -14,7 +14,6 @@ OpenGlWidget::~OpenGlWidget()
 }
 
 void OpenGlWidget::initializeGL() {
-    //frame = 0;
     de = 0;
     angle = 0.0f;
     ax=ay=dax=day=0;
@@ -42,13 +41,6 @@ void OpenGlWidget::initializeGL() {
     meshes.push_back(meshTree);
     meshes.push_back(meshTwig);
 
-    /*
-    meshTree->material.ambient = vec3{ 0.329412f, 0.223529f, 0.027451f };
-    meshTree->material.diffuse = vec3{ 0.780392f, 0.568627f, 0.113725f };
-    meshTree->material.specular = vec3{ 0.992157f, 0.941176f, 0.807843f };
-    meshTree->material.shiness = 27.8974f;
-    */
-
     meshTwig->material.shiness = 27.8974f;
 
     gourardProgram = new GLSLProgram();
@@ -67,6 +59,7 @@ void OpenGlWidget::initializeGL() {
     timer.setInterval(10);
     timer.start();
 }
+
 void OpenGlWidget::paintGL() {
     processCamera();
     rotateLight();
