@@ -3,6 +3,10 @@
 
 #include <cmath>
 
+struct vec4 {
+    float x, y, z, a;
+};
+
 struct vec3 {
     float x, y, z;
 };

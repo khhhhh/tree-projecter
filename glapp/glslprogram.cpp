@@ -90,6 +90,15 @@ void GLSLProgram::setUniform(const char* name, vec3 vec) {
     else
         qDebug() << "Uniform variable error: " << name << endl;
 }
+
+void GLSLProgram::setUniform(const char* name, vec4 vec) {
+    GLint loc = glGetUniformLocation(handle, name);
+    if(loc != -1)
+        glUniform4f(loc, vec.x, vec.y, vec.z, vec.a);
+    else
+        qDebug() << "Uniform variable error: " << name << endl;
+}
+
 void GLSLProgram::setUniform(const char* name, float val) {
     GLint loc = glGetUniformLocation(handle, name);
     if(loc != -1)

@@ -206,6 +206,8 @@ void MainWindow::set_sliders()
     ui->slTwistRate->setValue(TwistRate);
     ui->slTrunkLen->setValue(TrunkLen);
 
+    ui->slSeason->setValue(0);
+
 }
 
 void MainWindow::growTree()
@@ -216,7 +218,7 @@ void MainWindow::growTree()
     ui->buttonGrow->setEnabled(false);
     int growSteps = ui->spinBox->value();
 
-    //double level =  j["mLevels"];
+    double level =  j["mLevels"];
     //double treeSteps = j["mTreeSteps"];
     double InitBranchLen =  j["mInitialBranchLength"];
     double maxRad = j["mMaxRadius"];
@@ -234,12 +236,14 @@ void MainWindow::growTree()
     ui->slTwigScale->setValue(1);
     */
 
+
     j["mInitialBranchLength"] = 0.01;
     j["mMaxRadius"] = 0.02;
     j["mTrunkLength"] = 0.1;
     j["mTwigScale"] = 0.01;
-    j["mDropAmount"] = 0.2;
+    j["mDropAmount"] = 0;
     j["mGrowAmount"] = 0.9;
+    j["mLevels"] = 1;
 
     double mInitialBranchLength = j["mInitialBranchLength"];
     double mMaxRadius = j["mMaxRadius"];
@@ -247,6 +251,7 @@ void MainWindow::growTree()
     double mTwigScale = j["mTwigScale"];
     double mDropAmount = j["mDropAmount"];
     double mGrowAmount = j["mGrowAmount"];
+    double mLevels = j["mLevels"];
 
     double initBranchLenStep = (double)(InitBranchLen - mInitialBranchLength) / growSteps;
     double maxRadStep = (double)(maxRad - mMaxRadius) / growSteps;
@@ -254,6 +259,7 @@ void MainWindow::growTree()
     double twigScaleStep = (double)(twigScale - mTwigScale) / growSteps;
     double dropStep = (double)(drop - mDropAmount) / growSteps;
     double growStep = (double)(grow - mGrowAmount) / growSteps;
+    double levelStep = (double)(level - mLevels) / growSteps;
 
 
     double delayMSec = (double)1000/growSteps;
@@ -265,6 +271,7 @@ void MainWindow::growTree()
         mTwigScale += twigScaleStep;
         mDropAmount += dropStep;
         mGrowAmount += growStep;
+        mLevels += levelStep;
 
         j["mInitialBranchLength"] = mInitialBranchLength;
         j["mMaxRadius"] = mMaxRadius;
@@ -272,6 +279,8 @@ void MainWindow::growTree()
         j["mTwigScale"] = mTwigScale;
         j["mDropAmount"] = mDropAmount;
         j["mGrowAmount"] = mGrowAmount;
+        //j["mLevels"] = (int)mLevels;
+        j["mLevels"] = mLevels;
 
         set_sliders();
         openGlWidget->loadFromJSON(j);
@@ -327,5 +336,11 @@ void MainWindow::on_actionSaveAs_triggered()
 void MainWindow::on_spinBox_valueChanged(int arg1)
 {
     growSteps = arg1;
+}
+
+
+void MainWindow::on_slSeason_valueChanged(int value)
+{
+    openGlWidget->loadSeasonValue(value);
 }
 

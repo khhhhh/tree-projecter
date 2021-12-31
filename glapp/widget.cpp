@@ -43,10 +43,12 @@ void OpenGlWidget::initializeGL() {
 
     meshTwig->material.shiness = 27.8974f;
 
+    /*
     gourardProgram = new GLSLProgram();
     gourardProgram->compileShaderFromFile(":/shaders/vshader.vert", GL_VERTEX_SHADER);
     gourardProgram->compileShaderFromFile(":/shaders/fshader.fsh", GL_FRAGMENT_SHADER);
     gourardProgram->link();
+    */
 
     phongProgram = new GLSLProgram();
     phongProgram->compileShaderFromFile(":/shaders/phong.vert", GL_VERTEX_SHADER);
@@ -75,6 +77,10 @@ void OpenGlWidget::paintGL() {
     program->setUniform("LightPosition", lightPosition);
     //program->setUniform("LightPower", 50);
 
+    vec4 treeCol = {1,1,1,1};
+    vec4 *colors = new vec4[2];
+    colors[0] = treeCol;
+    colors[1] = leavesColor;
 
     for(size_t i=0; i< meshes.size(); i++) {
         Mesh *mesh = meshes[i];
@@ -86,6 +92,7 @@ void OpenGlWidget::paintGL() {
         //        program->setUniform("MaterialDiffuse", mesh->material.diffuse);
         //        program->setUniform("MaterialSpecular", mesh->material.specular);
         program->setUniform("MaterialShiness", mesh->material.shiness);
+        program->setUniform("leavesColor", colors[texInd]);
         program->setUniform("ColorTexture", 1);
 
         mesh->render();
@@ -159,6 +166,15 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent * e) {
     }
 }
 
+void OpenGlWidget::loadSeasonValue(int val)
+{
+    val %= 10;
+    // val 0-9
+    float chVal = 0.1*val;
+    float minusOneChVal = 1 - chVal;
+    leavesColor = {chVal, 1-chVal, 0, 1-chVal};
+}
+
 void OpenGlWidget::processCamera() {
     float dv = 0.1f;
 
@@ -182,7 +198,7 @@ void OpenGlWidget::processCamera() {
 }
 
 void OpenGlWidget::rotateLight() {
-    //lightPosition = lightPosition * rotationMat(1, 0,1,0);
-    //lightPosition = lightPosition * rotationMat(1, 0, 1, 0);
+    lightPosition = lightPosition * rotationMat(1, 0,1,0);
+    lightPosition = lightPosition * rotationMat(1, 0, 1, 0);
 }
 

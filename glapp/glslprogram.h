@@ -18,6 +18,7 @@ public:
 
     void setUniform(const char* name, mat4 mat);
     void setUniform(const char* name, vec3 vec);
+    void setUniform(const char* name, vec4 vec);
     void setUniform(const char* name, float val);
 
     bool link();

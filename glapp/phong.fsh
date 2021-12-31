@@ -3,6 +3,7 @@
 //uniform vec3 MaterialAmbient;
 //uniform vec3 MaterialDiffuse;
 //uniform vec3 MaterialSpecular;
+uniform vec4 leavesColor;
 uniform float MaterialShiness;
 uniform float LightPower;
 uniform sampler2D ColorTexture;
@@ -43,7 +44,12 @@ void main(void)
     vec4 MaterialDiffuse = texture( ColorTexture, uv );
     if(MaterialDiffuse.a < 0.1)
         discard;
-    fragColor= MaterialDiffuse;
+    if(leavesColor.a < 0.15)
+        discard;
+
+    //fragColor = MaterialDiffuse;
+    fragColor= MaterialDiffuse * leavesColor;
+
     /*
     vec3 color = MaterialDiffuse;
     fragColor=vec4(color,1);

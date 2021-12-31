@@ -31,6 +31,7 @@ class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     float angle;
     float ax,ay,dax,day;
     vec3 lightPosition;
+    vec4 leavesColor;
 
 
     void processCamera();
@@ -50,6 +51,7 @@ protected:
 public:
     std::set<int> keys;
 
+    void loadSeasonValue(int val);
     void loadFromJSON(json j);
     void loadFromPath(QString path);
     ~OpenGlWidget();

@@ -31,6 +31,8 @@ private slots:
 
     void on_spinBox_valueChanged(int arg1);
 
+    void on_slSeason_valueChanged(int value);
+
 private:
     std::vector<QSlider *> sliders;
     QString opened_file_path;
