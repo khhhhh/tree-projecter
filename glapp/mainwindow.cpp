@@ -207,7 +207,6 @@ void MainWindow::set_sliders()
     ui->slTrunkLen->setValue(TrunkLen);
 
     ui->slSeason->setValue(0);
-
 }
 
 void MainWindow::growTree()
@@ -226,6 +225,7 @@ void MainWindow::growTree()
     double twigScale =  j["mTwigScale"];
     double drop = j["mDropAmount"];
     double grow = j["mGrowAmount"];
+    int seasonLvl = 0;
 
     /*
     ui->slider_levels->setValue(1);
@@ -272,7 +272,12 @@ void MainWindow::growTree()
         mDropAmount += dropStep;
         mGrowAmount += growStep;
         mLevels += levelStep;
+        seasonLvl += 1;
 
+        if(seasonLvl > 9)
+            seasonLvl = 0;
+
+        ui->slSeason->setValue(seasonLvl);
         j["mInitialBranchLength"] = mInitialBranchLength;
         j["mMaxRadius"] = mMaxRadius;
         j["mTrunkLength"] = mTrunkLength;
@@ -284,6 +289,7 @@ void MainWindow::growTree()
 
         set_sliders();
         openGlWidget->loadFromJSON(j);
+        openGlWidget->loadSeasonValue(seasonLvl);
         delay(delayMSec);
     }
     ui->buttonGrow->setEnabled(true);

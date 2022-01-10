@@ -172,7 +172,7 @@ void OpenGlWidget::loadSeasonValue(int val)
     // val 0-9
     float chVal = 0.1*val;
     float minusOneChVal = 1 - chVal;
-    leavesColor = {chVal, 1-chVal, 0, 1-chVal};
+    leavesColor = {chVal, minusOneChVal, 0, minusOneChVal};
 }
 
 void OpenGlWidget::processCamera() {
