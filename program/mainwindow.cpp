@@ -217,14 +217,16 @@ void MainWindow::growTree()
     ui->buttonGrow->setEnabled(false);
     int growSteps = ui->spinBox->value();
 
-    double level =  j["mLevels"];
+    //float level =  j["mLevels"];
     //double treeSteps = j["mTreeSteps"];
-    double InitBranchLen =  j["mInitialBranchLength"];
-    double maxRad = j["mMaxRadius"];
-    double trunkLen = j["mTrunkLength"];
-    double twigScale =  j["mTwigScale"];
-    double drop = j["mDropAmount"];
-    double grow = j["mGrowAmount"];
+    float InitBranchLen =  j["mInitialBranchLength"];
+    float maxRad = j["mMaxRadius"];
+    float trunkLen = j["mTrunkLength"];
+    float twigScale =  j["mTwigScale"];
+    float drop = j["mDropAmount"];
+    float grow = j["mGrowAmount"];
+    float climbRate = j["mClimbRate"];
+    float lenFallOffFact = j["mLengthFalloffFactor"];
     int seasonLvl = 0;
 
     /*
@@ -237,6 +239,7 @@ void MainWindow::growTree()
     */
 
 
+    /*
     j["mInitialBranchLength"] = 0.01;
     j["mMaxRadius"] = 0.02;
     j["mTrunkLength"] = 0.1;
@@ -244,35 +247,44 @@ void MainWindow::growTree()
     j["mDropAmount"] = 0;
     j["mGrowAmount"] = 0.9;
     j["mLevels"] = 1;
+    j["mClimbRate"] = 1;
+    */
 
-    double mInitialBranchLength = j["mInitialBranchLength"];
-    double mMaxRadius = j["mMaxRadius"];
-    double mTrunkLength = j["mTrunkLength"];
-    double mTwigScale = j["mTwigScale"];
-    double mDropAmount = j["mDropAmount"];
-    double mGrowAmount = j["mGrowAmount"];
-    double mLevels = j["mLevels"];
+    float mInitialBranchLength = j["mInitialBranchLength"] = 0.01;
+    float mMaxRadius = j["mMaxRadius"] = 0.02;
+    float mTrunkLength = j["mTrunkLength"] = 0.1;
+    float mTwigScale = j["mTwigScale"] = 0.01;
+    float mDropAmount = j["mDropAmount"] = 0;
+    float mGrowAmount = j["mGrowAmount"] = 0.9;
+    //double mLevels = j["mLevels"] = 1;
+    float mClimbRate = j["mClimbRate"] = 0.1;
+    float mLengthFalloffFactor = j["mLengthFalloffFactor"] = 0.01;
 
-    double initBranchLenStep = (double)(InitBranchLen - mInitialBranchLength) / growSteps;
-    double maxRadStep = (double)(maxRad - mMaxRadius) / growSteps;
-    double trunkLenStep = (double)(trunkLen - mTrunkLength) / growSteps;
-    double twigScaleStep = (double)(twigScale - mTwigScale) / growSteps;
-    double dropStep = (double)(drop - mDropAmount) / growSteps;
-    double growStep = (double)(grow - mGrowAmount) / growSteps;
-    double levelStep = (double)(level - mLevels) / growSteps;
+    float initBranchLenStep = (float)(InitBranchLen - mInitialBranchLength) / growSteps;
+    float maxRadStep = (float)(maxRad - mMaxRadius) / growSteps;
+    float trunkLenStep = (float)(trunkLen - mTrunkLength) / growSteps;
+    float twigScaleStep = (float)(twigScale - mTwigScale) / (growSteps / 2);
+    float dropStep = (float)(drop - mDropAmount) / growSteps;
+    float growStep = (float)(grow - mGrowAmount) / growSteps;
+    //float levelStep = (float)(level - mLevels) / growSteps;
+    float climbRateStep = (float)(climbRate - mClimbRate) / growSteps;
+    float lenFallOffFactorStep = (float)(lenFallOffFact - mLengthFalloffFactor) / growSteps;
 
 
-    double delayMSec = (double)1000/growSteps;
+    float delayMSec = (float)1000/growSteps;
     for(int i = 0; i < growSteps; i++)
     {
         mInitialBranchLength += initBranchLenStep;
         mMaxRadius += maxRadStep;
         mTrunkLength += trunkLenStep;
-        mTwigScale += twigScaleStep;
+        if(i >= growSteps / 2)
+            mTwigScale += twigScaleStep;
         mDropAmount += dropStep;
         mGrowAmount += growStep;
-        mLevels += levelStep;
+        //mLevels += levelStep;
         seasonLvl += 1;
+        mClimbRate += climbRateStep;
+        mLengthFalloffFactor += lenFallOffFactorStep;
 
         if(seasonLvl > 9)
             seasonLvl = 0;
@@ -285,11 +297,14 @@ void MainWindow::growTree()
         j["mDropAmount"] = mDropAmount;
         j["mGrowAmount"] = mGrowAmount;
         //j["mLevels"] = (int)mLevels;
-        j["mLevels"] = mLevels;
+        //j["mLevels"] = mLevels;
+        j["mClimbRate"] = mClimbRate;
+        j["mLengthFalloffFactor"] = mLengthFalloffFactor;
 
         set_sliders();
         openGlWidget->loadFromJSON(j);
-        openGlWidget->loadSeasonValue(seasonLvl);
+        if(ui->cbSeason->isChecked())
+            openGlWidget->loadSeasonValue(seasonLvl);
         delay(delayMSec);
     }
     ui->buttonGrow->setEnabled(true);
@@ -349,4 +364,3 @@ void MainWindow::on_slSeason_valueChanged(int value)
 {
     openGlWidget->loadSeasonValue(value);
 }
-

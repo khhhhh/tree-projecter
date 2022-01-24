@@ -30,7 +30,7 @@ void OpenGlWidget::initializeGL() {
     Texture *treeTex, *twigTex;
     treeTex = new Texture();
     twigTex = new Texture();
-    treeTex->loadFromImage(":/pics/tree1.jpg");
+    treeTex->loadFromImage(":/pics/treetex.png");
     twigTex->loadFromImage(":/pics/twig1.png");
     textures.push_back(treeTex);
     textures.push_back(twigTex);
@@ -65,12 +65,10 @@ void OpenGlWidget::initializeGL() {
 void OpenGlWidget::paintGL() {
     processCamera();
     rotateLight();
-    glClearColor(0.5, 0.5, 0.5, 1);
+    glClearColor(0.7, 0.7, 0.7, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     program->use();
-    //glEnable(GL_BLEND);
-    //glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
     program->setUniform("ViewMat", camera->matrix());
     program->setUniform("ProjMat", projMat);
@@ -91,14 +89,13 @@ void OpenGlWidget::paintGL() {
         //        program->setUniform("MaterialAmbient", mesh->material.ambient);
         //        program->setUniform("MaterialDiffuse", mesh->material.diffuse);
         //        program->setUniform("MaterialSpecular", mesh->material.specular);
-        program->setUniform("MaterialShiness", mesh->material.shiness);
+        //program->setUniform("MaterialShiness", mesh->material.shiness);
         program->setUniform("leavesColor", colors[texInd]);
         program->setUniform("ColorTexture", 1);
 
         mesh->render();
         texture->unbind();
     }
-    //glDisable(GL_BLEND);
 }
 void OpenGlWidget::resizeGL(int w, int h) {
     glViewport(0, 0, w, h);
@@ -172,7 +169,7 @@ void OpenGlWidget::loadSeasonValue(int val)
     // val 0-9
     float chVal = 0.1*val;
     float minusOneChVal = 1 - chVal;
-    leavesColor = {chVal, minusOneChVal, 0, minusOneChVal};
+    leavesColor = {chVal, minusOneChVal, 0, 1};
 }
 
 void OpenGlWidget::processCamera() {

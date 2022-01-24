@@ -8,6 +8,7 @@
     <qresource prefix="/pics">
         <file>tree1.jpg</file>
         <file>twig1.png</file>
+        <file>treetex.png</file>
     </qresource>
     <qresource prefix="/json">
         <file>file.json</file>

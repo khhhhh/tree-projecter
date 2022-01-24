@@ -3,6 +3,14 @@
 #include <QTextStream>
 #include <QDebug>
 
+#include <QtGlobal>
+
+#if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
+#define ENDL Qt::endl
+#else
+#define ENDL endl
+#endif
+
 GLSLProgram::GLSLProgram() {
     initializeOpenGLFunctions();
     // uchwyt do programu, za jego pomocą indeksujemy programy
@@ -45,7 +53,7 @@ bool GLSLProgram::checkShaderStatus(GLuint shader) {
         // utworzenie wystarczająco długiej tablicy znaków i przepisanie do niej błędów
         GLchar infoLog[10240];
         glGetShaderInfoLog(shader, 10240, NULL, infoLog);
-        qDebug() << "Shader ERROR: " << infoLog << endl;
+        qDebug() << "Shader ERROR: " << infoLog << ENDL;
         return false;
     }
     return true;
@@ -57,11 +65,11 @@ bool GLSLProgram::checkProgramStatus(GLuint program) {
     if(stat == GL_FALSE) {
         GLchar infoLog[10240];
         glGetProgramInfoLog(program, 10240, NULL, infoLog);
-        qDebug() << "Program ERROR: " << infoLog << endl;
+        qDebug() << "Program ERROR: " << infoLog << ENDL;
         return false;
     }
     else
-        qDebug() << "Program LINKED"<< endl;
+        qDebug() << "Program LINKED"<< ENDL;
     return true;
 }
 
@@ -80,7 +88,7 @@ void GLSLProgram::setUniform(const char* name, mat4 mat) {
     if(loc != -1)
         glUniformMatrix4fv(loc, 1, GL_FALSE, mat.m);
     else
-        qDebug() << "Uniform variable error: " << name << endl;
+        qDebug() << "Uniform variable error: " << name << ENDL;
 }
 
 void GLSLProgram::setUniform(const char* name, vec3 vec) {
@@ -88,7 +96,7 @@ void GLSLProgram::setUniform(const char* name, vec3 vec) {
     if(loc != -1)
         glUniform3f(loc, vec.x, vec.y, vec.z);
     else
-        qDebug() << "Uniform variable error: " << name << endl;
+        qDebug() << "Uniform variable error: " << name << ENDL;
 }
 
 void GLSLProgram::setUniform(const char* name, vec4 vec) {
@@ -96,7 +104,7 @@ void GLSLProgram::setUniform(const char* name, vec4 vec) {
     if(loc != -1)
         glUniform4f(loc, vec.x, vec.y, vec.z, vec.a);
     else
-        qDebug() << "Uniform variable error: " << name << endl;
+        qDebug() << "Uniform variable error: " << name << ENDL;
 }
 
 void GLSLProgram::setUniform(const char* name, float val) {
@@ -104,5 +112,5 @@ void GLSLProgram::setUniform(const char* name, float val) {
     if(loc != -1)
         glUniform1f(loc, val);
     else
-        qDebug() << "Uniform variable error: " << name << endl;
+        qDebug() << "Uniform variable error: " << name << ENDL;
 }
