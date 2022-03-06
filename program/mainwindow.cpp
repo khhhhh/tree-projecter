@@ -219,9 +219,6 @@ void MainWindow::set_sliders()
 
 void MainWindow::growTree()
 {
-    for (QSlider* i : sliders) {
-        disconnect(i, SIGNAL(valueChanged(int)), this, SLOT(slider_valueChanged()));
-     }
     ui->buttonGrow->setEnabled(false);
     int growSteps = ui->spinBox->value();
 
@@ -255,6 +252,10 @@ void MainWindow::growTree()
     float climbRateStep = (float)(climbRate - mClimbRate) / growSteps;
     float lenFallOffFactorStep = (float)(lenFallOffFact - mLengthFalloffFactor) / growSteps;
 
+    // if season no need to be changed - increaser will be zero, else one
+    int seasonInc = 0;
+    if(ui->cbSeason->isChecked())
+        seasonInc = 1;
 
     float delayMSec = (float)1000/growSteps;
     for(int i = 0; i < growSteps; i++)
@@ -267,14 +268,14 @@ void MainWindow::growTree()
         mDropAmount += dropStep;
         mGrowAmount += growStep;
         //mLevels += levelStep;
-        seasonLvl += 1;
+        seasonLvl += seasonInc;
         mClimbRate += climbRateStep;
         mLengthFalloffFactor += lenFallOffFactorStep;
 
         if(seasonLvl > 9)
             seasonLvl = 0;
 
-        ui->slSeason->setValue(seasonLvl);
+        //ui->slSeason->setValue(seasonLvl);
         j["mInitialBranchLength"] = mInitialBranchLength;
         j["mMaxRadius"] = mMaxRadius;
         j["mTrunkLength"] = mTrunkLength;
@@ -286,17 +287,13 @@ void MainWindow::growTree()
         j["mClimbRate"] = mClimbRate;
         j["mLengthFalloffFactor"] = mLengthFalloffFactor;
 
-        set_sliders();
+        //set_sliders();
         openGlWidget->loadFromJSON(j);
         if(ui->cbSeason->isChecked())
             openGlWidget->loadSeasonValue(seasonLvl);
         delay(delayMSec);
     }
     ui->buttonGrow->setEnabled(true);
-
-    for (QSlider* i : sliders) {
-        connect(i, SIGNAL(valueChanged(int)), this, SLOT(slider_valueChanged()));
-    }
 }
 
 float MainWindow::round(float var)
