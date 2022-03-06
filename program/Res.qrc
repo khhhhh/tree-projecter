@@ -5,12 +5,17 @@
         <file>phong.fsh</file>
         <file>phong.vert</file>
     </qresource>
-    <qresource prefix="/pics">
-        <file>tree1.jpg</file>
-        <file>twig1.png</file>
-        <file>treetex.png</file>
-    </qresource>
     <qresource prefix="/json">
         <file>file.json</file>
+    </qresource>
+    <qresource prefix="/textures/trees">
+        <file>3.jpg</file>
+        <file>4.jpg</file>
+        <file>5.jpg</file>
+        <file>1.jpg</file>
+        <file>2.jpg</file>
+    </qresource>
+    <qresource prefix="/textures/twigs">
+        <file>twig1.png</file>
     </qresource>
 </RCC>

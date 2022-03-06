@@ -28,9 +28,8 @@ changeTexWindow::~changeTexWindow()
 
 void changeTexWindow::LoadPaths()
 {
-    pathLinks.append(":/pics/tree1.jpg");
-    pathLinks.append(":/pics/twig1.png");
-    pathLinks.append(":/pics/treetex.png");
+    for(int i = 1; i < 6; i++)
+        pathLinks.append(":/textures/trees/" + QString::number(i) + ".jpg");
 
     for (int i = 0; i < pathLinks.length(); i++) {
         ui->listWidget->addItem(new QListWidgetItem(QIcon(pathLinks[i]), QString::number(i), ui->listWidget) );

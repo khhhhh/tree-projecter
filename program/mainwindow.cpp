@@ -115,8 +115,6 @@ void MainWindow::slider_valueChanged()
     j["mTwistRate"] = ui->slTwistRate->value() / 100.0f;
     j["mTrunkLength"] = ui->slTrunkLen->value() / 10.0f;
 
-    /*
-    */
     openGlWidget->loadFromJSON(j);
 }
 
@@ -227,8 +225,6 @@ void MainWindow::growTree()
     ui->buttonGrow->setEnabled(false);
     int growSteps = ui->spinBox->value();
 
-    //float level =  j["mLevels"];
-    //double treeSteps = j["mTreeSteps"];
     float InitBranchLen =  j["mInitialBranchLength"];
     float maxRad = j["mMaxRadius"];
     float trunkLen = j["mTrunkLength"];
@@ -239,26 +235,6 @@ void MainWindow::growTree()
     float lenFallOffFact = j["mLengthFalloffFactor"];
     int seasonLvl = 0;
 
-    /*
-    ui->slider_levels->setValue(1);
-    ui->slider_treeSteps->setValue(1);
-    ui->slInitBranch->setValue(1);
-    ui->slMaxRad->setValue(2);
-    ui->slTrunkLen->setValue(1);
-    ui->slTwigScale->setValue(1);
-    */
-
-
-    /*
-    j["mInitialBranchLength"] = 0.01;
-    j["mMaxRadius"] = 0.02;
-    j["mTrunkLength"] = 0.1;
-    j["mTwigScale"] = 0.01;
-    j["mDropAmount"] = 0;
-    j["mGrowAmount"] = 0.9;
-    j["mLevels"] = 1;
-    j["mClimbRate"] = 1;
-    */
 
     float mInitialBranchLength = j["mInitialBranchLength"] = 0.01;
     float mMaxRadius = j["mMaxRadius"] = 0.02;
@@ -266,7 +242,6 @@ void MainWindow::growTree()
     float mTwigScale = j["mTwigScale"] = 0.01;
     float mDropAmount = j["mDropAmount"] = 0;
     float mGrowAmount = j["mGrowAmount"] = 0.9;
-    //double mLevels = j["mLevels"] = 1;
     float mClimbRate = j["mClimbRate"] = 0.1;
     float mLengthFalloffFactor = j["mLengthFalloffFactor"] = 0.01;
 
