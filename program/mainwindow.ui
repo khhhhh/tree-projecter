@@ -673,6 +673,13 @@
           </property>
          </widget>
         </item>
+        <item row="14" column="0">
+         <widget class="QLabel" name="l15">
+          <property name="text">
+           <string>segments</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
