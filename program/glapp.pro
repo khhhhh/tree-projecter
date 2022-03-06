@@ -48,4 +48,5 @@ RESOURCES += \
     Res.qrc
 
 FORMS += \
+    changeTexWindow.ui \
     mainwindow.ui
