@@ -7,6 +7,7 @@
 #include <QTextStream>
 #include <QTime>
 #include <QKeyEvent>
+#include "changetexwindow.h"
 
 using jsos = nlohmann::json;
 
@@ -72,12 +73,21 @@ MainWindow::MainWindow(QWidget *parent) :
         connect(i, SIGNAL(valueChanged(int)), this, SLOT(slider_valueChanged()));
      }
     connect(ui->buttonGrow, SIGNAL(clicked()), this, SLOT(growTree()));
+    connect(ui->btTexture, SIGNAL(clicked()), this, SLOT(loadTexWindow()));
+
     ui->horizontalLayout->addWidget(openGlWidget, 66);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::setTexture(QString path)
+{
+    std::string str = path.toStdString();
+    const char* p = str.c_str();
+    openGlWidget->loadTexture(p);
 }
 
 void MainWindow::slider_valueChanged()
@@ -324,6 +334,13 @@ float MainWindow::round(float var)
     return (float)value / 100;
 }
 
+void MainWindow::loadTexWindow()
+{
+    changeTexWindow *dialog = new changeTexWindow(this);
+    dialog->show();
+
+}
+
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     openGlWidget->keys.insert(event->key());
@@ -364,3 +381,4 @@ void MainWindow::on_slSeason_valueChanged(int value)
 {
     openGlWidget->loadSeasonValue(value);
 }
+

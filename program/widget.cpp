@@ -139,6 +139,11 @@ void OpenGlWidget::loadFromPath(QString path)
     }
 }
 
+void OpenGlWidget::loadTexture(const char * path)
+{
+    textures[0]->loadFromImage(path);
+}
+
 void OpenGlWidget::loadFromJSON(json j)
 {
     Proctree::Properties props(j);

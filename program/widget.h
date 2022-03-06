@@ -54,6 +54,7 @@ public:
     void loadSeasonValue(int val);
     void loadFromJSON(json j);
     void loadFromPath(QString path);
+    void loadTexture(const char * path);
     ~OpenGlWidget();
 };
 #endif // WIDGET_H

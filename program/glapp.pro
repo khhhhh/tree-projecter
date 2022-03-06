@@ -12,6 +12,7 @@ CONFIG += c++17
 
 SOURCES += \
     camera.cpp \
+    changetexwindow.cpp \
     frame.cpp \
     glslprogram.cpp \
     main.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
 
 HEADERS += \
     camera.h \
+    changetexwindow.h \
     frame.h \
     gldebug.h \
     glmath.h \

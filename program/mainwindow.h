@@ -18,10 +18,12 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void setTexture(QString path);
 
 private slots:
     void slider_valueChanged();
     void growTree();
+    void loadTexWindow();
 
     void on_actionOpen_triggered();
     void on_actionSave_triggered();
