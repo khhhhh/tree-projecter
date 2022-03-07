@@ -22,7 +22,6 @@ private:
     Ui::changeTexWindow *ui;
     MainWindow *mainWin;
     QStringList pathLinks;
-    changeTexWindow *obj;
 
     bool LoadPaths(QString path, QListWidget* widget);
 

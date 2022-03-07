@@ -11,6 +11,7 @@
 #include <set>
 #include "texture.h"
 
+
 class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 {
     Q_OBJECT

@@ -33,8 +33,7 @@ changeTexWindow::changeTexWindow(MainWindow *qMain) : ui(new Ui::changeTexWindow
 
 changeTexWindow::~changeTexWindow()
 {
-    mainWin->btTextureEnabled(true);
-    delete ui;
+    closeDialog();
 }
 
 bool changeTexWindow::LoadPaths(QString path, QListWidget* widget)
@@ -61,13 +60,13 @@ bool changeTexWindow::LoadPaths(QString path, QListWidget* widget)
     }
     widget->setIconSize(sizeOfIcon);
     widget->setFlow(QListView::LeftToRight);
+    widget->setCurrentRow(0);
     return true;
 }
 
 void changeTexWindow::sendTexturePath()
 {
-    if(ui->listWidget->currentRow() != NULL)
-        mainWin->setTexture(pathLinks[ui->listWidget->currentRow()]);
+    mainWin->setTexture(pathLinks[ui->listWidget->currentRow()]);
     closeDialog();
 }
 
