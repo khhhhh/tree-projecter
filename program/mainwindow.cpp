@@ -321,8 +321,8 @@ float MainWindow::round(float var)
 void MainWindow::loadTexWindow()
 {
     changeTexWindow *dialog = new changeTexWindow(this);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->show();
-
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)

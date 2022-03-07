@@ -2,6 +2,7 @@
 #define CHANGETEXWINDOW_H
 
 #include <QDialog>
+#include <QListWidget>
 #include "mainwindow.h"
 
 namespace Ui {
@@ -21,13 +22,12 @@ private:
     Ui::changeTexWindow *ui;
     MainWindow *mainWin;
     QStringList pathLinks;
-    changeTexWindow *obj;
 
-    void LoadPaths();
+    bool LoadPaths(QString path, QListWidget* widget);
 
 private slots:
     void sendTexturePath();
-    void cancelTex();
+    void closeDialog();
 };
 
 #endif // CHANGETEXWINDOW_H
