@@ -2,6 +2,7 @@
 #include "ui_changetexwindow.h"
 #include <QListWidgetItem>
 #include <iostream>
+#include <QDir>
 
 changeTexWindow::changeTexWindow(QWidget *parent) :
     QDialog(parent),
@@ -31,14 +32,16 @@ changeTexWindow::~changeTexWindow()
 
 void changeTexWindow::LoadPaths()
 {
-    for(int i = 1; i < 6; i++)
-        pathLinks.append(":/textures/trees/" + QString::number(i) + ".jpg");
+    QDir directory("textures/trees");
+    QStringList images =
+            directory.entryList(QStringList() << "*",QDir::Files);
+
 
     QSize sizeOfIcon(100,100);
-    for (int i = 0; i < pathLinks.length(); i++) {
-        QIcon *icon = new QIcon(pathLinks[i]);
-        icon->actualSize(sizeOfIcon);
-        ui->listWidget->addItem(new QListWidgetItem(*icon, "Tree " + QString::number(i), ui->listWidget) );
+
+    for (int i = 0; i < images.length(); i++) {
+        QIcon icon("textures/trees/" + images[i]);
+        ui->listWidget->addItem(new QListWidgetItem(icon, "", ui->listWidget) );
     }
     ui->listWidget->setIconSize(sizeOfIcon);
     ui->listWidget->setFlow(QListView::LeftToRight);

@@ -3,6 +3,7 @@
 
 #include <QApplication>
 #include <QSurfaceFormat>
+#include <QDir>
 
 int main(int argc, char *argv[])
 {
@@ -12,13 +13,10 @@ int main(int argc, char *argv[])
     format.setProfile(QSurfaceFormat::CoreProfile);
     format.setVersion(3,3);
     QSurfaceFormat::setDefaultFormat(format);
+    QDir::setCurrent(QCoreApplication::applicationDirPath());
 
     MainWindow mw;
-
     mw.show();
-    /*
-    Widget w;
-    w.show();
-    */
+
     return a.exec();
 }

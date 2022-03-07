@@ -30,8 +30,8 @@ void OpenGlWidget::initializeGL() {
     Texture *treeTex, *twigTex;
     treeTex = new Texture();
     twigTex = new Texture();
-    treeTex->loadFromImage(":/textures/trees/3.jpg");
-    twigTex->loadFromImage(":/textures/twigs/twig1.png");
+    treeTex->loadFromImage("textures/trees/3.jpg");
+    twigTex->loadFromImage("textures/twigs/twig1.png");
     textures.push_back(treeTex);
     textures.push_back(twigTex);
 
