@@ -19,6 +19,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void setTexture(QString path);
+    void btTextureEnabled(bool enabled);
 
 private slots:
     void slider_valueChanged();

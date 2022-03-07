@@ -21,11 +21,13 @@ private:
     Ui::changeTexWindow *ui;
     MainWindow *mainWin;
     QStringList pathLinks;
+    changeTexWindow *obj;
 
     void LoadPaths();
 
 private slots:
     void sendTexturePath();
+    void cancelTex();
 };
 
 #endif // CHANGETEXWINDOW_H

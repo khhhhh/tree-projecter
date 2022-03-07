@@ -90,6 +90,11 @@ void MainWindow::setTexture(QString path)
     openGlWidget->loadTexture(p);
 }
 
+void MainWindow::btTextureEnabled(bool enabled)
+{
+    ui->btTexture->setEnabled(enabled);
+}
+
 void MainWindow::slider_valueChanged()
 {
     j["mSeed"] = ui->slider_seed->value();
@@ -219,7 +224,11 @@ void MainWindow::set_sliders()
 
 void MainWindow::growTree()
 {
+    for(QSlider * slider : sliders)
+        slider->setEnabled(false);
+    ui->slSeason->setEnabled(false);
     ui->buttonGrow->setEnabled(false);
+
     int growSteps = ui->spinBox->value();
 
     float InitBranchLen =  j["mInitialBranchLength"];
@@ -294,6 +303,9 @@ void MainWindow::growTree()
         delay(delayMSec);
     }
     ui->buttonGrow->setEnabled(true);
+    for(QSlider * slider : sliders)
+        slider->setEnabled(true);
+    ui->slSeason->setEnabled(true);
 }
 
 float MainWindow::round(float var)

@@ -18,7 +18,6 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     mesh.cpp \
-    picker.cpp \
     texture.cpp \
     widget.cpp \
     proctree.cpp
@@ -33,7 +32,6 @@ HEADERS += \
     json.hpp \
     mainwindow.h \
     mesh.h \
-    picker.h \
     texture.h \
     widget.h \
     proctree.h
