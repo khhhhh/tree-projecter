@@ -3,7 +3,6 @@
 #include <QListWidgetItem>
 #include <iostream>
 #include <QDir>
-#include <QMessageBox>
 
 changeTexWindow::changeTexWindow(QWidget *parent) :
     QDialog(parent),
@@ -16,13 +15,9 @@ changeTexWindow::changeTexWindow(MainWindow *qMain) : ui(new Ui::changeTexWindow
 {
     ui->setupUi(this);
 
-    if(!LoadPaths("textures/trees", ui->listWidget))
-    {
-        QMessageBox box;
-        box.setText("No textures found in /textures/trees/");
-        box.show();
-        this->close();
-    }
+    LoadPaths("textures/trees", ui->listWidget);
+    // TODO: add info that there are no textures
+    //    "No textures found in /textures/trees/"
     //LoadPaths("textures/twigs", ui->listWidget_2);
     mainWin = qMain;
     mainWin->btTextureEnabled(false);
