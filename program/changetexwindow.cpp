@@ -3,6 +3,7 @@
 #include <QListWidgetItem>
 #include <iostream>
 #include <QDir>
+#include <QMessageBox>
 
 changeTexWindow::changeTexWindow(QWidget *parent) :
     QDialog(parent),
@@ -15,13 +16,19 @@ changeTexWindow::changeTexWindow(MainWindow *qMain) : ui(new Ui::changeTexWindow
 {
     ui->setupUi(this);
 
-    LoadPaths();
-
+    if(!LoadPaths("textures/trees", ui->listWidget))
+    {
+        QMessageBox box;
+        box.setText("No textures found in /textures/trees/");
+        box.show();
+        this->close();
+    }
+    //LoadPaths("textures/twigs", ui->listWidget_2);
     mainWin = qMain;
     mainWin->btTextureEnabled(false);
 
     connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(sendTexturePath()));
-    connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(cancelTex()));
+    connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(closeDialog()));
 }
 
 changeTexWindow::~changeTexWindow()
@@ -30,30 +37,41 @@ changeTexWindow::~changeTexWindow()
     delete ui;
 }
 
-void changeTexWindow::LoadPaths()
+bool changeTexWindow::LoadPaths(QString path, QListWidget* widget)
 {
-    QDir directory("textures/trees");
-    QStringList images =
-            directory.entryList(QStringList() << "*",QDir::Files);
+    QDir directory(path);
+    QStringList formats;
+    formats.append("*.png");
+    formats.append("*.jpg");
+    formats.append("*.PNG");
+    formats.append("*.JPG");
 
+    pathLinks =
+            directory.entryList(formats,QDir::Files);
+
+    if(pathLinks.length() == 0)
+        return false;
 
     QSize sizeOfIcon(100,100);
 
-    for (int i = 0; i < images.length(); i++) {
-        QIcon icon("textures/trees/" + images[i]);
-        ui->listWidget->addItem(new QListWidgetItem(icon, "", ui->listWidget) );
+    for (int i = 0; i < pathLinks.length(); i++) {
+        pathLinks[i] = path + "/" + pathLinks[i];
+        QIcon icon(pathLinks[i]);
+        widget->addItem(new QListWidgetItem(icon, "", widget ));
     }
-    ui->listWidget->setIconSize(sizeOfIcon);
-    ui->listWidget->setFlow(QListView::LeftToRight);
+    widget->setIconSize(sizeOfIcon);
+    widget->setFlow(QListView::LeftToRight);
+    return true;
 }
 
 void changeTexWindow::sendTexturePath()
 {
-    mainWin->setTexture(pathLinks[ui->listWidget->currentRow()]);
-    cancelTex();
+    if(ui->listWidget->currentRow() != NULL)
+        mainWin->setTexture(pathLinks[ui->listWidget->currentRow()]);
+    closeDialog();
 }
 
-void changeTexWindow::cancelTex()
+void changeTexWindow::closeDialog()
 {
     mainWin->btTextureEnabled(true);
     this->close();
