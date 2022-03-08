@@ -1,8 +1,8 @@
 #include "changetexwindow.h"
 #include "ui_changetexwindow.h"
 #include <QListWidgetItem>
-#include <iostream>
 #include <QDir>
+#include "widget.h"
 
 changeTexWindow::changeTexWindow(QWidget *parent) :
     QDialog(parent),
@@ -15,10 +15,16 @@ changeTexWindow::changeTexWindow(MainWindow *qMain) : ui(new Ui::changeTexWindow
 {
     ui->setupUi(this);
 
-    LoadPaths("textures/trees", ui->listWidget);
-    // TODO: add info that there are no textures
-    //    "No textures found in /textures/trees/"
-    //LoadPaths("textures/twigs", ui->listWidget_2);
+    if(LoadPaths("textures/trees", ui->listWidget, woodPaths))
+        ui->lbNoWood->setVisible(false);
+    else
+        ui->listWidget->setVisible(false);
+
+    if(LoadPaths("textures/twigs", ui->listWidget_2, twigPaths))
+        ui->lbNoTwig->setVisible(false);
+    else
+        ui->listWidget_2->setVisible(false);
+
     mainWin = qMain;
     mainWin->btTextureEnabled(false);
 
@@ -31,7 +37,7 @@ changeTexWindow::~changeTexWindow()
     closeDialog();
 }
 
-bool changeTexWindow::LoadPaths(QString path, QListWidget* widget)
+bool changeTexWindow::LoadPaths(QString path, QListWidget* widget, QStringList& filePaths)
 {
     QDir directory(path);
     QStringList formats;
@@ -40,17 +46,17 @@ bool changeTexWindow::LoadPaths(QString path, QListWidget* widget)
     formats.append("*.PNG");
     formats.append("*.JPG");
 
-    pathLinks =
+    filePaths =
             directory.entryList(formats,QDir::Files);
 
-    if(pathLinks.length() == 0)
+    if(filePaths.length() == 0)
         return false;
 
     QSize sizeOfIcon(100,100);
 
-    for (int i = 0; i < pathLinks.length(); i++) {
-        pathLinks[i] = path + "/" + pathLinks[i];
-        QIcon icon(pathLinks[i]);
+    for (int i = 0; i < filePaths.length(); i++) {
+        filePaths[i] = path + "/" + filePaths[i];
+        QIcon icon(filePaths[i]);
         widget->addItem(new QListWidgetItem(icon, "", widget ));
     }
     widget->setIconSize(sizeOfIcon);
@@ -61,7 +67,10 @@ bool changeTexWindow::LoadPaths(QString path, QListWidget* widget)
 
 void changeTexWindow::sendTexturePath()
 {
-    mainWin->setTexture(pathLinks[ui->listWidget->currentRow()]);
+    if(woodPaths.length() > 0)
+        mainWin->setTexture(woodPaths[ui->listWidget->currentRow()], TextureType::WOOD);
+    if(twigPaths.length() > 0)
+        mainWin->setTexture(twigPaths[ui->listWidget_2->currentRow()], TextureType::TWIG);
     closeDialog();
 }
 

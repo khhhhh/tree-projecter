@@ -15,7 +15,21 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QLabel" name="lbNoWood">
+     <property name="text">
+      <string>No textures found in /textures/trees/</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QListWidget" name="listWidget"/>
+   </item>
+   <item>
+    <widget class="QLabel" name="lbNoTwig">
+     <property name="text">
+      <string>No textures found in /textures/twigs/</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QListWidget" name="listWidget_2"/>
