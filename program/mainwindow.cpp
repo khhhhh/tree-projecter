@@ -63,11 +63,12 @@ MainWindow::MainWindow(QWidget *parent) :
     sliders.push_back(ui->slGrow);
     sliders.push_back(ui->slMaxRad);
     sliders.push_back(ui->slRadFall);
-    sliders.push_back(ui->slSeg);
     sliders.push_back(ui->slTaper);
     sliders.push_back(ui->slTrunkKink);
     sliders.push_back(ui->slTrunkLen);
     sliders.push_back(ui->slTwistRate);
+
+    sliders.push_back(ui->slGrowth);
 
     for (const QSlider* i : sliders) {
         connect(i, SIGNAL(valueChanged(int)), this, SLOT(slider_valueChanged()));
@@ -95,6 +96,11 @@ void MainWindow::btTextureEnabled(bool enabled)
     ui->btTexture->setEnabled(enabled);
 }
 
+void MainWindow::ungrowTree()
+{
+
+}
+
 void MainWindow::slider_valueChanged()
 {
     j["mSeed"] = ui->slider_seed->value();
@@ -112,13 +118,14 @@ void MainWindow::slider_valueChanged()
     j["mDropAmount"] = ui->slDrop->value() / 100.0f;
     j["mGrowAmount"] = ui->slGrow->value() / 100.0f;
     j["mSweepAmount"] = ui->slSweep->value() / 100.0f;
-    j["mSegments"] = ui->slSeg->value();
     j["mMaxRadius"] = ui->slMaxRad->value() / 100.0f;
     j["mTrunkKink"] = ui->slTrunkKink->value() / 1000.0f;
     j["mTaperRate"] = ui->slTaper->value() / 100.0f;
     j["mRadiusFalloffRate"] = ui->slRadFall->value() / 100.0f;
     j["mTwistRate"] = ui->slTwistRate->value() / 100.0f;
     j["mTrunkLength"] = ui->slTrunkLen->value() / 10.0f;
+
+    changeGrowthTree(ui->slGrowth->value());
 
     openGlWidget->loadFromJSON(j);
 }
@@ -198,7 +205,6 @@ void MainWindow::set_sliders()
     ui->slider_seed->setValue(j["mSeed"]);
     ui->slider_levels->setValue(j["mLevels"]);
     ui->slider_treeSteps->setValue(j["mTreeSteps"]);
-    ui->slSeg->setValue(j["mSegments"]);
     ui->slVMul->setValue(VMul);
     ui->slTwigScale->setValue(TwigScale);
     ui->slInitBranch->setValue(InitBranch);
@@ -229,7 +235,22 @@ void MainWindow::growTree()
     ui->slSeason->setEnabled(false);
     ui->buttonGrow->setEnabled(false);
 
-    int growSteps = ui->spinBox->value();
+    for(int i = 0; i <= 100; i++)
+    {
+        //changeGrowthTree(i);
+        ui->slGrowth->setValue(i);
+        delay(1);
+    }
+
+    ui->buttonGrow->setEnabled(true);
+    for(QSlider * slider : sliders)
+        slider->setEnabled(true);
+    ui->slSeason->setEnabled(true);
+}
+
+void MainWindow::changeGrowthTree(int procent)
+{
+    int growSteps = 100;
 
     float InitBranchLen =  j["mInitialBranchLength"];
     float maxRad = j["mMaxRadius"];
@@ -257,7 +278,6 @@ void MainWindow::growTree()
     float twigScaleStep = (float)(twigScale - mTwigScale) / (growSteps / 2);
     float dropStep = (float)(drop - mDropAmount) / growSteps;
     float growStep = (float)(grow - mGrowAmount) / growSteps;
-    //float levelStep = (float)(level - mLevels) / growSteps;
     float climbRateStep = (float)(climbRate - mClimbRate) / growSteps;
     float lenFallOffFactorStep = (float)(lenFallOffFact - mLengthFalloffFactor) / growSteps;
 
@@ -266,46 +286,32 @@ void MainWindow::growTree()
     if(ui->cbSeason->isChecked())
         seasonInc = 1;
 
-    float delayMSec = (float)1000/growSteps;
-    for(int i = 0; i < growSteps; i++)
-    {
-        mInitialBranchLength += initBranchLenStep;
-        mMaxRadius += maxRadStep;
-        mTrunkLength += trunkLenStep;
-        if(i >= growSteps / 2)
-            mTwigScale += twigScaleStep;
-        mDropAmount += dropStep;
-        mGrowAmount += growStep;
-        //mLevels += levelStep;
-        seasonLvl += seasonInc;
-        mClimbRate += climbRateStep;
-        mLengthFalloffFactor += lenFallOffFactorStep;
+    mInitialBranchLength += initBranchLenStep * procent;
+    mMaxRadius += maxRadStep * procent;
+    mTrunkLength += trunkLenStep * procent;
+    if(procent >= 50)
+        mTwigScale += twigScaleStep * (procent / 2);
+    mDropAmount += dropStep * procent;
+    mGrowAmount += growStep * procent;
+    seasonLvl += seasonInc * procent;
+    mClimbRate += climbRateStep * procent;
+    mLengthFalloffFactor += lenFallOffFactorStep * procent;
 
-        if(seasonLvl > 9)
-            seasonLvl = 0;
+    if(seasonLvl > 9)
+        seasonLvl = 0;
 
-        //ui->slSeason->setValue(seasonLvl);
-        j["mInitialBranchLength"] = mInitialBranchLength;
-        j["mMaxRadius"] = mMaxRadius;
-        j["mTrunkLength"] = mTrunkLength;
-        j["mTwigScale"] = mTwigScale;
-        j["mDropAmount"] = mDropAmount;
-        j["mGrowAmount"] = mGrowAmount;
-        //j["mLevels"] = (int)mLevels;
-        //j["mLevels"] = mLevels;
-        j["mClimbRate"] = mClimbRate;
-        j["mLengthFalloffFactor"] = mLengthFalloffFactor;
+    j["mInitialBranchLength"] = mInitialBranchLength;
+    j["mMaxRadius"] = mMaxRadius;
+    j["mTrunkLength"] = mTrunkLength;
+    j["mTwigScale"] = mTwigScale;
+    j["mDropAmount"] = mDropAmount;
+    j["mGrowAmount"] = mGrowAmount;
+    j["mClimbRate"] = mClimbRate;
+    j["mLengthFalloffFactor"] = mLengthFalloffFactor;
 
-        //set_sliders();
-        openGlWidget->loadFromJSON(j);
-        if(ui->cbSeason->isChecked())
-            openGlWidget->loadSeasonValue(seasonLvl);
-        delay(delayMSec);
-    }
-    ui->buttonGrow->setEnabled(true);
-    for(QSlider * slider : sliders)
-        slider->setEnabled(true);
-    ui->slSeason->setEnabled(true);
+    openGlWidget->loadFromJSON(j);
+    if(ui->cbSeason->isChecked())
+        openGlWidget->loadSeasonValue(seasonLvl);
 }
 
 float MainWindow::round(float var)
@@ -354,12 +360,6 @@ void MainWindow::on_actionSaveAs_triggered()
         }
     }
 }
-
-void MainWindow::on_spinBox_valueChanged(int arg1)
-{
-    growSteps = arg1;
-}
-
 
 void MainWindow::on_slSeason_valueChanged(int value)
 {

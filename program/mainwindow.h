@@ -20,19 +20,18 @@ public:
     ~MainWindow();
     void setTexture(QString path, TextureType type);
     void btTextureEnabled(bool enabled);
+    void ungrowTree();
 
 private slots:
     void slider_valueChanged();
     void growTree();
+    void changeGrowthTree(int procent);
     void loadTexWindow();
 
     void on_actionOpen_triggered();
     void on_actionSave_triggered();
 
     void on_actionSaveAs_triggered();
-
-
-    void on_spinBox_valueChanged(int arg1);
 
     void on_slSeason_valueChanged(int value);
 
@@ -47,7 +46,6 @@ private:
     float round(float var);
 
 
-    int growSteps = 12;
 protected:
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
