@@ -18,7 +18,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void setTexture(QString path);
+    void setTexture(QString path, TextureType type);
     void btTextureEnabled(bool enabled);
 
 private slots:

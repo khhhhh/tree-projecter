@@ -11,6 +11,7 @@
 #include <set>
 #include "texture.h"
 
+enum TextureType { WOOD, TWIG };
 
 class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 {
@@ -55,7 +56,7 @@ public:
     void loadSeasonValue(int val);
     void loadFromJSON(json j);
     void loadFromPath(QString path);
-    void loadTexture(const char * path);
+    void loadTexture(const char * path, TextureType type);
     ~OpenGlWidget();
 };
 #endif // WIDGET_H

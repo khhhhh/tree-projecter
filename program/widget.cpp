@@ -139,9 +139,18 @@ void OpenGlWidget::loadFromPath(QString path)
     }
 }
 
-void OpenGlWidget::loadTexture(const char * path)
+void OpenGlWidget::loadTexture(const char * path, TextureType type)
 {
-    textures[0]->loadFromImage(path);
+    switch(type)
+    {
+    case TextureType::WOOD:
+        textures[0]->loadFromImage(path);
+        break;
+    case TextureType::TWIG:
+        textures[1]->loadFromImage(path);
+        break;
+    }
+
 }
 
 void OpenGlWidget::loadFromJSON(json j)

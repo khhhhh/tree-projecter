@@ -21,9 +21,10 @@ public:
 private:
     Ui::changeTexWindow *ui;
     MainWindow *mainWin;
-    QStringList pathLinks;
+    QStringList woodPaths;
+    QStringList twigPaths;
 
-    bool LoadPaths(QString path, QListWidget* widget);
+    bool LoadPaths(QString path, QListWidget* widget, QStringList& filepaths);
 
 private slots:
     void sendTexturePath();

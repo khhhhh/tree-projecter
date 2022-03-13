@@ -83,11 +83,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::setTexture(QString path)
+void MainWindow::setTexture(QString path, TextureType type)
 {
     std::string str = path.toStdString();
     const char* p = str.c_str();
-    openGlWidget->loadTexture(p);
+    openGlWidget->loadTexture(p, type);
 }
 
 void MainWindow::btTextureEnabled(bool enabled)
