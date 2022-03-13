@@ -43,8 +43,6 @@ private:
     json j;
     void set_sliders();
     void delay(int secs);
-    float round(float var);
-
 
 protected:
     void keyPressEvent(QKeyEvent *event);

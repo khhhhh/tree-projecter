@@ -124,6 +124,7 @@ void MainWindow::slider_valueChanged()
     j["mRadiusFalloffRate"] = ui->slRadFall->value() / 100.0f;
     j["mTwistRate"] = ui->slTwistRate->value() / 100.0f;
     j["mTrunkLength"] = ui->slTrunkLen->value() / 10.0f;
+    j["mSeason"] = ui->slSeason->value();
 
     changeGrowthTree(ui->slGrowth->value());
 
@@ -237,7 +238,6 @@ void MainWindow::growTree()
 
     for(int i = 0; i <= 100; i++)
     {
-        //changeGrowthTree(i);
         ui->slGrowth->setValue(i);
         delay(1);
     }
@@ -282,23 +282,18 @@ void MainWindow::changeGrowthTree(int procent)
     float lenFallOffFactorStep = (float)(lenFallOffFact - mLengthFalloffFactor) / growSteps;
 
     // if season no need to be changed - increaser will be zero, else one
-    int seasonInc = 0;
-    if(ui->cbSeason->isChecked())
-        seasonInc = 1;
-
     mInitialBranchLength += initBranchLenStep * procent;
     mMaxRadius += maxRadStep * procent;
     mTrunkLength += trunkLenStep * procent;
+
     if(procent >= 50)
-        mTwigScale += twigScaleStep * (procent / 2);
+        mTwigScale += twigScaleStep * (procent - 50);
+
     mDropAmount += dropStep * procent;
     mGrowAmount += growStep * procent;
-    seasonLvl += seasonInc * procent;
+    seasonLvl = procent;
     mClimbRate += climbRateStep * procent;
     mLengthFalloffFactor += lenFallOffFactorStep * procent;
-
-    if(seasonLvl > 9)
-        seasonLvl = 0;
 
     j["mInitialBranchLength"] = mInitialBranchLength;
     j["mMaxRadius"] = mMaxRadius;
@@ -308,20 +303,11 @@ void MainWindow::changeGrowthTree(int procent)
     j["mGrowAmount"] = mGrowAmount;
     j["mClimbRate"] = mClimbRate;
     j["mLengthFalloffFactor"] = mLengthFalloffFactor;
+    j["mSeason"] = seasonLvl;
 
     openGlWidget->loadFromJSON(j);
     if(ui->cbSeason->isChecked())
         openGlWidget->loadSeasonValue(seasonLvl);
-}
-
-float MainWindow::round(float var)
-{
-    // 37.66666 * 100 =3766.66
-    // 3766.66 + .5 =3767.16    for rounding off value
-    // then type cast to int so value is 3767
-    // then divided by 100 so the value converted into 37.67
-    float value = (int)(var * 100 + .5);
-    return (float)value / 100;
 }
 
 void MainWindow::loadTexWindow()
