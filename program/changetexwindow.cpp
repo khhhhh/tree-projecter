@@ -34,7 +34,8 @@ changeTexWindow::changeTexWindow(MainWindow *qMain) : ui(new Ui::changeTexWindow
 
 changeTexWindow::~changeTexWindow()
 {
-    closeDialog();
+    mainWin->btTextureEnabled(true);
+    delete ui;
 }
 
 bool changeTexWindow::LoadPaths(QString path, QListWidget* widget, QStringList& filePaths)
@@ -78,5 +79,4 @@ void changeTexWindow::closeDialog()
 {
     mainWin->btTextureEnabled(true);
     this->close();
-    delete ui;
 }
