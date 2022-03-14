@@ -263,21 +263,19 @@ void MainWindow::changeGrowthTree(int procent)
     float mClimbRate = j["mClimbRate"];
     float mLengthFalloffFactor = j["mLengthFalloffFactor"];
 
-    // if season no need to be changed - increaser will be zero, else one
     mInitialBranchLength *= procentF;
     mMaxRadius *= procentF;
     mTrunkLength *=procentF;
-
-    if(procent >= 50)
-        mTwigScale *= (procentF - 0.5) * 2;
-    else
-        mTwigScale = 0;
-
     mDropAmount *= procentF;
     mGrowAmount *= procentF;
     seasonLvl = procent;
     mClimbRate *= procentF;
     mLengthFalloffFactor *= procentF;
+
+    if(procent >= 50)
+        mTwigScale *= (procentF - 0.5) * 2;
+    else
+        mTwigScale = 0;
 
     j["mInitialBranchLength"] = mInitialBranchLength;
     j["mMaxRadius"] = mMaxRadius;
