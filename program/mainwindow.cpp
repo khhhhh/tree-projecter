@@ -253,19 +253,7 @@ void MainWindow::changeGrowthTree(int procent)
     int growSteps = 100;
     float procentF = (float)procent/ growSteps;
 
-    /*
-    float InitBranchLen =  j["mInitialBranchLength"];
-    float maxRad = j["mMaxRadius"];
-    float trunkLen = j["mTrunkLength"];
-    float twigScale =  j["mTwigScale"];
-    float drop = j["mDropAmount"];
-    float grow = j["mGrowAmount"];
-    float climbRate = j["mClimbRate"];
-    float lenFallOffFact = j["mLengthFalloffFactor"];
-    */
     int seasonLvl = 0;
-
-
     float mInitialBranchLength = j["mInitialBranchLength"];
     float mMaxRadius = j["mMaxRadius"];
     float mTrunkLength = j["mTrunkLength"];
@@ -274,17 +262,6 @@ void MainWindow::changeGrowthTree(int procent)
     float mGrowAmount = j["mGrowAmount"];
     float mClimbRate = j["mClimbRate"];
     float mLengthFalloffFactor = j["mLengthFalloffFactor"];
-
-    /*
-    float initBranchLenStep = (float)(InitBranchLen - mInitialBranchLength);
-    float maxRadStep = (float)(maxRad - mMaxRadius);
-    float trunkLenStep = (float)(trunkLen - mTrunkLength);
-    float twigScaleStep = (float)(twigScale - mTwigScale) / (growSteps / 2);
-    float dropStep = (float)(drop - mDropAmount);
-    float growStep = (float)(grow - mGrowAmount);
-    float climbRateStep = (float)(climbRate - mClimbRate);
-    float lenFallOffFactorStep = (float)(lenFallOffFact - mLengthFalloffFactor);
-    */
 
     // if season no need to be changed - increaser will be zero, else one
     mInitialBranchLength *= procentF;
