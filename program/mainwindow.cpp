@@ -253,6 +253,7 @@ void MainWindow::changeGrowthTree(int procent)
     int growSteps = 100;
     float procentF = (float)procent/ growSteps;
 
+    /*
     float InitBranchLen =  j["mInitialBranchLength"];
     float maxRad = j["mMaxRadius"];
     float trunkLen = j["mTrunkLength"];
@@ -261,18 +262,20 @@ void MainWindow::changeGrowthTree(int procent)
     float grow = j["mGrowAmount"];
     float climbRate = j["mClimbRate"];
     float lenFallOffFact = j["mLengthFalloffFactor"];
+    */
     int seasonLvl = 0;
 
 
-    float mInitialBranchLength = j["mInitialBranchLength"] = 0.01;
-    float mMaxRadius = j["mMaxRadius"] = 0.02;
-    float mTrunkLength = j["mTrunkLength"] = 0.1;
-    float mTwigScale = j["mTwigScale"] = 0.01;
-    float mDropAmount = j["mDropAmount"] = 0;
-    float mGrowAmount = j["mGrowAmount"] = 0.9;
-    float mClimbRate = j["mClimbRate"] = 0.1;
-    float mLengthFalloffFactor = j["mLengthFalloffFactor"] = 0.01;
+    float mInitialBranchLength = j["mInitialBranchLength"];
+    float mMaxRadius = j["mMaxRadius"];
+    float mTrunkLength = j["mTrunkLength"];
+    float mTwigScale = j["mTwigScale"];
+    float mDropAmount = j["mDropAmount"];
+    float mGrowAmount = j["mGrowAmount"];
+    float mClimbRate = j["mClimbRate"];
+    float mLengthFalloffFactor = j["mLengthFalloffFactor"];
 
+    /*
     float initBranchLenStep = (float)(InitBranchLen - mInitialBranchLength);
     float maxRadStep = (float)(maxRad - mMaxRadius);
     float trunkLenStep = (float)(trunkLen - mTrunkLength);
@@ -281,20 +284,23 @@ void MainWindow::changeGrowthTree(int procent)
     float growStep = (float)(grow - mGrowAmount);
     float climbRateStep = (float)(climbRate - mClimbRate);
     float lenFallOffFactorStep = (float)(lenFallOffFact - mLengthFalloffFactor);
+    */
 
     // if season no need to be changed - increaser will be zero, else one
-    mInitialBranchLength += initBranchLenStep * procentF;
-    mMaxRadius += maxRadStep * procentF;
-    mTrunkLength += trunkLenStep * procentF;
+    mInitialBranchLength *= procentF;
+    mMaxRadius *= procentF;
+    mTrunkLength *=procentF;
 
     if(procent >= 50)
-        mTwigScale += twigScaleStep * (procent - 50);
+        mTwigScale *= (procentF - 0.5) * 2;
+    else
+        mTwigScale = 0;
 
-    mDropAmount += dropStep * procentF;
-    mGrowAmount += growStep * procentF;
+    mDropAmount *= procentF;
+    mGrowAmount *= procentF;
     seasonLvl = procent;
-    mClimbRate += climbRateStep * procentF;
-    mLengthFalloffFactor += lenFallOffFactorStep * procentF;
+    mClimbRate *= procentF;
+    mLengthFalloffFactor *= procentF;
 
     j["mInitialBranchLength"] = mInitialBranchLength;
     j["mMaxRadius"] = mMaxRadius;
