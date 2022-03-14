@@ -251,6 +251,7 @@ void MainWindow::growTree()
 void MainWindow::changeGrowthTree(int procent)
 {
     int growSteps = 100;
+    float procentF = (float)procent/ growSteps;
 
     float InitBranchLen =  j["mInitialBranchLength"];
     float maxRad = j["mMaxRadius"];
@@ -272,28 +273,28 @@ void MainWindow::changeGrowthTree(int procent)
     float mClimbRate = j["mClimbRate"] = 0.1;
     float mLengthFalloffFactor = j["mLengthFalloffFactor"] = 0.01;
 
-    float initBranchLenStep = (float)(InitBranchLen - mInitialBranchLength) / growSteps;
-    float maxRadStep = (float)(maxRad - mMaxRadius) / growSteps;
-    float trunkLenStep = (float)(trunkLen - mTrunkLength) / growSteps;
+    float initBranchLenStep = (float)(InitBranchLen - mInitialBranchLength);
+    float maxRadStep = (float)(maxRad - mMaxRadius);
+    float trunkLenStep = (float)(trunkLen - mTrunkLength);
     float twigScaleStep = (float)(twigScale - mTwigScale) / (growSteps / 2);
-    float dropStep = (float)(drop - mDropAmount) / growSteps;
-    float growStep = (float)(grow - mGrowAmount) / growSteps;
-    float climbRateStep = (float)(climbRate - mClimbRate) / growSteps;
-    float lenFallOffFactorStep = (float)(lenFallOffFact - mLengthFalloffFactor) / growSteps;
+    float dropStep = (float)(drop - mDropAmount);
+    float growStep = (float)(grow - mGrowAmount);
+    float climbRateStep = (float)(climbRate - mClimbRate);
+    float lenFallOffFactorStep = (float)(lenFallOffFact - mLengthFalloffFactor);
 
     // if season no need to be changed - increaser will be zero, else one
-    mInitialBranchLength += initBranchLenStep * procent;
-    mMaxRadius += maxRadStep * procent;
-    mTrunkLength += trunkLenStep * procent;
+    mInitialBranchLength += initBranchLenStep * procentF;
+    mMaxRadius += maxRadStep * procentF;
+    mTrunkLength += trunkLenStep * procentF;
 
     if(procent >= 50)
         mTwigScale += twigScaleStep * (procent - 50);
 
-    mDropAmount += dropStep * procent;
-    mGrowAmount += growStep * procent;
+    mDropAmount += dropStep * procentF;
+    mGrowAmount += growStep * procentF;
     seasonLvl = procent;
-    mClimbRate += climbRateStep * procent;
-    mLengthFalloffFactor += lenFallOffFactorStep * procent;
+    mClimbRate += climbRateStep * procentF;
+    mLengthFalloffFactor += lenFallOffFactorStep * procentF;
 
     j["mInitialBranchLength"] = mInitialBranchLength;
     j["mMaxRadius"] = mMaxRadius;
@@ -326,9 +327,9 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
     openGlWidget->keys.erase(event->key());
 }
 
-void MainWindow::delay(int secs)
+void MainWindow::delay(int miliseconds)
 {
-    QTime dieTime = QTime::currentTime().addMSecs(secs);
+    QTime dieTime = QTime::currentTime().addMSecs(miliseconds);
     while (QTime::currentTime() < dieTime)
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
