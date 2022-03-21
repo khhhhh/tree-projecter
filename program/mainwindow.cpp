@@ -217,7 +217,6 @@ void MainWindow::set_sliders()
     ui->slDrop->setValue(Drop);
     ui->slGrow->setValue(Grow);
     ui->slSweep->setValue(Sweep);
-    //ui->slSweep->setValue(1);
     ui->slMaxRad->setValue(MaxRad);
     ui->slClumbRate->setValue(ClimbRate);
     ui->slTrunkKink->setValue(TrunkKink);
@@ -252,6 +251,12 @@ void MainWindow::changeGrowthTree(int procent)
 {
     int growSteps = 100;
     float procentF = (float)procent/ growSteps;
+    if(procent < 10)
+    {
+        if(procent == 0)
+            procent = 1;
+        procentF = 0.1 - ((float)procent / 1000.0f);
+    }
 
     int seasonLvl = 0;
     float mInitialBranchLength = j["mInitialBranchLength"];
