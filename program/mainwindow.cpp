@@ -68,7 +68,7 @@ MainWindow::MainWindow(QWidget *parent) :
     sliders.push_back(ui->slTrunkLen);
     sliders.push_back(ui->slTwistRate);
 
-    //sliders.push_back(ui->slGrowth);
+    sliders.push_back(ui->slGrowth);
 
     for (const QSlider* i : sliders) {
         connect(i, SIGNAL(valueChanged(int)), this, SLOT(slider_valueChanged()));
@@ -76,7 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->buttonGrow, SIGNAL(clicked()), this, SLOT(growTree()));
     connect(ui->btTexture, SIGNAL(clicked()), this, SLOT(loadTexWindow()));
 
-    connect(ui->slGrowth, SIGNAL(valueChanged(int)), this, SLOT(changeGrowthTree(int)));
+    //connect(ui->slGrowth, SIGNAL(valueChanged(int)), this, SLOT(changeGrowthTree(int)));
     ui->horizontalLayout->addWidget(openGlWidget, 66);
 }
 
@@ -127,6 +127,7 @@ void MainWindow::slider_valueChanged()
     j["mTrunkLength"] = ui->slTrunkLen->value() / 10.0f;
     j["mSeason"] = ui->slSeason->value();
 
+    changeGrowthTree(ui->slGrowth->value());
 
     openGlWidget->loadFromJSON(j);
 }
@@ -289,7 +290,9 @@ void MainWindow::setGrowSliders()
 void MainWindow::growTree()
 {
     for(QSlider * slider : sliders)
+    {
         slider->setEnabled(false);
+    }
     ui->slSeason->setEnabled(false);
     ui->buttonGrow->setEnabled(false);
 
@@ -301,7 +304,9 @@ void MainWindow::growTree()
 
     ui->buttonGrow->setEnabled(true);
     for(QSlider * slider : sliders)
+    {
         slider->setEnabled(true);
+    }
     ui->slSeason->setEnabled(true);
 }
 
