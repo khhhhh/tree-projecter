@@ -63,11 +63,12 @@ MainWindow::MainWindow(QWidget *parent) :
     sliders.push_back(ui->slGrow);
     sliders.push_back(ui->slMaxRad);
     sliders.push_back(ui->slRadFall);
-    sliders.push_back(ui->slSeg);
     sliders.push_back(ui->slTaper);
     sliders.push_back(ui->slTrunkKink);
     sliders.push_back(ui->slTrunkLen);
     sliders.push_back(ui->slTwistRate);
+
+    sliders.push_back(ui->slGrowth);
 
     for (const QSlider* i : sliders) {
         connect(i, SIGNAL(valueChanged(int)), this, SLOT(slider_valueChanged()));
@@ -95,6 +96,11 @@ void MainWindow::btTextureEnabled(bool enabled)
     ui->btTexture->setEnabled(enabled);
 }
 
+void MainWindow::ungrowTree()
+{
+
+}
+
 void MainWindow::slider_valueChanged()
 {
     j["mSeed"] = ui->slider_seed->value();
@@ -112,13 +118,15 @@ void MainWindow::slider_valueChanged()
     j["mDropAmount"] = ui->slDrop->value() / 100.0f;
     j["mGrowAmount"] = ui->slGrow->value() / 100.0f;
     j["mSweepAmount"] = ui->slSweep->value() / 100.0f;
-    j["mSegments"] = ui->slSeg->value();
     j["mMaxRadius"] = ui->slMaxRad->value() / 100.0f;
     j["mTrunkKink"] = ui->slTrunkKink->value() / 1000.0f;
     j["mTaperRate"] = ui->slTaper->value() / 100.0f;
     j["mRadiusFalloffRate"] = ui->slRadFall->value() / 100.0f;
     j["mTwistRate"] = ui->slTwistRate->value() / 100.0f;
     j["mTrunkLength"] = ui->slTrunkLen->value() / 10.0f;
+    j["mSeason"] = ui->slSeason->value();
+
+    changeGrowthTree(ui->slGrowth->value());
 
     openGlWidget->loadFromJSON(j);
 }
@@ -198,7 +206,6 @@ void MainWindow::set_sliders()
     ui->slider_seed->setValue(j["mSeed"]);
     ui->slider_levels->setValue(j["mLevels"]);
     ui->slider_treeSteps->setValue(j["mTreeSteps"]);
-    ui->slSeg->setValue(j["mSegments"]);
     ui->slVMul->setValue(VMul);
     ui->slTwigScale->setValue(TwigScale);
     ui->slInitBranch->setValue(InitBranch);
@@ -229,93 +236,60 @@ void MainWindow::growTree()
     ui->slSeason->setEnabled(false);
     ui->buttonGrow->setEnabled(false);
 
-    int growSteps = ui->spinBox->value();
-
-    float InitBranchLen =  j["mInitialBranchLength"];
-    float maxRad = j["mMaxRadius"];
-    float trunkLen = j["mTrunkLength"];
-    float twigScale =  j["mTwigScale"];
-    float drop = j["mDropAmount"];
-    float grow = j["mGrowAmount"];
-    float climbRate = j["mClimbRate"];
-    float lenFallOffFact = j["mLengthFalloffFactor"];
-    int seasonLvl = 0;
-
-
-    float mInitialBranchLength = j["mInitialBranchLength"] = 0.01;
-    float mMaxRadius = j["mMaxRadius"] = 0.02;
-    float mTrunkLength = j["mTrunkLength"] = 0.1;
-    float mTwigScale = j["mTwigScale"] = 0.01;
-    float mDropAmount = j["mDropAmount"] = 0;
-    float mGrowAmount = j["mGrowAmount"] = 0.9;
-    float mClimbRate = j["mClimbRate"] = 0.1;
-    float mLengthFalloffFactor = j["mLengthFalloffFactor"] = 0.01;
-
-    float initBranchLenStep = (float)(InitBranchLen - mInitialBranchLength) / growSteps;
-    float maxRadStep = (float)(maxRad - mMaxRadius) / growSteps;
-    float trunkLenStep = (float)(trunkLen - mTrunkLength) / growSteps;
-    float twigScaleStep = (float)(twigScale - mTwigScale) / (growSteps / 2);
-    float dropStep = (float)(drop - mDropAmount) / growSteps;
-    float growStep = (float)(grow - mGrowAmount) / growSteps;
-    //float levelStep = (float)(level - mLevels) / growSteps;
-    float climbRateStep = (float)(climbRate - mClimbRate) / growSteps;
-    float lenFallOffFactorStep = (float)(lenFallOffFact - mLengthFalloffFactor) / growSteps;
-
-    // if season no need to be changed - increaser will be zero, else one
-    int seasonInc = 0;
-    if(ui->cbSeason->isChecked())
-        seasonInc = 1;
-
-    float delayMSec = (float)1000/growSteps;
-    for(int i = 0; i < growSteps; i++)
+    for(int i = 0; i <= 100; i++)
     {
-        mInitialBranchLength += initBranchLenStep;
-        mMaxRadius += maxRadStep;
-        mTrunkLength += trunkLenStep;
-        if(i >= growSteps / 2)
-            mTwigScale += twigScaleStep;
-        mDropAmount += dropStep;
-        mGrowAmount += growStep;
-        //mLevels += levelStep;
-        seasonLvl += seasonInc;
-        mClimbRate += climbRateStep;
-        mLengthFalloffFactor += lenFallOffFactorStep;
-
-        if(seasonLvl > 9)
-            seasonLvl = 0;
-
-        //ui->slSeason->setValue(seasonLvl);
-        j["mInitialBranchLength"] = mInitialBranchLength;
-        j["mMaxRadius"] = mMaxRadius;
-        j["mTrunkLength"] = mTrunkLength;
-        j["mTwigScale"] = mTwigScale;
-        j["mDropAmount"] = mDropAmount;
-        j["mGrowAmount"] = mGrowAmount;
-        //j["mLevels"] = (int)mLevels;
-        //j["mLevels"] = mLevels;
-        j["mClimbRate"] = mClimbRate;
-        j["mLengthFalloffFactor"] = mLengthFalloffFactor;
-
-        //set_sliders();
-        openGlWidget->loadFromJSON(j);
-        if(ui->cbSeason->isChecked())
-            openGlWidget->loadSeasonValue(seasonLvl);
-        delay(delayMSec);
+        ui->slGrowth->setValue(i);
+        delay(1);
     }
+
     ui->buttonGrow->setEnabled(true);
     for(QSlider * slider : sliders)
         slider->setEnabled(true);
     ui->slSeason->setEnabled(true);
 }
 
-float MainWindow::round(float var)
+void MainWindow::changeGrowthTree(int procent)
 {
-    // 37.66666 * 100 =3766.66
-    // 3766.66 + .5 =3767.16    for rounding off value
-    // then type cast to int so value is 3767
-    // then divided by 100 so the value converted into 37.67
-    float value = (int)(var * 100 + .5);
-    return (float)value / 100;
+    int growSteps = 100;
+    float procentF = (float)procent/ growSteps;
+
+    int seasonLvl = 0;
+    float mInitialBranchLength = j["mInitialBranchLength"];
+    float mMaxRadius = j["mMaxRadius"];
+    float mTrunkLength = j["mTrunkLength"];
+    float mTwigScale = j["mTwigScale"];
+    float mDropAmount = j["mDropAmount"];
+    float mGrowAmount = j["mGrowAmount"];
+    float mClimbRate = j["mClimbRate"];
+    float mLengthFalloffFactor = j["mLengthFalloffFactor"];
+
+    mInitialBranchLength *= procentF;
+    mMaxRadius *= procentF;
+    mTrunkLength *=procentF;
+    mDropAmount *= procentF;
+    mGrowAmount *= procentF;
+    seasonLvl = procent;
+    mClimbRate *= procentF;
+    mLengthFalloffFactor *= procentF;
+
+    if(procent >= 50)
+        mTwigScale *= (procentF - 0.5) * 2;
+    else
+        mTwigScale = 0;
+
+    j["mInitialBranchLength"] = mInitialBranchLength;
+    j["mMaxRadius"] = mMaxRadius;
+    j["mTrunkLength"] = mTrunkLength;
+    j["mTwigScale"] = mTwigScale;
+    j["mDropAmount"] = mDropAmount;
+    j["mGrowAmount"] = mGrowAmount;
+    j["mClimbRate"] = mClimbRate;
+    j["mLengthFalloffFactor"] = mLengthFalloffFactor;
+    j["mSeason"] = seasonLvl;
+
+    openGlWidget->loadFromJSON(j);
+    if(ui->cbSeason->isChecked())
+        openGlWidget->loadSeasonValue(seasonLvl);
 }
 
 void MainWindow::loadTexWindow()
@@ -334,9 +308,9 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
     openGlWidget->keys.erase(event->key());
 }
 
-void MainWindow::delay(int secs)
+void MainWindow::delay(int miliseconds)
 {
-    QTime dieTime = QTime::currentTime().addMSecs(secs);
+    QTime dieTime = QTime::currentTime().addMSecs(miliseconds);
     while (QTime::currentTime() < dieTime)
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
@@ -354,12 +328,6 @@ void MainWindow::on_actionSaveAs_triggered()
         }
     }
 }
-
-void MainWindow::on_spinBox_valueChanged(int arg1)
-{
-    growSteps = arg1;
-}
-
 
 void MainWindow::on_slSeason_valueChanged(int value)
 {
