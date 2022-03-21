@@ -42,6 +42,7 @@ private:
     OpenGlWidget *openGlWidget;
     json j;
     void set_sliders();
+    void setGrowSliders();
     void delay(int secs);
 
 protected:
