@@ -7,6 +7,8 @@
 #include <iostream>
 #include <fstream>
 #include "json.hpp"
+#include <string>
+
 using json = nlohmann::json;
 
 OpenGlWidget::~OpenGlWidget()
@@ -25,8 +27,6 @@ void OpenGlWidget::initializeGL() {
 
     camera = new Camera();
 
-    meshTwig = new Mesh(GL_TRIANGLES);
-
     Texture *treeTex, *twigTex;
     treeTex = new Texture();
     twigTex = new Texture();
@@ -35,27 +35,20 @@ void OpenGlWidget::initializeGL() {
     textures.push_back(treeTex);
     textures.push_back(twigTex);
 
-    meshTree = Mesh::generateTree(*meshTwig);
-    meshTree->pos = {0, -1, -1};
-    meshTwig->pos = {0, -1, -1};
+    meshTwig = new Mesh(GL_TRIANGLES);
+    meshTree = Mesh::generateTree(meshTwig);
+    meshTree->pos = {0, 0, 0};
+    meshTwig->pos = {0, 0, 0};
     meshes.push_back(meshTree);
     meshes.push_back(meshTwig);
 
-    meshTwig->material.shiness = 27.8974f;
-
-    /*
-    gourardProgram = new GLSLProgram();
-    gourardProgram->compileShaderFromFile(":/shaders/vshader.vert", GL_VERTEX_SHADER);
-    gourardProgram->compileShaderFromFile(":/shaders/fshader.fsh", GL_FRAGMENT_SHADER);
-    gourardProgram->link();
-    */
 
     phongProgram = new GLSLProgram();
     phongProgram->compileShaderFromFile(":/shaders/phong.vert", GL_VERTEX_SHADER);
     phongProgram->compileShaderFromFile(":/shaders/phong.fsh", GL_FRAGMENT_SHADER);
     phongProgram->link();
 
-    program = phongProgram; //gourardProgram;
+    program = phongProgram;
 
     connect(&timer, SIGNAL(timeout()), this, SLOT(update()));
     timer.setInterval(10);
@@ -67,13 +60,16 @@ void OpenGlWidget::paintGL() {
     rotateLight();
     glClearColor(0.7, 0.7, 0.7, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 
     program->use();
 
     program->setUniform("ViewMat", camera->matrix());
     program->setUniform("ProjMat", projMat);
     program->setUniform("LightPosition", lightPosition);
-    //program->setUniform("LightPower", 50);
 
     vec4 treeCol = {1,1,1,1};
     vec4 *colors = new vec4[2];
@@ -86,19 +82,18 @@ void OpenGlWidget::paintGL() {
         Texture *texture = textures[texInd];
         program->setUniform("ModelMat", mesh->matrix());
         texture->bind(0);
-        //        program->setUniform("MaterialAmbient", mesh->material.ambient);
-        //        program->setUniform("MaterialDiffuse", mesh->material.diffuse);
-        //        program->setUniform("MaterialSpecular", mesh->material.specular);
-        //program->setUniform("MaterialShiness", mesh->material.shiness);
         program->setUniform("leavesColor", colors[texInd]);
         program->setUniform("ColorTexture", 1);
 
         mesh->render();
         texture->unbind();
     }
+
 }
 void OpenGlWidget::resizeGL(int w, int h) {
     glViewport(0, 0, w, h);
+    width = w;
+    height = h;
     projMat = perspectiveMat(60.0f, w/(float)h, 0.01f, 150.0f);
 }
 
@@ -123,6 +118,33 @@ void OpenGlWidget::switchProgram() {
         program = gourardProgram;
         qDebug() << "gourard";
     }
+}
+
+void OpenGlWidget::createNewTree(int x, int y)
+{
+    GLdouble projection[16];
+
+    mat4_floatToGLdouble(projection, projMat.m);
+
+    vec3 dir_ray = camera->mouseClickRay(x, y, projection, width, height);
+
+    vec3 planePoint = {0, 0, 0};
+    vec3 planeNormal = {0, 1, 0};
+    vec3 diff = camera->pos - planePoint;
+    float prod1 = dot(diff, planeNormal);
+    float prod2 = dot(dir_ray, planeNormal);
+    float prod3 = prod1 / prod2;
+    vec3 intersecPoint = camera->pos - dir_ray * prod3;
+
+
+    makeCurrent();
+
+    Mesh *Twig = new Mesh(GL_TRIANGLES);
+    Mesh *Tree = Mesh::generateTree(Twig);
+    Tree->pos = intersecPoint;
+    Twig->pos = intersecPoint;
+    meshes.push_back(Tree);
+    meshes.push_back(Twig);
 }
 
 
@@ -160,10 +182,16 @@ void OpenGlWidget::loadFromJSON(json j)
 }
 
 void OpenGlWidget::mousePressEvent(QMouseEvent * e) {
-    if(e->button() == Qt::LeftButton){
-        e->pos().x();
-        ax = e->pos().x();
-        ay = e->pos().y();
+    switch(e->button()) {
+        case Qt::LeftButton:
+            ax = e->pos().x();
+            ay = e->pos().y();
+        break;
+        case Qt::RightButton:
+            createNewTree(e->pos().x(), e->pos().y());
+        break;
+        default:
+        break;
     }
 }
 

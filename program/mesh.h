@@ -39,7 +39,7 @@ public:
     void render();
 
     static Mesh *loadFromObj(const char *filename);
-    static Mesh *generateTree(Mesh& meshTwig);
+    static Mesh *generateTree(Mesh *twigMesh);
     static void changeTree(Mesh& meshTree, Mesh &meshTwig, Proctree::Properties props);
 
     static Mesh *createTerrain(QImage img, vec3 scale);

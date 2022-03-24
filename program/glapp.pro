@@ -3,8 +3,14 @@ QT       += core gui opengl
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
-#LIBS += -lGLU
-#LIBS +=  -lglew32 -lopengl32
+
+unix {
+    LIBS += -lGLU
+}
+
+win32 {
+    LIBS += -lglu32 -lopengl32
+}
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.

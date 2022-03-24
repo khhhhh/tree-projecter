@@ -143,79 +143,6 @@ Mesh *Mesh::loadFromObj(const char *filename) {
     return mesh;
 }
 
-//Mesh *Mesh::loadFromObj(const char *filename) {
-//    QFile file(filename);
-//    Mesh *mesh = new Mesh(GL_TRIANGLES);
-//    //mesh->name = filename;
-//    if(file.open(QFile::ReadOnly)) {
-//        int currentIndex=0;
-//        QTextStream stream(&file);
-//        std::vector<vec3> vertices, normals, resultVertices, resultNormals;
-//        std::vector<uint> indices;
-//        while(!stream.atEnd()) {
-//            QString line = stream.readLine();
-//            if(!line.isEmpty()) {
-//                auto listElements = line.split(' ');
-//                if(line[0]=='v') {
-//                    vec3 vertex = {listElements[1].toFloat(), listElements[2].toFloat(), listElements[3].toFloat()};
-//                    if(line[1]=='n')
-//                        normals.push_back(vertex);
-//                    else
-//                        vertices.push_back(vertex);
-//                }
-//                else if(line[0]=='f') {
-//                    for(int i=1; i<=3; i++) {
-//                        auto faceData = listElements[i].split('/');
-//                        resultVertices.push_back(vertices[faceData[0].toUShort()-1]);
-//                        resultNormals.push_back(normals[faceData[2].toUShort()-1]);
-//                        indices.push_back(currentIndex++);
-//                    }
-//                }
-//            }
-//        }
-//        mesh->setVertices(resultVertices.data(), resultVertices.size());
-//        mesh->setAttribute(Mesh::Normals, resultNormals.data(), resultNormals.size());
-//        mesh->setIndices(indices.data(), indices.size());
-//        file.close();
-//        qDebug() << filename << " loaded";
-//    }
-//    else
-//        qDebug() << filename << " loading error";
-//    return mesh;
-//}
-
-//Mesh *Mesh::loadFromObj(const char *filename) {
-//    QFile file(filename);
-//    Mesh *mesh = new Mesh(GL_TRIANGLES);
-//    //mesh->name = filename;
-//    if(file.open(QFile::ReadOnly)) {
-//        QTextStream stream(&file);
-//        std::vector<vec3> vertices;
-//        std::vector<ushort> indices;
-//        while(!stream.atEnd()) {
-//            QString line = stream.readLine();
-//            if(!line.isEmpty()) {
-//                auto listElements = line.split(' ');
-//                if(line[0]=='v') {
-//                    vec3 vertex = {listElements[1].toFloat(), listElements[2].toFloat(), listElements[3].toFloat()};
-//                    vertices.push_back(vertex);
-//                }
-//                else if(line[0]=='f') {
-//                    indices.push_back(listElements[1].toUShort()-1);
-//                    indices.push_back(listElements[2].toUShort()-1);
-//                    indices.push_back(listElements[3].toUShort()-1);
-//                }
-//            }
-//        }
-//        mesh->setVertices(vertices.data(), vertices.size());
-//        mesh->setIndices(indices.data(), indices.size());
-//        file.close();
-//        qDebug() << filename << " loaded";
-//    }
-//    else
-//        qDebug() << filename << " loading error";
-//    return mesh;
-//}
 
 Mesh *Mesh::createTerrain(QImage img, vec3 scale) {
     int w = img.width();
@@ -233,7 +160,7 @@ Mesh *Mesh::createTerrain(QImage img, vec3 scale) {
 
     mesh->setVertices(vertices.data(), vertices.size());
 
-    std::vector<uint> indices(w*h*3);
+    std::vector<uint> indices(w*h*6);
     for(int z=0; z<h-1; z++) {
         for(int x=0; x<w-1; x++) {
             indices[iout] = iin;
@@ -300,7 +227,7 @@ Mesh *Mesh::createTerrain(QImage img, vec3 scale) {
     return mesh;
 }
 
-Mesh *Mesh::generateTree(Mesh &meshTwig) {
+Mesh *Mesh::generateTree(Mesh *meshTwig) {
     Mesh *mesh = new Mesh(GL_TRIANGLES);
     Proctree::Tree tree;
     tree.generate();
@@ -344,10 +271,10 @@ Mesh *Mesh::generateTree(Mesh &meshTwig) {
     mesh->setAttribute(Mesh::Normals, normals.data(), normals.size());
     mesh->setAttribute(Mesh::UV, UVs.data(), UVs.size());
 
-    meshTwig.setVertices(verticesTwig.data(), verticesTwig.size());
-    meshTwig.setIndices(indicesTwig.data(), indicesTwig.size());
-    meshTwig.setAttribute(Mesh::Normals, normalsTwig.data(), normals.size());
-    meshTwig.setAttribute(Mesh::UV, UVsTwig.data(), UVsTwig.size());
+    meshTwig->setVertices(verticesTwig.data(), verticesTwig.size());
+    meshTwig->setIndices(indicesTwig.data(), indicesTwig.size());
+    meshTwig->setAttribute(Mesh::Normals, normalsTwig.data(), normals.size());
+    meshTwig->setAttribute(Mesh::UV, UVsTwig.data(), UVsTwig.size());
     return mesh;
 }
 

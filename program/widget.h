@@ -24,6 +24,7 @@ class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     std::vector<Texture *> textures;
     Mesh *meshTree, *meshTwig;
 
+    Mesh *terrain;
     mat4 projMat;
 
     QPoint refPoint;
@@ -39,6 +40,13 @@ class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void processCamera();
     void rotateLight();
     void switchProgram();
+
+    void createNewTree(int x, int y);
+
+
+    //temp
+    int width;
+    int height;
 
 protected:
     void initializeGL();
