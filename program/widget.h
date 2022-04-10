@@ -10,6 +10,7 @@
 #include "camera.h"
 #include <set>
 #include "texture.h"
+#include "tree.h"
 
 enum TextureType { WOOD, TWIG };
 
@@ -23,6 +24,12 @@ class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     GLSLProgram *program, *gourardProgram, *phongProgram;
     std::vector<Texture *> textures;
     Mesh *meshTree, *meshTwig;
+
+
+    Tree *drawingTree;
+    Texture *selTex;
+    Mesh *treeMesh;
+    Mesh *twigMesh;
 
     Mesh *terrain;
     mat4 projMat;
@@ -60,9 +67,9 @@ protected:
 
 public:
     std::set<int> keys;
+    std::vector<Tree *> *trees;
 
     void loadSeasonValue(int val);
-    void loadFromJSON(json j);
     void loadFromPath(QString path);
     void loadTexture(const char * path, TextureType type);
     ~OpenGlWidget();

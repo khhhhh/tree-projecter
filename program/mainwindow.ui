@@ -15,666 +15,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QPushButton" name="buttonGrow">
-        <property name="text">
-         <string>Grow</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btTexture">
-        <property name="text">
-         <string>Select texture</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="0" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="2" column="3">
-         <widget class="QLabel" name="ltreeSteps">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="2">
-         <widget class="QSlider" name="slClumbRate">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
-         <widget class="QLabel" name="l8">
-          <property name="text">
-           <string>Drop amount</string>
-          </property>
-         </widget>
-        </item>
-        <item row="17" column="3">
-         <widget class="QLabel" name="lTrunkLen">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="19" column="3">
-         <widget class="QLabel" name="lTwigRate">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QSlider" name="slider_levels">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>9</number>
-          </property>
-          <property name="value">
-           <number>1</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="20" column="3">
-         <widget class="QLabel" name="lVMul">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="13" column="0">
-         <widget class="QLabel" name="l14">
-          <property name="text">
-           <string>radius falloff</string>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="3">
-         <widget class="QLabel" name="lFallPow">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="2">
-         <widget class="QSlider" name="slGrow">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="14" column="3">
-         <widget class="QLabel" name="lSweep">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="12" column="2">
-         <widget class="QSlider" name="slMaxRad">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="l5">
-          <property name="text">
-           <string>Climb rate</string>
-          </property>
-         </widget>
-        </item>
-        <item row="21" column="2">
-         <widget class="QSlider" name="slSeason">
-          <property name="minimum">
-           <number>0</number>
-          </property>
-          <property name="maximum">
-           <number>9</number>
-          </property>
-          <property name="value">
-           <number>1</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="l1">
-          <property name="text">
-           <string>Seed</string>
-          </property>
-         </widget>
-        </item>
-        <item row="21" column="0">
-         <widget class="QLabel" name="l23">
-          <property name="text">
-           <string>Season</string>
-          </property>
-         </widget>
-        </item>
-        <item row="15" column="0">
-         <widget class="QLabel" name="l17">
-          <property name="text">
-           <string>taper </string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="3">
-         <widget class="QLabel" name="lLenFallFact">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="3">
-         <widget class="QLabel" name="lGrow">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="0">
-         <widget class="QLabel" name="l12">
-          <property name="text">
-           <string>len fall off pow</string>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="2">
-         <widget class="QSlider" name="slLenFallPow">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="l3">
-          <property name="text">
-           <string>Tree Steps</string>
-          </property>
-         </widget>
-        </item>
-        <item row="12" column="0">
-         <widget class="QLabel" name="l13">
-          <property name="text">
-           <string>max radius</string>
-          </property>
-         </widget>
-        </item>
-        <item row="21" column="3">
-         <widget class="QLabel" name="lSeason">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="0">
-         <widget class="QLabel" name="l10">
-          <property name="text">
-           <string>Init branch len</string>
-          </property>
-         </widget>
-        </item>
-        <item row="22" column="0">
-         <widget class="QCheckBox" name="cbSeason">
-          <property name="text">
-           <string>Season change</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="2">
-         <widget class="QSlider" name="slDrop">
-          <property name="minimum">
-           <number>-90</number>
-          </property>
-          <property name="maximum">
-           <number>90</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="16" column="3">
-         <widget class="QLabel" name="lTrunkKink">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="2">
-         <widget class="QSlider" name="slClumpMax">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="QSlider" name="slBranchFac">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>500</number>
-          </property>
-          <property name="singleStep">
-           <number>10</number>
-          </property>
-          <property name="pageStep">
-           <number>10</number>
-          </property>
-          <property name="value">
-           <number>1</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="l4">
-          <property name="text">
-           <string>Branch factor</string>
-          </property>
-         </widget>
-        </item>
-        <item row="19" column="0">
-         <widget class="QLabel" name="l21">
-          <property name="text">
-           <string>twist rate</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QSlider" name="slider_seed">
-          <property name="maximum">
-           <number>1000</number>
-          </property>
-          <property name="value">
-           <number>0</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="15" column="2">
-         <widget class="QSlider" name="slTaper">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="singleStep">
-           <number>1</number>
-          </property>
-          <property name="value">
-           <number>2</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="3">
-         <widget class="QLabel" name="lDrop">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="19" column="2">
-         <widget class="QSlider" name="slTwistRate">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>999</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="2">
-         <widget class="QSlider" name="slInitBranch">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="l2">
-          <property name="text">
-           <string>Levels</string>
-          </property>
-         </widget>
-        </item>
-        <item row="17" column="2">
-         <widget class="QSlider" name="slTrunkLen">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="13" column="2">
-         <widget class="QSlider" name="slRadFall">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="l6">
-          <property name="text">
-           <string>Clump min</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="3">
-         <widget class="QLabel" name="lClumpMax">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="20" column="2">
-         <widget class="QSlider" name="slVMul">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="2">
-         <widget class="QSlider" name="slLenFallFac">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="2">
-         <widget class="QSlider" name="slClumpMin">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="16" column="0">
-         <widget class="QLabel" name="l18">
-          <property name="text">
-           <string>trunk kink</string>
-          </property>
-         </widget>
-        </item>
-        <item row="14" column="0">
-         <widget class="QLabel" name="l16">
-          <property name="text">
-           <string>sweep </string>
-          </property>
-         </widget>
-        </item>
-        <item row="15" column="3">
-         <widget class="QLabel" name="lTaper">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="12" column="3">
-         <widget class="QLabel" name="lMaxRad">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="14" column="2">
-         <widget class="QSlider" name="slSweep">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="value">
-           <number>2</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <widget class="QLabel" name="lSeed">
-          <property name="minimumSize">
-           <size>
-            <width>20</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="18" column="3">
-         <widget class="QLabel" name="lTwigSc">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="3">
-         <widget class="QLabel" name="lClumpMin">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="13" column="3">
-         <widget class="QLabel" name="lRadFall">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="16" column="2">
-         <widget class="QSlider" name="slTrunkKink">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>1000</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="18" column="0">
-         <widget class="QLabel" name="l20">
-          <property name="text">
-           <string>twig scale</string>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="3">
-         <widget class="QLabel" name="lInitBranch">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="l7">
-          <property name="text">
-           <string>Clump max</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="3">
-         <widget class="QLabel" name="lBranch">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="QSlider" name="slider_treeSteps">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>10</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="17" column="0">
-         <widget class="QLabel" name="l19">
-          <property name="text">
-           <string>trunk len</string>
-          </property>
-         </widget>
-        </item>
-        <item row="20" column="0">
-         <widget class="QLabel" name="l22">
-          <property name="text">
-           <string>Vmultiplier</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="0">
-         <widget class="QLabel" name="l11">
-          <property name="text">
-           <string>len Fall off fact</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3">
-         <widget class="QLabel" name="lLevels">
-          <property name="minimumSize">
-           <size>
-            <width>20</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="0">
-         <widget class="QLabel" name="l9">
-          <property name="text">
-           <string>Grow amount</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="3">
-         <widget class="QLabel" name="lClumbRate">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="18" column="2">
-         <widget class="QSlider" name="slTwigScale">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </item>
     <item row="2" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
@@ -727,6 +67,676 @@ QSlider::sub-page:vertical {
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QPushButton" name="buttonGrow">
+        <property name="text">
+         <string>Grow</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btTexture">
+        <property name="text">
+         <string>Select texture</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="6" column="2">
+         <widget class="QSlider" name="slClumpMax">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="0">
+         <widget class="QLabel" name="l12">
+          <property name="text">
+           <string>len fall off pow</string>
+          </property>
+         </widget>
+        </item>
+        <item row="15" column="0">
+         <widget class="QLabel" name="l17">
+          <property name="text">
+           <string>taper </string>
+          </property>
+         </widget>
+        </item>
+        <item row="13" column="3">
+         <widget class="QLabel" name="lRadFall">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QSlider" name="slider_treeSteps">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>10</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="18" column="3">
+         <widget class="QLabel" name="lTwigSc">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="20" column="2">
+         <widget class="QSlider" name="slVMul">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="14" column="0">
+         <widget class="QLabel" name="l16">
+          <property name="text">
+           <string>sweep </string>
+          </property>
+         </widget>
+        </item>
+        <item row="22" column="0">
+         <widget class="QCheckBox" name="cbSeason">
+          <property name="text">
+           <string>Season change</string>
+          </property>
+         </widget>
+        </item>
+        <item row="16" column="0">
+         <widget class="QLabel" name="l18">
+          <property name="text">
+           <string>trunk kink</string>
+          </property>
+         </widget>
+        </item>
+        <item row="17" column="2">
+         <widget class="QSlider" name="slTrunkLen">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="14" column="2">
+         <widget class="QSlider" name="slSweep">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>2</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="21" column="3">
+         <widget class="QLabel" name="lSeason">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="l7">
+          <property name="text">
+           <string>Clump max</string>
+          </property>
+         </widget>
+        </item>
+        <item row="20" column="3">
+         <widget class="QLabel" name="lVMul">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="2">
+         <widget class="QSlider" name="slLenFallFac">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="20" column="0">
+         <widget class="QLabel" name="l22">
+          <property name="text">
+           <string>Vmultiplier</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="QLabel" name="l9">
+          <property name="text">
+           <string>Grow amount</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="2">
+         <widget class="QSlider" name="slMaxRad">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QLabel" name="l10">
+          <property name="text">
+           <string>Init branch len</string>
+          </property>
+         </widget>
+        </item>
+        <item row="14" column="3">
+         <widget class="QLabel" name="lSweep">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="2">
+         <widget class="QSlider" name="slInitBranch">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="2">
+         <widget class="QSlider" name="slLenFallPow">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="2">
+         <widget class="QSlider" name="slGrow">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="15" column="2">
+         <widget class="QSlider" name="slTaper">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="singleStep">
+           <number>1</number>
+          </property>
+          <property name="value">
+           <number>2</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="17" column="0">
+         <widget class="QLabel" name="l19">
+          <property name="text">
+           <string>trunk len</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="3">
+         <widget class="QLabel" name="lMaxRad">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="l3">
+          <property name="text">
+           <string>Tree Steps</string>
+          </property>
+         </widget>
+        </item>
+        <item row="16" column="3">
+         <widget class="QLabel" name="lTrunkKink">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="19" column="3">
+         <widget class="QLabel" name="lTwigRate">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QLabel" name="lLevels">
+          <property name="minimumSize">
+           <size>
+            <width>20</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QLabel" name="ltreeSteps">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="2">
+         <widget class="QSlider" name="slDrop">
+          <property name="minimum">
+           <number>-90</number>
+          </property>
+          <property name="maximum">
+           <number>90</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="3">
+         <widget class="QLabel" name="lFallPow">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="l4">
+          <property name="text">
+           <string>Branch factor</string>
+          </property>
+         </widget>
+        </item>
+        <item row="21" column="2">
+         <widget class="QSlider" name="slSeason">
+          <property name="minimum">
+           <number>0</number>
+          </property>
+          <property name="maximum">
+           <number>9</number>
+          </property>
+          <property name="value">
+           <number>1</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="3">
+         <widget class="QLabel" name="lInitBranch">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLabel" name="lSeed">
+          <property name="minimumSize">
+           <size>
+            <width>20</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="15" column="3">
+         <widget class="QLabel" name="lTaper">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="18" column="2">
+         <widget class="QSlider" name="slTwigScale">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="3">
+         <widget class="QLabel" name="lBranch">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="l5">
+          <property name="text">
+           <string>Climb rate</string>
+          </property>
+         </widget>
+        </item>
+        <item row="21" column="0">
+         <widget class="QLabel" name="l23">
+          <property name="text">
+           <string>Season</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0">
+         <widget class="QLabel" name="l11">
+          <property name="text">
+           <string>len Fall off fact</string>
+          </property>
+         </widget>
+        </item>
+        <item row="13" column="0">
+         <widget class="QLabel" name="l14">
+          <property name="text">
+           <string>radius falloff</string>
+          </property>
+         </widget>
+        </item>
+        <item row="13" column="2">
+         <widget class="QSlider" name="slRadFall">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="3">
+         <widget class="QLabel" name="lClumpMax">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="16" column="2">
+         <widget class="QSlider" name="slTrunkKink">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>1000</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="QSlider" name="slClumpMin">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="17" column="3">
+         <widget class="QLabel" name="lTrunkLen">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="3">
+         <widget class="QLabel" name="lDrop">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="3">
+         <widget class="QLabel" name="lClumpMin">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="l6">
+          <property name="text">
+           <string>Clump min</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="l8">
+          <property name="text">
+           <string>Drop amount</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="3">
+         <widget class="QLabel" name="lClumbRate">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="19" column="0">
+         <widget class="QLabel" name="l21">
+          <property name="text">
+           <string>twist rate</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="l2">
+          <property name="text">
+           <string>Levels</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QSlider" name="slider_seed">
+          <property name="maximum">
+           <number>1000</number>
+          </property>
+          <property name="value">
+           <number>0</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="19" column="2">
+         <widget class="QSlider" name="slTwistRate">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>999</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="3">
+         <widget class="QLabel" name="lGrow">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="18" column="0">
+         <widget class="QLabel" name="l20">
+          <property name="text">
+           <string>twig scale</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="l1">
+          <property name="text">
+           <string>Seed</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QSlider" name="slider_levels">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>9</number>
+          </property>
+          <property name="value">
+           <number>1</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="3">
+         <widget class="QLabel" name="lLenFallFact">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="0">
+         <widget class="QLabel" name="l13">
+          <property name="text">
+           <string>max radius</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="QSlider" name="slClumbRate">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QSlider" name="slBranchFac">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>500</number>
+          </property>
+          <property name="singleStep">
+           <number>10</number>
+          </property>
+          <property name="pageStep">
+           <number>10</number>
+          </property>
+          <property name="value">
+           <number>1</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="22" column="2">
+         <widget class="QListWidget" name="listWidget">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
@@ -786,38 +796,6 @@ QSlider::sub-page:vertical {
  <resources/>
  <connections>
   <connection>
-   <sender>slider_seed</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lSeed</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>399</x>
-     <y>204</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>765</x>
-     <y>204</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>slider_levels</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lLevels</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>399</x>
-     <y>391</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>765</x>
-     <y>391</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionOpen</sender>
    <signal>triggered(bool)</signal>
    <receiver>actionSave</receiver>
@@ -834,66 +812,18 @@ QSlider::sub-page:vertical {
    </hints>
   </connection>
   <connection>
-   <sender>slider_treeSteps</sender>
+   <sender>slGrowth</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>ltreeSteps</receiver>
+   <receiver>lGrowth</receiver>
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>402</x>
-     <y>437</y>
+     <x>432</x>
+     <y>641</y>
     </hint>
     <hint type="destinationlabel">
-     <x>765</x>
-     <y>437</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>slBranchFac</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lBranch</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>412</x>
-     <y>113</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>765</x>
-     <y>113</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>slClumbRate</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lClumbRate</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>412</x>
-     <y>137</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>765</x>
-     <y>137</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>slClumpMin</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lClumpMin</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>412</x>
-     <y>161</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>765</x>
-     <y>161</y>
+     <x>755</x>
+     <y>641</y>
     </hint>
    </hints>
   </connection>
@@ -930,38 +860,6 @@ QSlider::sub-page:vertical {
    </hints>
   </connection>
   <connection>
-   <sender>slDrop</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lDrop</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>412</x>
-     <y>209</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>765</x>
-     <y>209</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>slGrow</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lGrow</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>412</x>
-     <y>233</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>765</x>
-     <y>233</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>slInitBranch</sender>
    <signal>valueChanged(int)</signal>
    <receiver>lInitBranch</receiver>
@@ -978,146 +876,18 @@ QSlider::sub-page:vertical {
    </hints>
   </connection>
   <connection>
-   <sender>slLenFallFac</sender>
+   <sender>slider_treeSteps</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>lLenFallFact</receiver>
+   <receiver>ltreeSteps</receiver>
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>412</x>
-     <y>281</y>
+     <x>402</x>
+     <y>437</y>
     </hint>
     <hint type="destinationlabel">
      <x>765</x>
-     <y>281</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>slLenFallPow</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lFallPow</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>412</x>
-     <y>305</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>765</x>
-     <y>305</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>slMaxRad</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lMaxRad</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>412</x>
-     <y>329</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>765</x>
-     <y>329</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>slRadFall</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lRadFall</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>412</x>
-     <y>353</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>765</x>
-     <y>353</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>slSweep</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lSweep</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>412</x>
-     <y>401</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>765</x>
-     <y>401</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>slTaper</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lTaper</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>412</x>
-     <y>425</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>765</x>
-     <y>425</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>slTrunkKink</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lTrunkKink</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>412</x>
-     <y>449</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>765</x>
-     <y>449</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>slTrunkLen</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lTrunkLen</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>412</x>
-     <y>473</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>765</x>
-     <y>473</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>slTwigScale</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lTwigSc</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>412</x>
-     <y>497</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>765</x>
-     <y>497</y>
+     <y>437</y>
     </hint>
    </hints>
   </connection>
@@ -1154,18 +924,258 @@ QSlider::sub-page:vertical {
    </hints>
   </connection>
   <connection>
-   <sender>slGrowth</sender>
+   <sender>slTaper</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>lGrowth</receiver>
+   <receiver>lTaper</receiver>
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>432</x>
-     <y>641</y>
+     <x>412</x>
+     <y>425</y>
     </hint>
     <hint type="destinationlabel">
-     <x>755</x>
-     <y>641</y>
+     <x>765</x>
+     <y>425</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slLenFallPow</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lFallPow</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>412</x>
+     <y>305</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>765</x>
+     <y>305</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slTrunkLen</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lTrunkLen</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>412</x>
+     <y>473</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>765</x>
+     <y>473</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slider_seed</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lSeed</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>399</x>
+     <y>204</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>765</x>
+     <y>204</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slTrunkKink</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lTrunkKink</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>412</x>
+     <y>449</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>765</x>
+     <y>449</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slMaxRad</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lMaxRad</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>412</x>
+     <y>329</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>765</x>
+     <y>329</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slGrow</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lGrow</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>412</x>
+     <y>233</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>765</x>
+     <y>233</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slSweep</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lSweep</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>412</x>
+     <y>401</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>765</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slDrop</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lDrop</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>412</x>
+     <y>209</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>765</x>
+     <y>209</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slLenFallFac</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lLenFallFact</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>412</x>
+     <y>281</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>765</x>
+     <y>281</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slBranchFac</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lBranch</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>412</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>765</x>
+     <y>113</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slTwigScale</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lTwigSc</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>412</x>
+     <y>497</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>765</x>
+     <y>497</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slider_levels</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lLevels</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>399</x>
+     <y>391</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>765</x>
+     <y>391</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slClumbRate</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lClumbRate</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>412</x>
+     <y>137</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>765</x>
+     <y>137</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slClumpMin</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lClumpMin</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>412</x>
+     <y>161</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>765</x>
+     <y>161</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slRadFall</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lRadFall</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>412</x>
+     <y>353</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>765</x>
+     <y>353</y>
     </hint>
    </hints>
   </connection>

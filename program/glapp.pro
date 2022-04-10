@@ -25,6 +25,7 @@ SOURCES += \
     mainwindow.cpp \
     mesh.cpp \
     texture.cpp \
+    tree.cpp \
     widget.cpp \
     proctree.cpp
 
@@ -39,6 +40,7 @@ HEADERS += \
     mainwindow.h \
     mesh.h \
     texture.h \
+    tree.h \
     widget.h \
     proctree.h
 

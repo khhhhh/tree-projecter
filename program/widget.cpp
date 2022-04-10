@@ -35,13 +35,10 @@ void OpenGlWidget::initializeGL() {
     textures.push_back(treeTex);
     textures.push_back(twigTex);
 
-    meshTwig = new Mesh(GL_TRIANGLES);
-    meshTree = Mesh::generateTree(meshTwig);
-    meshTree->pos = {0, 0, 0};
-    meshTwig->pos = {0, 0, 0};
-    meshes.push_back(meshTree);
-    meshes.push_back(meshTwig);
-
+    Tree *firstTree = new Tree();
+    firstTree->texture.tree = 0;
+    firstTree->texture.twig = 1;
+    trees->push_back(firstTree);
 
     phongProgram = new GLSLProgram();
     phongProgram->compileShaderFromFile(":/shaders/phong.vert", GL_VERTEX_SHADER);
@@ -76,17 +73,34 @@ void OpenGlWidget::paintGL() {
     colors[0] = treeCol;
     colors[1] = leavesColor;
 
-    for(size_t i=0; i< meshes.size(); i++) {
-        Mesh *mesh = meshes[i];
-        int texInd = i % 2;
-        Texture *texture = textures[texInd];
-        program->setUniform("ModelMat", mesh->matrix());
-        texture->bind(0);
-        program->setUniform("leavesColor", colors[texInd]);
-        program->setUniform("ColorTexture", 1);
 
-        mesh->render();
-        texture->unbind();
+    for(size_t i=0; i< trees->size(); i++) {
+        drawingTree = trees->operator[](i);
+
+        int texInd = i % 2;
+
+        program->setUniform(
+                    "ModelMat",
+                    drawingTree->meshTree->matrix()
+                    );
+
+        selTex = textures[drawingTree->texture.tree];
+        selTex->bind(0);
+        program->setUniform("ColorTexture", 1);
+        program->setUniform("leavesColor", colors[0]);
+        drawingTree->meshTree->render();
+        selTex->unbind();
+
+        program->setUniform(
+                    "ModelMat",
+                    drawingTree->meshTwig->matrix()
+                    );
+
+        selTex = textures[drawingTree->texture.twig];
+        selTex->bind(0);
+        program->setUniform("leavesColor", colors[1]);
+        drawingTree->meshTwig->render();
+        selTex->unbind();
     }
 
 }
@@ -139,12 +153,11 @@ void OpenGlWidget::createNewTree(int x, int y)
 
     makeCurrent();
 
-    Mesh *Twig = new Mesh(GL_TRIANGLES);
-    Mesh *Tree = Mesh::generateTree(Twig);
-    Tree->pos = intersecPoint;
-    Twig->pos = intersecPoint;
-    meshes.push_back(Tree);
-    meshes.push_back(Twig);
+    Tree *newTree = new Tree();
+    //newTree->setProps()
+    newTree->setPos(intersecPoint);
+
+    trees->push_back(newTree);
 }
 
 
@@ -173,12 +186,6 @@ void OpenGlWidget::loadTexture(const char * path, TextureType type)
         break;
     }
 
-}
-
-void OpenGlWidget::loadFromJSON(json j)
-{
-    Proctree::Properties props(j);
-    Mesh::changeTree(*meshTree, *meshTwig, props);
 }
 
 void OpenGlWidget::mousePressEvent(QMouseEvent * e) {

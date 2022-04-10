@@ -37,6 +37,7 @@ private slots:
 
 private:
     std::vector<QSlider *> sliders;
+    std::vector<Tree *> trees;
     QString opened_file_path;
     Ui::MainWindow *ui;
     OpenGlWidget *openGlWidget;
@@ -44,6 +45,7 @@ private:
     void set_sliders();
     void setGrowSliders();
     void delay(int secs);
+    void setPropsAtIndex(int index, json j);
 
 protected:
     void keyPressEvent(QKeyEvent *event);

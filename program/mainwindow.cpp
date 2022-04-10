@@ -9,15 +9,15 @@
 #include <QKeyEvent>
 #include "changetexwindow.h"
 
-using jsos = nlohmann::json;
+using json = nlohmann::json;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    j =
-    {
+
+    j = {
         {"mSeed" , 262},
         {"mSegments" , 6},
         {"mLevels" , 5},
@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
     };
 
     openGlWidget = new OpenGlWidget();
-
+    openGlWidget->trees = &(this->trees);
     set_sliders();
 
     sliders.push_back(ui->slider_seed);
@@ -77,7 +77,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->btTexture, SIGNAL(clicked()), this, SLOT(loadTexWindow()));
 
     //connect(ui->slGrowth, SIGNAL(valueChanged(int)), this, SLOT(changeGrowthTree(int)));
-    ui->horizontalLayout->addWidget(openGlWidget, 66);
+    ui->horizontalLayout->addWidget(openGlWidget, 80);
 }
 
 MainWindow::~MainWindow()
@@ -129,7 +129,7 @@ void MainWindow::slider_valueChanged()
 
     changeGrowthTree(ui->slGrowth->value());
 
-    openGlWidget->loadFromJSON(j);
+    setPropsAtIndex(0, j);
 }
 
 
@@ -143,7 +143,7 @@ void MainWindow::on_actionOpen_triggered()
             QTextStream stream(&file);
             std::string shader_src =  stream.readAll().toStdString();
             j = json::parse(shader_src);
-            openGlWidget->loadFromJSON(j);
+            setPropsAtIndex(0, j);
             set_sliders();
         }
     }
@@ -357,7 +357,12 @@ void MainWindow::changeGrowthTree(int procent)
 
     //setGrowSliders();
 
-    openGlWidget->loadFromJSON(j);
+    for(Tree *tree : trees)
+    {
+        tree->setProps(j);
+        tree->generate();
+    }
+    //openGlWidget->loadFromJSON(j);
     if(ui->cbSeason->isChecked())
         openGlWidget->loadSeasonValue(seasonLvl);
 }
@@ -383,6 +388,12 @@ void MainWindow::delay(int miliseconds)
     QTime dieTime = QTime::currentTime().addMSecs(miliseconds);
     while (QTime::currentTime() < dieTime)
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+}
+
+void MainWindow::setPropsAtIndex(int index, json j)
+{
+    trees[index]->setProps(j);
+    trees[index]->generate();
 }
 
 
