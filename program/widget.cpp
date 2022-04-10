@@ -39,6 +39,8 @@ void OpenGlWidget::initializeGL() {
     firstTree->texture.tree = 0;
     firstTree->texture.twig = 1;
     trees->push_back(firstTree);
+    listWidget->addItem("Tree 1");
+    listWidget->setCurrentRow(0);
 
     phongProgram = new GLSLProgram();
     phongProgram->compileShaderFromFile(":/shaders/phong.vert", GL_VERTEX_SHADER);
@@ -77,29 +79,27 @@ void OpenGlWidget::paintGL() {
     for(size_t i=0; i< trees->size(); i++) {
         drawingTree = trees->operator[](i);
 
-        int texInd = i % 2;
-
         program->setUniform(
                     "ModelMat",
-                    drawingTree->meshTree->matrix()
+                    drawingTree->getMeshTree()->matrix()
                     );
 
         selTex = textures[drawingTree->texture.tree];
         selTex->bind(0);
         program->setUniform("ColorTexture", 1);
         program->setUniform("leavesColor", colors[0]);
-        drawingTree->meshTree->render();
+        drawingTree->getMeshTree()->render();
         selTex->unbind();
 
         program->setUniform(
                     "ModelMat",
-                    drawingTree->meshTwig->matrix()
+                    drawingTree->getMeshTwig()->matrix()
                     );
 
         selTex = textures[drawingTree->texture.twig];
         selTex->bind(0);
         program->setUniform("leavesColor", colors[1]);
-        drawingTree->meshTwig->render();
+        drawingTree->getMeshTwig()->render();
         selTex->unbind();
     }
 
@@ -150,14 +150,16 @@ void OpenGlWidget::createNewTree(int x, int y)
     float prod3 = prod1 / prod2;
     vec3 intersecPoint = camera->pos - dir_ray * prod3;
 
-
     makeCurrent();
 
     Tree *newTree = new Tree();
-    //newTree->setProps()
     newTree->setPos(intersecPoint);
-
     trees->push_back(newTree);
+
+    int treeIndex = trees->size();
+    QString treeName = "Tree " + QString::number(treeIndex);
+    listWidget->addItem(treeName);
+    listWidget->setCurrentRow(listWidget->count() - 1);
 }
 
 
@@ -236,6 +238,9 @@ void OpenGlWidget::processCamera() {
         camera->pos = camera->pos + camera->up*dv;
     else if(keys.find(Qt::Key_Z) != keys.end())
         camera->pos = camera->pos - camera->up*dv;
+
+    if(camera->pos.y < 0)
+        camera->pos.y = 0;
 
     camera->forward = {0,0,-1};
     camera->forward = camera->forward * rotationMat(dax, 0, 1, 0);

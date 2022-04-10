@@ -4,6 +4,7 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions_3_3_Core>
 #include <QTimer>
+#include <QListWidget>
 
 #include "mesh.h"
 #include "glslprogram.h"
@@ -68,6 +69,7 @@ protected:
 public:
     std::set<int> keys;
     std::vector<Tree *> *trees;
+    QListWidget *listWidget;
 
     void loadSeasonValue(int val);
     void loadFromPath(QString path);

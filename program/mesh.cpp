@@ -24,7 +24,7 @@ void Mesh::setAttribute(Mesh::BufferType index, vec3 *data, int n) {
             // włączenie możliwości zapisu tablicy pod wskazanym indeksem
             glEnableVertexAttribArray(index);
             // przepisanie danych do bufora
-            glBufferData(GL_ARRAY_BUFFER, n*sizeof(vec3), data, GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, n*sizeof(vec3), data, GL_DYNAMIC_DRAW);
             // ustawienie lokalizacji danych w buforze, dzięki temu po indeksie
             // będzie można odszukiwać zmienne w shaderze i wiadomo jakiego będą typu
             glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, 0, 0);

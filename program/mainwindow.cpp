@@ -7,6 +7,10 @@
 #include <QTextStream>
 #include <QTime>
 #include <QKeyEvent>
+#include <QStringListModel>
+#include <QList>
+#include <QString>
+#include <QList>
 #include "changetexwindow.h"
 
 using json = nlohmann::json;
@@ -44,6 +48,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     openGlWidget = new OpenGlWidget();
     openGlWidget->trees = &(this->trees);
+    openGlWidget->listWidget = ui->listWidget;
+    ui->horizontalLayout->addWidget(openGlWidget, 80);
+
     set_sliders();
 
     sliders.push_back(ui->slider_seed);
@@ -68,16 +75,14 @@ MainWindow::MainWindow(QWidget *parent) :
     sliders.push_back(ui->slTrunkLen);
     sliders.push_back(ui->slTwistRate);
 
-    sliders.push_back(ui->slGrowth);
 
     for (const QSlider* i : sliders) {
         connect(i, SIGNAL(valueChanged(int)), this, SLOT(slider_valueChanged()));
      }
     connect(ui->buttonGrow, SIGNAL(clicked()), this, SLOT(growTree()));
     connect(ui->btTexture, SIGNAL(clicked()), this, SLOT(loadTexWindow()));
-
-    //connect(ui->slGrowth, SIGNAL(valueChanged(int)), this, SLOT(changeGrowthTree(int)));
-    ui->horizontalLayout->addWidget(openGlWidget, 80);
+    connect(ui->slGrowth, SIGNAL(valueChanged(int)), this, SLOT(changeGrowthTree(int)));
+    connect(ui->btDelete, SIGNAL(clicked()), this, SLOT(deleteTree()));
 }
 
 MainWindow::~MainWindow()
@@ -95,11 +100,6 @@ void MainWindow::setTexture(QString path, TextureType type)
 void MainWindow::btTextureEnabled(bool enabled)
 {
     ui->btTexture->setEnabled(enabled);
-}
-
-void MainWindow::ungrowTree()
-{
-
 }
 
 void MainWindow::slider_valueChanged()
@@ -127,9 +127,7 @@ void MainWindow::slider_valueChanged()
     j["mTrunkLength"] = ui->slTrunkLen->value() / 10.0f;
     j["mSeason"] = ui->slSeason->value();
 
-    changeGrowthTree(ui->slGrowth->value());
-
-    setPropsAtIndex(0, j);
+    setPropsAtIndex(ui->listWidget->currentRow(), j);
 }
 
 
@@ -143,7 +141,7 @@ void MainWindow::on_actionOpen_triggered()
             QTextStream stream(&file);
             std::string shader_src =  stream.readAll().toStdString();
             j = json::parse(shader_src);
-            setPropsAtIndex(0, j);
+            setPropsAtIndex(ui->listWidget->currentRow(), j);
             set_sliders();
         }
     }
@@ -229,64 +227,6 @@ void MainWindow::set_sliders()
     ui->slSeason->setValue(0);
 }
 
-void MainWindow::setGrowSliders()
-{
-    float  TwigScale = j["mTwigScale"],
-          InitBranch = j["mInitialBranchLength"],
-          LenFallFac = j["mLengthFalloffFactor"],
-          BranchFac = j["mBranchFactor"],
-          Drop = j["mDropAmount"],
-          Grow = j["mGrowAmount"],
-          MaxRad = j["mMaxRadius"],
-          ClimbRate = j["mClimbRate"],
-          TrunkLen = j["mTrunkLength"];
-
-    TwigScale *= 100;
-    InitBranch *= 100;
-    LenFallFac *= 100;
-    BranchFac *= 100;
-    Drop *= 100;
-    Grow *= 100;
-    MaxRad *= 100;
-    ClimbRate *= 100;
-    TrunkLen *= 10;
-
-    ui->slTwigScale->blockSignals(true);
-    ui->slInitBranch->blockSignals(true);
-    ui->slLenFallFac->blockSignals(true);
-    ui->slBranchFac->blockSignals(true);
-    ui->slDrop->blockSignals(true);
-    ui->slGrow->blockSignals(true);
-    ui->slMaxRad->blockSignals(true);
-    ui->slClumbRate->blockSignals(true);
-    ui->slTrunkLen->blockSignals(true);
-    ui->slSeason->blockSignals(true);
-
-    ui->slTwigScale->setValue(TwigScale);
-    ui->slInitBranch->setValue(InitBranch);
-    ui->slLenFallFac->setValue(LenFallFac);
-    ui->slBranchFac->setValue(BranchFac);
-    ui->slDrop->setValue(Drop);
-    ui->slGrow->setValue(Grow);
-    ui->slMaxRad->setValue(MaxRad);
-    ui->slClumbRate->setValue(ClimbRate);
-    ui->slTrunkLen->setValue(TrunkLen);
-
-    ui->slSeason->setValue(0);
-
-    ui->slTwigScale->blockSignals(false);
-    ui->slInitBranch->blockSignals(false);
-    ui->slLenFallFac->blockSignals(false);
-    ui->slBranchFac->blockSignals(false);
-    ui->slDrop->blockSignals(false);
-    ui->slGrow->blockSignals(false);
-    ui->slMaxRad->blockSignals(false);
-    ui->slClumbRate->blockSignals(false);
-    ui->slTrunkLen->blockSignals(false);
-    ui->slSeason->blockSignals(false);
-
-}
-
 void MainWindow::growTree()
 {
     for(QSlider * slider : sliders)
@@ -298,7 +238,8 @@ void MainWindow::growTree()
 
     for(int i = 0; i <= 100; i++)
     {
-        ui->slGrowth->setValue(i);
+        for(Tree* tree : trees)
+            tree->growTree(i);
         delay(1);
     }
 
@@ -312,57 +253,17 @@ void MainWindow::growTree()
 
 void MainWindow::changeGrowthTree(int procent)
 {
-    int growSteps = 100;
-    float procentF = (float)procent/ growSteps;
-    if(procent < 10)
-    {
-        if(procent == 0)
-            procent = 1;
-        procentF = 0.1 - ((float)procent / 1000.0f);
-    }
-
     int seasonLvl = 0;
-    float mInitialBranchLength = j["mInitialBranchLength"];
-    float mMaxRadius = j["mMaxRadius"];
-    float mTrunkLength = j["mTrunkLength"];
-    float mTwigScale = j["mTwigScale"];
-    float mDropAmount = j["mDropAmount"];
-    float mGrowAmount = j["mGrowAmount"];
-    float mClimbRate = j["mClimbRate"];
-    float mLengthFalloffFactor = j["mLengthFalloffFactor"];
 
-    mInitialBranchLength *= procentF;
-    mMaxRadius *= procentF;
-    mTrunkLength *=procentF;
-    mDropAmount *= procentF;
-    mGrowAmount *= procentF;
-    seasonLvl = procent;
-    mClimbRate *= procentF;
-    mLengthFalloffFactor *= procentF;
-
-    if(procent >= 50)
-        mTwigScale *= (procentF - 0.5) * 2;
+    if(ui->cbGrowAllTrees->isChecked()) {
+        for(Tree* tree : trees)
+            tree->growTree(procent);
+    }
     else
-        mTwigScale = 0;
+        trees[ui->listWidget->currentRow()]->growTree(procent);
 
-    j["mInitialBranchLength"] = mInitialBranchLength;
-    j["mMaxRadius"] = mMaxRadius;
-    j["mTrunkLength"] = mTrunkLength;
-    j["mTwigScale"] = mTwigScale;
-    j["mDropAmount"] = mDropAmount;
-    j["mGrowAmount"] = mGrowAmount;
-    j["mClimbRate"] = mClimbRate;
-    j["mLengthFalloffFactor"] = mLengthFalloffFactor;
     j["mSeason"] = seasonLvl;
 
-    //setGrowSliders();
-
-    for(Tree *tree : trees)
-    {
-        tree->setProps(j);
-        tree->generate();
-    }
-    //openGlWidget->loadFromJSON(j);
     if(ui->cbSeason->isChecked())
         openGlWidget->loadSeasonValue(seasonLvl);
 }
@@ -376,6 +277,9 @@ void MainWindow::loadTexWindow()
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
+    if(event->key() == Qt::Key_Delete){
+        deleteTree();
+    }
     openGlWidget->keys.insert(event->key());
 }
 
@@ -414,5 +318,33 @@ void MainWindow::on_actionSaveAs_triggered()
 void MainWindow::on_slSeason_valueChanged(int value)
 {
     openGlWidget->loadSeasonValue(value);
+}
+
+
+void MainWindow::on_listWidget_currentRowChanged(int currentRow)
+{
+    if(currentRow < 0)
+        return;
+    j.update(trees[currentRow]->getProps());
+    set_sliders();
+}
+
+void MainWindow::deleteTree()
+{
+    int index = ui->listWidget->currentRow();
+    if(index < 0)
+        return;
+
+    trees.erase(trees.begin() + index);
+    delete ui->listWidget->takeItem(index);
+
+    if(ui->listWidget->count() == 0)
+    {
+        //block all widgets
+    }
+    else if(ui->listWidget->count() == 1)
+    {
+        ui->listWidget->setCurrentRow(0);
+    }
 }
 

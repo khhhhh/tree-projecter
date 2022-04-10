@@ -20,7 +20,6 @@ public:
     ~MainWindow();
     void setTexture(QString path, TextureType type);
     void btTextureEnabled(bool enabled);
-    void ungrowTree();
 
 private slots:
     void slider_valueChanged();
@@ -35,6 +34,9 @@ private slots:
 
     void on_slSeason_valueChanged(int value);
 
+    void on_listWidget_currentRowChanged(int currentRow);
+    void deleteTree();
+
 private:
     std::vector<QSlider *> sliders;
     std::vector<Tree *> trees;
@@ -43,13 +45,13 @@ private:
     OpenGlWidget *openGlWidget;
     json j;
     void set_sliders();
-    void setGrowSliders();
     void delay(int secs);
     void setPropsAtIndex(int index, json j);
 
 protected:
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
+    //void mousePressEvent(QMouseEvent* event);
 };
 
 #endif // MAINWINDOW_H
