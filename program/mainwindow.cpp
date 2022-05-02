@@ -238,8 +238,13 @@ void MainWindow::growTree()
 
     for(int i = 0; i <= 100; i++)
     {
-        for(Tree* tree : trees)
-            tree->growTree(i);
+        if(ui->cbGrowAllTrees->isChecked())
+        {
+            for(Tree* tree : trees)
+                tree->growTree(i);
+        }
+        else
+            trees[ui->listWidget->currentRow()]->growTree(i);
         delay(1);
     }
 
