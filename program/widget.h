@@ -33,6 +33,7 @@ class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     Mesh *twigMesh;
 
     Mesh *terrain;
+    Mesh *building;
     mat4 projMat;
 
     QPoint refPoint;

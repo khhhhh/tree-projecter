@@ -45,24 +45,13 @@ void OpenGlWidget::initializeGL() {
     listWidget->setCurrentRow(0);
 
     // terrain and walls
-    /*
+    building = Mesh::generateWall(7.0f);
+    building->pos = {0, 7, -20};
+
     QImage img(":/textures/trees/1.jpg");
     terrain = Mesh::createTerrain(img, {-1,0.001,-1});
     terrain->pos = {100,0,100};
 
-    vec3 verts[]  = { {-1,  1, 0},
-              { 1,  1, 0},
-              {-1, -1, 0},
-              { 1, -1, 0}
-            };
-    vec3 color = {0.6, 0.6, 0.9};
-    vec3 colors[] = { color, color, color, color };
-
-
-    uint indices[] = { 0,2,1, 2,3,1 };
-    terrain->setIndices(indices, 6);
-    terrain->setVertices(verts, 4);
-    */
 
     phongProgram = new GLSLProgram();
     phongProgram->compileShaderFromFile(":/shaders/phong.vert", GL_VERTEX_SHADER);
@@ -79,7 +68,7 @@ void OpenGlWidget::initializeGL() {
 void OpenGlWidget::paintGL() {
     processCamera();
     rotateLight();
-    glClearColor(0.9, 0.9, 0.9, 1);
+    glClearColor(0.52, 0.8, 0.92, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
@@ -96,6 +85,24 @@ void OpenGlWidget::paintGL() {
     vec4 *colors = new vec4[2];
     colors[0] = treeCol;
     colors[1] = leavesColor;
+
+    //selTex = textures[0];
+    //selTex->bind(0);
+    program->setUniform(
+            "ModelMat",
+            terrain->matrix()
+            );
+    program->setUniform("ColorTexture", 1);
+    program->setUniform("leavesColor", colors[0]);
+    terrain->render();
+
+    program->setUniform(
+            "ModelMat",
+            building->matrix()
+            );
+    building->render();
+    //selTex->unbind();
+
     /*
     //selTex = textures[0];
     //selTex->bind(0);

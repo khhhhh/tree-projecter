@@ -327,3 +327,57 @@ void Mesh::changeTree(Mesh &meshTree, Mesh &meshTwig, Proctree::Properties props
     meshTwig.setAttribute(Mesh::Normals, normalsTwig.data(), normals.size());
     meshTwig.setAttribute(Mesh::UV, UVsTwig.data(), UVsTwig.size());
 }
+
+Mesh *Mesh::generateWall(float scale)
+{
+    Mesh *mesh = new Mesh(GL_TRIANGLES);
+    std::vector<vec3> vertices, normals;
+    std::vector<vec2> UVs;
+    std::vector<uint> indices;
+
+    vec3 verts[] = {
+    {-1*scale,-1*scale,1*scale},
+    {1*scale,-1*scale,1*scale},
+    {1*scale,-1*scale,-1*scale},
+    {-1*scale,-1*scale,-1*scale},
+
+    {-1*scale,0.5f*scale,1*scale},
+    {1*scale,0.5f*scale,1*scale},
+    {1*scale,0.5f*scale,-1*scale},
+    {-1*scale,0.5f*scale,-1*scale}
+    };
+
+    for(int i = 0; i < 8; i++)
+    {
+        vertices.push_back(verts[i]);
+        normals.push_back(verts[i]);
+    }
+
+    uint vec[] = {1, 2, 6,
+                  6, 5, 1,
+
+                  0, 4, 7,
+                  7, 3, 0,
+
+                  4, 5, 6,
+                  6, 7, 4,
+
+                  0, 3, 2,
+                  2, 1, 0,
+
+                  0, 1, 5,
+                  5, 4, 0,
+
+                  3, 7, 6,
+                  6, 2, 3 };
+    for(int i = 0; i < 30; i++)
+        indices.push_back(vec[i]);
+
+    mesh->setVertices(vertices.data(), vertices.size());
+    mesh->setIndices(indices.data(), indices.size());
+    mesh->setAttribute(Mesh::Normals, normals.data(), normals.size());
+
+    return mesh;
+}
+
+
