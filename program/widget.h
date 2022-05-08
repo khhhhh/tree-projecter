@@ -22,7 +22,7 @@ class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     QTimer timer;
     Camera *camera;
     std::vector<Mesh *> meshes;
-    GLSLProgram *program, *gourardProgram, *phongProgram;
+    GLSLProgram *program, *phongProgram, *leavesProgram, *terrainShader;
     std::vector<Texture *> textures;
     Mesh *meshTree, *meshTwig;
 

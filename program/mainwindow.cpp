@@ -236,8 +236,15 @@ void MainWindow::growTree()
     ui->slSeason->setEnabled(false);
     ui->buttonGrow->setEnabled(false);
 
+    int seasonLvl = ui->slSeason->value();
     for(int i = 0; i <= 100; i++)
     {
+        if(ui->cbSeason->isChecked())
+        {
+            openGlWidget->loadSeasonValue(seasonLvl);
+            seasonLvl += 1;
+        }
+
         if(ui->cbGrowAllTrees->isChecked())
         {
             for(Tree* tree : trees)
@@ -245,7 +252,7 @@ void MainWindow::growTree()
         }
         else
             trees[ui->listWidget->currentRow()]->growTree(i);
-        delay(1);
+        delay(50);
     }
 
     ui->buttonGrow->setEnabled(true);

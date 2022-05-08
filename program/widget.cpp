@@ -64,6 +64,11 @@ void OpenGlWidget::initializeGL() {
     phongProgram->compileShaderFromFile(":/shaders/phong.fsh", GL_FRAGMENT_SHADER);
     phongProgram->link();
 
+    leavesProgram = new GLSLProgram();
+    leavesProgram->compileShaderFromFile(":/shaders/phong.vert", GL_VERTEX_SHADER);
+    leavesProgram->compileShaderFromFile(":/shaders/leavesShader.fsh", GL_FRAGMENT_SHADER);
+    leavesProgram->link();
+
     program = phongProgram;
 
     connect(&timer, SIGNAL(timeout()), this, SLOT(update()));
@@ -73,7 +78,6 @@ void OpenGlWidget::initializeGL() {
 
 void OpenGlWidget::paintGL() {
     processCamera();
-    rotateLight();
     glClearColor(0.52, 0.8, 0.92, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
@@ -81,25 +85,19 @@ void OpenGlWidget::paintGL() {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
-    program->use();
+    leavesProgram->use();
+    leavesProgram->setUniform("ViewMat", camera->matrix());
+    leavesProgram->setUniform("ProjMat", projMat);
 
+    program->use();
     program->setUniform("ViewMat", camera->matrix());
     program->setUniform("ProjMat", projMat);
-    program->setUniform("LightPosition", lightPosition);
 
-    vec4 treeCol = {1,1,1,1};
-    vec4 *colors = new vec4[2];
-    colors[0] = treeCol;
-    colors[1] = leavesColor;
 
-    //selTex = textures[0];
-    //selTex->bind(0);
     program->setUniform(
             "ModelMat",
             terrain->matrix()
-            );
-    program->setUniform("ColorTexture", 1);
-    program->setUniform("leavesColor", colors[0]);
+    );
     terrain->render();
 
     selTex = textures[2];
@@ -107,38 +105,44 @@ void OpenGlWidget::paintGL() {
     program->setUniform(
             "ModelMat",
             building->matrix()
-            );
+    );
     building->render();
     selTex->unbind();
 
 
+    selTex = textures[0];
+    selTex->bind(0);
+    program->use();
     for(size_t i=0; i< trees->size(); i++) {
         drawingTree = trees->operator[](i);
 
         program->setUniform(
                     "ModelMat",
                     drawingTree->getMeshTree()->matrix()
-                    );
+        );
 
-        selTex = textures[drawingTree->texture.tree];
-        selTex->bind(0);
         program->setUniform("ColorTexture", 1);
-        program->setUniform("leavesColor", colors[0]);
 
         drawingTree->getMeshTree()->render();
-        selTex->unbind();
+    }
+    selTex->unbind();
 
-        program->setUniform(
+
+    selTex = textures[1];
+    selTex->bind(0);
+    leavesProgram->use();
+    for(size_t i=0; i< trees->size(); i++) {
+        drawingTree = trees->operator[](i);
+        leavesProgram->setUniform(
                     "ModelMat",
                     drawingTree->getMeshTwig()->matrix()
-                    );
+        );
 
-        selTex = textures[drawingTree->texture.twig];
-        selTex->bind(0);
-        program->setUniform("leavesColor", colors[1]);
+        leavesProgram->setUniform("leavesColor", leavesColor);
         drawingTree->getMeshTwig()->render();
-        selTex->unbind();
     }
+    selTex->unbind();
+    program->use();
 
 }
 void OpenGlWidget::resizeGL(int w, int h) {
@@ -149,26 +153,12 @@ void OpenGlWidget::resizeGL(int w, int h) {
 }
 
 void OpenGlWidget::keyPressEvent(QKeyEvent *event) {
-    switch(event->key()) {
-    case Qt::Key_Tab: switchProgram(); break;
-    default: keys.insert(event->key());
-    }
+    keys.insert(event->key());
 }
 
 
 void OpenGlWidget::keyReleaseEvent(QKeyEvent *event) {
     keys.erase(event->key());
-}
-
-void OpenGlWidget::switchProgram() {
-    if(program == gourardProgram) {
-        program = phongProgram;
-        qDebug() << "phong";
-    }
-    else {
-        program = gourardProgram;
-        qDebug() << "gourard";
-    }
 }
 
 void OpenGlWidget::createNewTree(int x, int y)

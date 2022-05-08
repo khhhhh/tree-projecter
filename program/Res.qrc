@@ -1,9 +1,11 @@
 <RCC>
     <qresource prefix="/shaders">
-        <file>fshader.fsh</file>
-        <file>vshader.vert</file>
         <file>phong.fsh</file>
         <file>phong.vert</file>
+        <file>leavesShader.fsh</file>
+        <file>leavesShader.vert</file>
+        <file>terrainShader.fsh</file>
+        <file>terrainShader.vert</file>
     </qresource>
     <qresource prefix="/json">
         <file>file.json</file>
