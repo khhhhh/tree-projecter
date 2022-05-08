@@ -11,5 +11,7 @@
     <qresource prefix="/">
         <file>textures/trees/1.jpg</file>
         <file>textures/twigs/twig1.png</file>
+        <file>clouds2.png</file>
+        <file>textures/building/preview.jpg</file>
     </qresource>
 </RCC>

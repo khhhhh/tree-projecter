@@ -24,7 +24,7 @@ void Mesh::setAttribute(Mesh::BufferType index, vec3 *data, int n) {
             // włączenie możliwości zapisu tablicy pod wskazanym indeksem
             glEnableVertexAttribArray(index);
             // przepisanie danych do bufora
-            glBufferData(GL_ARRAY_BUFFER, n*sizeof(vec3), data, GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, n*sizeof(vec3), data, GL_DYNAMIC_DRAW);
             // ustawienie lokalizacji danych w buforze, dzięki temu po indeksie
             // będzie można odszukiwać zmienne w shaderze i wiadomo jakiego będą typu
             glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, 0, 0);
@@ -143,164 +143,49 @@ Mesh *Mesh::loadFromObj(const char *filename) {
     return mesh;
 }
 
-//Mesh *Mesh::loadFromObj(const char *filename) {
-//    QFile file(filename);
-//    Mesh *mesh = new Mesh(GL_TRIANGLES);
-//    //mesh->name = filename;
-//    if(file.open(QFile::ReadOnly)) {
-//        int currentIndex=0;
-//        QTextStream stream(&file);
-//        std::vector<vec3> vertices, normals, resultVertices, resultNormals;
-//        std::vector<uint> indices;
-//        while(!stream.atEnd()) {
-//            QString line = stream.readLine();
-//            if(!line.isEmpty()) {
-//                auto listElements = line.split(' ');
-//                if(line[0]=='v') {
-//                    vec3 vertex = {listElements[1].toFloat(), listElements[2].toFloat(), listElements[3].toFloat()};
-//                    if(line[1]=='n')
-//                        normals.push_back(vertex);
-//                    else
-//                        vertices.push_back(vertex);
-//                }
-//                else if(line[0]=='f') {
-//                    for(int i=1; i<=3; i++) {
-//                        auto faceData = listElements[i].split('/');
-//                        resultVertices.push_back(vertices[faceData[0].toUShort()-1]);
-//                        resultNormals.push_back(normals[faceData[2].toUShort()-1]);
-//                        indices.push_back(currentIndex++);
-//                    }
-//                }
-//            }
-//        }
-//        mesh->setVertices(resultVertices.data(), resultVertices.size());
-//        mesh->setAttribute(Mesh::Normals, resultNormals.data(), resultNormals.size());
-//        mesh->setIndices(indices.data(), indices.size());
-//        file.close();
-//        qDebug() << filename << " loaded";
-//    }
-//    else
-//        qDebug() << filename << " loading error";
-//    return mesh;
-//}
 
-//Mesh *Mesh::loadFromObj(const char *filename) {
-//    QFile file(filename);
-//    Mesh *mesh = new Mesh(GL_TRIANGLES);
-//    //mesh->name = filename;
-//    if(file.open(QFile::ReadOnly)) {
-//        QTextStream stream(&file);
-//        std::vector<vec3> vertices;
-//        std::vector<ushort> indices;
-//        while(!stream.atEnd()) {
-//            QString line = stream.readLine();
-//            if(!line.isEmpty()) {
-//                auto listElements = line.split(' ');
-//                if(line[0]=='v') {
-//                    vec3 vertex = {listElements[1].toFloat(), listElements[2].toFloat(), listElements[3].toFloat()};
-//                    vertices.push_back(vertex);
-//                }
-//                else if(line[0]=='f') {
-//                    indices.push_back(listElements[1].toUShort()-1);
-//                    indices.push_back(listElements[2].toUShort()-1);
-//                    indices.push_back(listElements[3].toUShort()-1);
-//                }
-//            }
-//        }
-//        mesh->setVertices(vertices.data(), vertices.size());
-//        mesh->setIndices(indices.data(), indices.size());
-//        file.close();
-//        qDebug() << filename << " loaded";
-//    }
-//    else
-//        qDebug() << filename << " loading error";
-//    return mesh;
-//}
-
-Mesh *Mesh::createTerrain(QImage img, vec3 scale) {
-    int w = img.width();
-    int h = img.height();
-
+Mesh *Mesh::createTerrain() {
     Mesh *mesh = new Mesh(GL_TRIANGLES);
-    std::vector<vec3> vertices(w*h);
+    std::vector<vec3> vertices;
+    std::vector<vec2> UVs;
+    std::vector<uint> indices;
+    std::vector<vec3> colors;
 
-    int i = 0;
-    for(int z=0; z<h; z++)
-        for(int x=0; x<w; x++)
-            vertices[i++] = vec3{x*scale.x, qRed(img.pixel(x,z))*scale.y , z*scale.z};
-
-    int iout=0, iin=0;
+    vertices.push_back({0,0,0});
+    vertices.push_back({300,0,0});
+    vertices.push_back({300,0,300});
+    vertices.push_back({0,0,300});
 
     mesh->setVertices(vertices.data(), vertices.size());
 
-    std::vector<uint> indices(w*h*3);
-    for(int z=0; z<h-1; z++) {
-        for(int x=0; x<w-1; x++) {
-            indices[iout] = iin;
-            indices[iout+1] = iin + w;
-            indices[iout+2] = iin + w+1;
 
-            indices[iout+3] = iin;
-            indices[iout+4] = iin + w + 1;
-            indices[iout+5] = iin + 1;
+    indices.push_back(0);
+    indices.push_back(2);
+    indices.push_back(1);
 
-            iin++;
-            iout+=6;
-        }
-        iin++;
-    }
+    indices.push_back(0);
+    indices.push_back(3);
+    indices.push_back(2);
+
     mesh->setIndices(indices.data(), indices.size());
 
-    std::vector<vec3> normals(w*h);
-    for(uint i=0;i<normals.size(); ++i)
-        normals[i] = vec3{0,1,0};
+    UVs.push_back({0, 0});
+    UVs.push_back({1, 0});
+    UVs.push_back({1, 1});
+    UVs.push_back({0, 1});
 
-    vec3 vup, vleft, vright, vdown, vsl, vsr;
-    vec3 n[6];
+    //mesh->setAttribute(Mesh::UV, UVs.data(), UVs.size());
 
-    i = w + 1;
+    colors.push_back({0, 1, 0});
+    colors.push_back({0, 1, 0});
+    colors.push_back({0, 1, 0});
+    colors.push_back({0, 1, 0});
 
-    for(int z=1; z<h-1; z++) {
-        for(int x=1; x<w-1; x++) {
-            vleft = vertices[i] - vertices[i-1];
-            vsl = vertices[i - w - 1] - vertices[i];
-            n[0] = cross(vleft, vsl);
-
-            vup = vertices[i-w] - vertices[i];
-            n[1] = cross(vup,vsl);
-
-            vright = vertices[i+1] - vertices[i];
-            n[2] = cross(vright, vup);
-
-            vdown = vertices[i] - vertices[i+w];
-            n[3] = cross(vleft, vdown);
-
-            vsr = vertices[i] - vertices[i+w+1];
-            reflect(vdown);
-            n[4] = cross(vsr, vdown);
-
-            n[5] = cross(vright, vsr);
-
-            normalize(n[0]);
-
-            for(int i=1; i<6; i++) {
-                normalize(n[i]);
-                n[0] = n[0] + n[i];
-            }
-            n[0] = n[0] * (1/6.f);
-
-            normalize(n[0]);
-            normals[i++] = n[0];
-        }
-        i+=2;
-    }
-
-    mesh->setAttribute(Mesh::Normals, normals.data(), normals.size());
-
+    mesh->setAttribute(Mesh::Colors, colors.data(), colors.size());
     return mesh;
 }
 
-Mesh *Mesh::generateTree(Mesh &meshTwig) {
+Mesh *Mesh::generateTree(Mesh *meshTwig) {
     Mesh *mesh = new Mesh(GL_TRIANGLES);
     Proctree::Tree tree;
     tree.generate();
@@ -344,10 +229,10 @@ Mesh *Mesh::generateTree(Mesh &meshTwig) {
     mesh->setAttribute(Mesh::Normals, normals.data(), normals.size());
     mesh->setAttribute(Mesh::UV, UVs.data(), UVs.size());
 
-    meshTwig.setVertices(verticesTwig.data(), verticesTwig.size());
-    meshTwig.setIndices(indicesTwig.data(), indicesTwig.size());
-    meshTwig.setAttribute(Mesh::Normals, normalsTwig.data(), normals.size());
-    meshTwig.setAttribute(Mesh::UV, UVsTwig.data(), UVsTwig.size());
+    meshTwig->setVertices(verticesTwig.data(), verticesTwig.size());
+    meshTwig->setIndices(indicesTwig.data(), indicesTwig.size());
+    meshTwig->setAttribute(Mesh::Normals, normalsTwig.data(), normals.size());
+    meshTwig->setAttribute(Mesh::UV, UVsTwig.data(), UVsTwig.size());
     return mesh;
 }
 
@@ -400,3 +285,103 @@ void Mesh::changeTree(Mesh &meshTree, Mesh &meshTwig, Proctree::Properties props
     meshTwig.setAttribute(Mesh::Normals, normalsTwig.data(), normals.size());
     meshTwig.setAttribute(Mesh::UV, UVsTwig.data(), UVsTwig.size());
 }
+
+Mesh *Mesh::createBuilding(int width, int height,float scale)
+{
+    Mesh *mesh = new Mesh(GL_TRIANGLES);
+    std::vector<vec3> vertices, normals;
+    std::vector<vec2> UVs;
+    std::vector<uint> indices;
+    float ratio;
+    ratio = (float)height / width;
+
+    vec3 verts[] = {
+        {0,0,1*scale},
+        {1*scale,0,1*scale},
+        {1*scale,ratio*scale,1*scale},
+        {0,ratio*scale,1*scale},
+
+        {0,0,0},
+        {1*scale,0,0},
+        {1*scale,ratio*scale,0},
+        {0,ratio*scale,0},
+    };
+
+    UVs = {
+        {0.0f,0.0f},
+        {1.0f,0.0f},
+        {1.0f,1.0f},
+        {0.0f,1.0f},
+
+        {0.0f,0.0f},
+        {1.0f,0.0f},
+        {1.0f,1.0f},
+        {0.0f,1.0f}
+
+        /*
+        {1.0f,1.0f},
+        {0.0f,1.0f},
+
+        {0.0f,0.0f},
+        {1.0f,0.0f},
+        {1.0f,1.0f},
+        {0.0f,1.0f},
+        {1.0f,1.0f},
+        {0.0f,1.0f},
+            */
+    };
+    for(int i = 0; i < 8; i++)
+    {
+        vertices.push_back(verts[i]);
+        normals.push_back(verts[i]);
+    }
+
+
+    uint vec[] =
+            /*
+        {1, 2, 6,
+         6, 5, 1,
+
+         0, 4, 7,
+         7, 3, 0,
+
+         4, 5, 6,
+         6, 7, 4,
+
+         0, 3, 2,
+         2, 1, 0,
+
+         0, 1, 5,
+         5, 4, 0,
+
+         3, 7, 6,
+         6, 2, 3 };
+                 */
+    {
+        0, 1, 2,
+        0, 2, 3,
+
+        1, 5, 6,
+        1, 6, 2,
+
+        4, 0, 3,
+        4, 3, 7,
+
+        3, 2, 6,
+        3, 6, 7,
+
+        5, 4, 6,
+        4, 7, 6
+    };
+    for(int i = 0; i < 30; i++)
+        indices.push_back(vec[i]);
+
+    mesh->setVertices(vertices.data(), vertices.size());
+    mesh->setIndices(indices.data(), indices.size());
+    mesh->setAttribute(Mesh::Normals, normals.data(), normals.size());
+    mesh->setAttribute(Mesh::UV, UVs.data(), UVs.size());
+
+    return mesh;
+}
+
+

@@ -2,6 +2,7 @@
 #define GLMATH_H
 
 #include <cmath>
+#include <GL/gl.h>
 
 struct vec4 {
     float x, y, z, a;
@@ -150,6 +151,19 @@ inline void reflect(vec3& v) {
     v.x = -v.x;
     v.y = -v.y;
     v.z = -v.z;
+}
+
+inline float dot(vec3 v1, vec3 v2)
+{
+    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+}
+
+inline void mat4_floatToGLdouble(GLdouble *glProjMat, float *fProjMat)
+{
+    for(int i = 0; i < 16; i++)
+    {
+        glProjMat[i] = (GLdouble) fProjMat[i];
+    }
 }
 
 

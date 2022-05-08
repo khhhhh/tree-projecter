@@ -4,13 +4,16 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions_3_3_Core>
 #include <QTimer>
+#include <QListWidget>
 
 #include "mesh.h"
 #include "glslprogram.h"
 #include "camera.h"
 #include <set>
 #include "texture.h"
+#include "tree.h"
 
+enum TextureType { WOOD, TWIG };
 
 class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 {
@@ -23,6 +26,14 @@ class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     std::vector<Texture *> textures;
     Mesh *meshTree, *meshTwig;
 
+
+    Tree *drawingTree;
+    Texture *selTex;
+    Mesh *treeMesh;
+    Mesh *twigMesh;
+
+    Mesh *terrain;
+    Mesh *building;
     mat4 projMat;
 
     QPoint refPoint;
@@ -39,6 +50,13 @@ class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void rotateLight();
     void switchProgram();
 
+    void createNewTree(int x, int y);
+
+
+    //temp
+    int width;
+    int height;
+
 protected:
     void initializeGL();
     void paintGL();
@@ -51,11 +69,13 @@ protected:
 
 public:
     std::set<int> keys;
+    std::vector<Tree *> *trees;
+    QListWidget *listWidget;
 
     void loadSeasonValue(int val);
-    void loadFromJSON(json j);
     void loadFromPath(QString path);
-    void loadTexture(const char * path);
+    void loadTexture(const char * path, TextureType type);
+    void loadBuildingTexture(const char * path);
     ~OpenGlWidget();
 };
 #endif // WIDGET_H

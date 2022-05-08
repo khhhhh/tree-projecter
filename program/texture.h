@@ -7,6 +7,8 @@
 class Texture :  protected QOpenGLFunctions_3_3_Core
 {
     GLuint handle;
+    int _width;
+    int _height;
 public:
     static uint textsize;
     Texture();
@@ -14,6 +16,9 @@ public:
 
     void bind(int unit);
     void unbind();
+
+    int width();
+    int height();
 };
 
 #endif // TEXTURE_H

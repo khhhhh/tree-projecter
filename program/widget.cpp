@@ -7,6 +7,8 @@
 #include <iostream>
 #include <fstream>
 #include "json.hpp"
+#include <string>
+
 using json = nlohmann::json;
 
 OpenGlWidget::~OpenGlWidget()
@@ -25,37 +27,44 @@ void OpenGlWidget::initializeGL() {
 
     camera = new Camera();
 
-    meshTwig = new Mesh(GL_TRIANGLES);
-
+    //textures
     Texture *treeTex, *twigTex;
+    Texture *buildingTex = new Texture();
+
     treeTex = new Texture();
     twigTex = new Texture();
+
     treeTex->loadFromImage(":/textures/trees/1.jpg");
     twigTex->loadFromImage(":/textures/twigs/twig1.png");
+    buildingTex->loadFromImage(":/textures/building/preview.jpg");
+
     textures.push_back(treeTex);
     textures.push_back(twigTex);
+    textures.push_back(buildingTex);
 
-    meshTree = Mesh::generateTree(*meshTwig);
-    meshTree->pos = {0, -1, -1};
-    meshTwig->pos = {0, -1, -1};
-    meshes.push_back(meshTree);
-    meshes.push_back(meshTwig);
 
-    meshTwig->material.shiness = 27.8974f;
+    //first Tree
+    Tree *firstTree = new Tree();
+    firstTree->texture.tree = 0;
+    firstTree->texture.twig = 1;
+    trees->push_back(firstTree);
+    listWidget->addItem("Tree 1");
+    listWidget->setCurrentRow(0);
 
-    /*
-    gourardProgram = new GLSLProgram();
-    gourardProgram->compileShaderFromFile(":/shaders/vshader.vert", GL_VERTEX_SHADER);
-    gourardProgram->compileShaderFromFile(":/shaders/fshader.fsh", GL_FRAGMENT_SHADER);
-    gourardProgram->link();
-    */
+    // terrain and walls
+    building = Mesh::createBuilding(buildingTex->width(), buildingTex->height(), 15.0f);
+    building->pos = {-7.5, 0, -25};
+
+    terrain = Mesh::createTerrain();
+    terrain->pos = {-150, 0, -150};
+
 
     phongProgram = new GLSLProgram();
     phongProgram->compileShaderFromFile(":/shaders/phong.vert", GL_VERTEX_SHADER);
     phongProgram->compileShaderFromFile(":/shaders/phong.fsh", GL_FRAGMENT_SHADER);
     phongProgram->link();
 
-    program = phongProgram; //gourardProgram;
+    program = phongProgram;
 
     connect(&timer, SIGNAL(timeout()), this, SLOT(update()));
     timer.setInterval(10);
@@ -65,40 +74,77 @@ void OpenGlWidget::initializeGL() {
 void OpenGlWidget::paintGL() {
     processCamera();
     rotateLight();
-    glClearColor(0.7, 0.7, 0.7, 1);
+    glClearColor(0.52, 0.8, 0.92, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 
     program->use();
 
     program->setUniform("ViewMat", camera->matrix());
     program->setUniform("ProjMat", projMat);
     program->setUniform("LightPosition", lightPosition);
-    //program->setUniform("LightPower", 50);
 
     vec4 treeCol = {1,1,1,1};
     vec4 *colors = new vec4[2];
     colors[0] = treeCol;
     colors[1] = leavesColor;
 
-    for(size_t i=0; i< meshes.size(); i++) {
-        Mesh *mesh = meshes[i];
-        int texInd = i % 2;
-        Texture *texture = textures[texInd];
-        program->setUniform("ModelMat", mesh->matrix());
-        texture->bind(0);
-        //        program->setUniform("MaterialAmbient", mesh->material.ambient);
-        //        program->setUniform("MaterialDiffuse", mesh->material.diffuse);
-        //        program->setUniform("MaterialSpecular", mesh->material.specular);
-        //program->setUniform("MaterialShiness", mesh->material.shiness);
-        program->setUniform("leavesColor", colors[texInd]);
-        program->setUniform("ColorTexture", 1);
+    //selTex = textures[0];
+    //selTex->bind(0);
+    program->setUniform(
+            "ModelMat",
+            terrain->matrix()
+            );
+    program->setUniform("ColorTexture", 1);
+    program->setUniform("leavesColor", colors[0]);
+    terrain->render();
 
-        mesh->render();
-        texture->unbind();
+    selTex = textures[2];
+    selTex->bind(0);
+    program->setUniform(
+            "ModelMat",
+            building->matrix()
+            );
+    building->render();
+    selTex->unbind();
+
+
+    for(size_t i=0; i< trees->size(); i++) {
+        drawingTree = trees->operator[](i);
+
+        program->setUniform(
+                    "ModelMat",
+                    drawingTree->getMeshTree()->matrix()
+                    );
+
+        selTex = textures[drawingTree->texture.tree];
+        selTex->bind(0);
+        program->setUniform("ColorTexture", 1);
+        program->setUniform("leavesColor", colors[0]);
+
+        drawingTree->getMeshTree()->render();
+        selTex->unbind();
+
+        program->setUniform(
+                    "ModelMat",
+                    drawingTree->getMeshTwig()->matrix()
+                    );
+
+        selTex = textures[drawingTree->texture.twig];
+        selTex->bind(0);
+        program->setUniform("leavesColor", colors[1]);
+        drawingTree->getMeshTwig()->render();
+        selTex->unbind();
     }
+
 }
 void OpenGlWidget::resizeGL(int w, int h) {
     glViewport(0, 0, w, h);
+    width = w;
+    height = h;
     projMat = perspectiveMat(60.0f, w/(float)h, 0.01f, 150.0f);
 }
 
@@ -125,6 +171,34 @@ void OpenGlWidget::switchProgram() {
     }
 }
 
+void OpenGlWidget::createNewTree(int x, int y)
+{
+    GLdouble projection[16];
+
+    mat4_floatToGLdouble(projection, projMat.m);
+
+    vec3 dir_ray = camera->mouseClickRay(x, y, projection, width, height);
+
+    vec3 planePoint = {0, 0, 0};
+    vec3 planeNormal = {0, 1, 0};
+    vec3 diff = camera->pos - planePoint;
+    float prod1 = dot(diff, planeNormal);
+    float prod2 = dot(dir_ray, planeNormal);
+    float prod3 = prod1 / prod2;
+    vec3 intersecPoint = camera->pos - dir_ray * prod3;
+
+    makeCurrent();
+
+    Tree *newTree = new Tree();
+    newTree->setPos(intersecPoint);
+    trees->push_back(newTree);
+
+    int treeIndex = trees->size();
+    QString treeName = "Tree " + QString::number(treeIndex);
+    listWidget->addItem(treeName);
+    listWidget->setCurrentRow(listWidget->count() - 1);
+}
+
 
 void OpenGlWidget::loadFromPath(QString path)
 {
@@ -139,22 +213,39 @@ void OpenGlWidget::loadFromPath(QString path)
     }
 }
 
-void OpenGlWidget::loadTexture(const char * path)
+void OpenGlWidget::loadTexture(const char * path, TextureType type)
 {
-    textures[0]->loadFromImage(path);
+    switch(type)
+    {
+    case TextureType::WOOD:
+        textures[0]->loadFromImage(path);
+        break;
+    case TextureType::TWIG:
+        textures[1]->loadFromImage(path);
+        break;
+    }
+
 }
 
-void OpenGlWidget::loadFromJSON(json j)
+void OpenGlWidget::loadBuildingTexture(const char *path)
 {
-    Proctree::Properties props(j);
-    Mesh::changeTree(*meshTree, *meshTwig, props);
+    makeCurrent();
+    textures[2]->loadFromImage(path);
+    building = Mesh::createBuilding(textures[2]->width(), textures[2]->height(), 15.0f);
+    building->pos = {-7.5f, 0, -25};
 }
 
 void OpenGlWidget::mousePressEvent(QMouseEvent * e) {
-    if(e->button() == Qt::LeftButton){
-        e->pos().x();
-        ax = e->pos().x();
-        ay = e->pos().y();
+    switch(e->button()) {
+        case Qt::LeftButton:
+            ax = e->pos().x();
+            ay = e->pos().y();
+        break;
+        case Qt::RightButton:
+            createNewTree(e->pos().x(), e->pos().y());
+        break;
+        default:
+        break;
     }
 }
 
@@ -192,6 +283,21 @@ void OpenGlWidget::processCamera() {
         camera->pos = camera->pos + camera->up*dv;
     else if(keys.find(Qt::Key_Z) != keys.end())
         camera->pos = camera->pos - camera->up*dv;
+
+    if(camera->pos.y < 0.1f)
+        camera->pos.y = 0.1f;
+    else if(camera->pos.y > 20)
+        camera->pos.y = 20;
+
+    if(camera->pos.x < -10)
+        camera->pos.x = -10;
+    else if(camera->pos.x > 10)
+        camera->pos.x = 10;
+
+    if(camera->pos.z < -10)
+        camera->pos.z = -10;
+    else if(camera->pos.z > 9.9f)
+        camera->pos.z = 9.9f;
 
     camera->forward = {0,0,-1};
     camera->forward = camera->forward * rotationMat(dax, 0, 1, 0);
