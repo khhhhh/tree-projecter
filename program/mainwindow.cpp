@@ -353,3 +353,15 @@ void MainWindow::deleteTree()
     }
 }
 
+
+void MainWindow::on_actionOpen_building_texture_2_triggered()
+{
+    opened_file_path = QFileDialog::getOpenFileName(this, "Open a file", "C://");
+    if(opened_file_path != "")
+    {
+        QByteArray ba = opened_file_path.toLocal8Bit();
+        const char *c_str2 = ba.data();
+        openGlWidget->loadBuildingTexture(c_str2);
+    }
+}
+

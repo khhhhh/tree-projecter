@@ -779,6 +779,7 @@ QSlider::sub-page:vertical {
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
+    <addaction name="actionOpen_building_texture_2"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -811,6 +812,16 @@ QSlider::sub-page:vertical {
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionOpen_building_texture">
+   <property name="text">
+    <string>Choose building texture</string>
+   </property>
+  </action>
+  <action name="actionOpen_building_texture_2">
+   <property name="text">
+    <string>Open building texture</string>
    </property>
   </action>
  </widget>

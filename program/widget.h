@@ -75,6 +75,7 @@ public:
     void loadSeasonValue(int val);
     void loadFromPath(QString path);
     void loadTexture(const char * path, TextureType type);
+    void loadBuildingTexture(const char * path);
     ~OpenGlWidget();
 };
 #endif // WIDGET_H

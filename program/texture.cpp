@@ -16,6 +16,8 @@ bool Texture::loadFromImage(const char *path)
     QImage image(path);
     if( !image.isNull() )
     {
+        _width = image.width();
+        _height = image.height();
         image = QGLWidget::convertToGLFormat(image);
         bind(0);
         textsize++;
@@ -45,5 +47,15 @@ void Texture::bind(int unit) {
 
 void Texture::unbind() {
     glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+int Texture::width()
+{
+    return _width;
+}
+
+int Texture::height()
+{
+    return _height;
 }
 

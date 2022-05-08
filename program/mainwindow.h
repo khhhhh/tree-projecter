@@ -37,6 +37,8 @@ private slots:
     void on_listWidget_currentRowChanged(int currentRow);
     void deleteTree();
 
+    void on_actionOpen_building_texture_2_triggered();
+
 private:
     std::vector<QSlider *> sliders;
     std::vector<Tree *> trees;

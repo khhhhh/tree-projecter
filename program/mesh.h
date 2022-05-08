@@ -41,9 +41,11 @@ public:
     static Mesh *loadFromObj(const char *filename);
     static Mesh *generateTree(Mesh *twigMesh);
     static void changeTree(Mesh& meshTree, Mesh &meshTwig, Proctree::Properties props);
-    static Mesh *generateWall(float scale);
+    static Mesh *createBuilding(int x, int y, float scale);
 
     static Mesh *createTerrain(QImage img, vec3 scale);
+    static Mesh *createTerrain();
+
 
     Material material;
 };

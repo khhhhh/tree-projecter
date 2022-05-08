@@ -29,12 +29,19 @@ void OpenGlWidget::initializeGL() {
 
     //textures
     Texture *treeTex, *twigTex;
+    Texture *buildingTex = new Texture();
+
     treeTex = new Texture();
     twigTex = new Texture();
+
     treeTex->loadFromImage(":/textures/trees/1.jpg");
     twigTex->loadFromImage(":/textures/twigs/twig1.png");
+    buildingTex->loadFromImage(":/textures/building/preview.jpg");
+
     textures.push_back(treeTex);
     textures.push_back(twigTex);
+    textures.push_back(buildingTex);
+
 
     //first Tree
     Tree *firstTree = new Tree();
@@ -45,12 +52,11 @@ void OpenGlWidget::initializeGL() {
     listWidget->setCurrentRow(0);
 
     // terrain and walls
-    building = Mesh::generateWall(7.0f);
-    building->pos = {0, 7, -20};
+    building = Mesh::createBuilding(buildingTex->width(), buildingTex->height(), 15.0f);
+    building->pos = {-7.5, 0, -25};
 
-    QImage img(":/textures/trees/1.jpg");
-    terrain = Mesh::createTerrain(img, {-1,0.001,-1});
-    terrain->pos = {100,0,100};
+    terrain = Mesh::createTerrain();
+    terrain->pos = {-150, 0, -150};
 
 
     phongProgram = new GLSLProgram();
@@ -96,26 +102,14 @@ void OpenGlWidget::paintGL() {
     program->setUniform("leavesColor", colors[0]);
     terrain->render();
 
+    selTex = textures[2];
+    selTex->bind(0);
     program->setUniform(
             "ModelMat",
             building->matrix()
             );
     building->render();
-    //selTex->unbind();
-
-    /*
-    //selTex = textures[0];
-    //selTex->bind(0);
-    program->setUniform(
-            "ModelMat",
-            terrain->matrix()
-            );
-    program->setUniform("ColorTexture", 1);
-    program->setUniform("leavesColor", colors[0]);
-    terrain->render();
-    //selTex->unbind();
-    */
-
+    selTex->unbind();
 
 
     for(size_t i=0; i< trees->size(); i++) {
@@ -233,6 +227,14 @@ void OpenGlWidget::loadTexture(const char * path, TextureType type)
 
 }
 
+void OpenGlWidget::loadBuildingTexture(const char *path)
+{
+    makeCurrent();
+    textures[2]->loadFromImage(path);
+    building = Mesh::createBuilding(textures[2]->width(), textures[2]->height(), 15.0f);
+    building->pos = {-7.5f, 0, -25};
+}
+
 void OpenGlWidget::mousePressEvent(QMouseEvent * e) {
     switch(e->button()) {
         case Qt::LeftButton:
@@ -282,8 +284,20 @@ void OpenGlWidget::processCamera() {
     else if(keys.find(Qt::Key_Z) != keys.end())
         camera->pos = camera->pos - camera->up*dv;
 
-    if(camera->pos.y < 0)
-        camera->pos.y = 0;
+    if(camera->pos.y < 0.1f)
+        camera->pos.y = 0.1f;
+    else if(camera->pos.y > 20)
+        camera->pos.y = 20;
+
+    if(camera->pos.x < -10)
+        camera->pos.x = -10;
+    else if(camera->pos.x > 10)
+        camera->pos.x = 10;
+
+    if(camera->pos.z < -10)
+        camera->pos.z = -10;
+    else if(camera->pos.z > 9.9f)
+        camera->pos.z = 9.9f;
 
     camera->forward = {0,0,-1};
     camera->forward = camera->forward * rotationMat(dax, 0, 1, 0);
