@@ -57,6 +57,7 @@ class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     int width;
     int height;
 
+
 protected:
     void initializeGL();
     void paintGL();

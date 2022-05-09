@@ -59,3 +59,9 @@ int Texture::height()
     return _height;
 }
 
+void Texture::Release() {
+    glDeleteTextures(1, &handle);
+    handle = 0;
+}
+//Free up the texture.
+Texture::~Texture() {Release();}
