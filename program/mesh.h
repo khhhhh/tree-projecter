@@ -39,7 +39,7 @@ public:
     void render();
 
     static Mesh *loadFromObj(const char *filename);
-    static Mesh *generateTree(Mesh *twigMesh);
+    static void generateTree(Mesh *mesh, Mesh *twigMesh);
     static void changeTree(Mesh& meshTree, Mesh &meshTwig, Proctree::Properties props);
     static Mesh *createBuilding(int x, int y, float scale);
 

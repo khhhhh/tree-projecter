@@ -24,7 +24,7 @@ void Mesh::setAttribute(Mesh::BufferType index, vec3 *data, int n) {
             // włączenie możliwości zapisu tablicy pod wskazanym indeksem
             glEnableVertexAttribArray(index);
             // przepisanie danych do bufora
-            glBufferData(GL_ARRAY_BUFFER, n*sizeof(vec3), data, GL_DYNAMIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, n*sizeof(vec3), data, GL_STATIC_DRAW);
             // ustawienie lokalizacji danych w buforze, dzięki temu po indeksie
             // będzie można odszukiwać zmienne w shaderze i wiadomo jakiego będą typu
             glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, 0, 0);
@@ -90,7 +90,6 @@ void Mesh::render() {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferObjects[Mesh::Indices]);
             glDrawElements(primitiveType, nInd, GL_UNSIGNED_INT, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        //glDrawArrays(primitiveType, 0, nVerts);
     glBindVertexArray(0);
 
     PRINT_GL_ERRORS("Mesh::render");
@@ -176,17 +175,16 @@ Mesh *Mesh::createTerrain() {
 
     //mesh->setAttribute(Mesh::UV, UVs.data(), UVs.size());
 
-    colors.push_back({0, 1, 0});
-    colors.push_back({0, 1, 0});
-    colors.push_back({0, 1, 0});
-    colors.push_back({0, 1, 0});
+    colors.push_back({0.19, 0.61, 0.2});
+    colors.push_back({0.19, 0.61, 0.2});
+    colors.push_back({0.22, 0.58, 0.2});
+    colors.push_back({0.22, 0.58, 0.2});
 
     mesh->setAttribute(Mesh::Colors, colors.data(), colors.size());
     return mesh;
 }
 
-Mesh *Mesh::generateTree(Mesh *meshTwig) {
-    Mesh *mesh = new Mesh(GL_TRIANGLES);
+void Mesh::generateTree(Mesh *mesh, Mesh *meshTwig) {
     Proctree::Tree tree;
     tree.generate();
     std::vector<vec3> vertices, normals;
@@ -233,7 +231,6 @@ Mesh *Mesh::generateTree(Mesh *meshTwig) {
     meshTwig->setIndices(indicesTwig.data(), indicesTwig.size());
     meshTwig->setAttribute(Mesh::Normals, normalsTwig.data(), normals.size());
     meshTwig->setAttribute(Mesh::UV, UVsTwig.data(), UVsTwig.size());
-    return mesh;
 }
 
 void Mesh::changeTree(Mesh &meshTree, Mesh &meshTwig, Proctree::Properties props) {
@@ -373,6 +370,24 @@ Mesh *Mesh::createBuilding(int width, int height,float scale)
         5, 4, 6,
         4, 7, 6
     };
+            /*
+    {
+        0, 2, 1,
+        0, 3, 2,
+
+        1, 6, 5,
+        1, 2, 6,
+
+        4, 3, 0,
+        4, 7, 3,
+
+        3, 6, 2,
+        3, 7, 6,
+
+        5, 6, 4,
+        4, 6, 7
+    };
+                 */
     for(int i = 0; i < 30; i++)
         indices.push_back(vec[i]);
 

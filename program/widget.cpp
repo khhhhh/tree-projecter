@@ -15,6 +15,27 @@ OpenGlWidget::~OpenGlWidget()
 {
 }
 
+void OpenGlWidget::timerStop()
+{
+    timer.stop();
+}
+
+void OpenGlWidget::timerStart()
+{
+    timer.start();
+}
+
+void OpenGlWidget::updateOpenGl()
+{
+    update();
+}
+
+void OpenGlWidget::growTree(int index, int procent)
+{
+    makeCurrent();
+    trees->at(index)->growTree(procent);
+}
+
 void OpenGlWidget::initializeGL() {
     de = 0;
     angle = 0.0f;
@@ -65,11 +86,24 @@ void OpenGlWidget::initializeGL() {
     phongProgram->link();
 
     leavesProgram = new GLSLProgram();
-    leavesProgram->compileShaderFromFile(":/shaders/phong.vert", GL_VERTEX_SHADER);
+    leavesProgram->compileShaderFromFile(":/shaders/leavesShader.vert", GL_VERTEX_SHADER);
     leavesProgram->compileShaderFromFile(":/shaders/leavesShader.fsh", GL_FRAGMENT_SHADER);
     leavesProgram->link();
 
+    terrainShader = new GLSLProgram();
+    terrainShader->compileShaderFromFile(":/shaders/terrainShader.vert", GL_VERTEX_SHADER);
+    terrainShader->compileShaderFromFile(":/shaders/terrainShader.fsh", GL_FRAGMENT_SHADER);
+    terrainShader->link();
+
     program = phongProgram;
+
+    glClearColor(0.52, 0.8, 0.92, 1);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEBUG_OUTPUT);
+
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 
     connect(&timer, SIGNAL(timeout()), this, SLOT(update()));
     timer.setInterval(10);
@@ -78,27 +112,22 @@ void OpenGlWidget::initializeGL() {
 
 void OpenGlWidget::paintGL() {
     processCamera();
-    glClearColor(0.52, 0.8, 0.92, 1);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
 
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+    auto ProjViewMat = mul(projMat, camera->matrix());
 
     leavesProgram->use();
-    leavesProgram->setUniform("ViewMat", camera->matrix());
-    leavesProgram->setUniform("ProjMat", projMat);
+    leavesProgram->setUniform("ProjViewMat", ProjViewMat);
 
-    program->use();
-    program->setUniform("ViewMat", camera->matrix());
-    program->setUniform("ProjMat", projMat);
-
-
-    program->setUniform(
+    terrainShader->use();
+    terrainShader->setUniform("ProjViewMat", ProjViewMat);
+    terrainShader->setUniform(
             "ModelMat",
             terrain->matrix()
     );
     terrain->render();
+
+    program->use();
+    program->setUniform("ProjViewMat", ProjViewMat);
 
     selTex = textures[2];
     selTex->bind(0);
@@ -114,16 +143,14 @@ void OpenGlWidget::paintGL() {
     selTex->bind(0);
     program->use();
     for(size_t i=0; i< trees->size(); i++) {
-        drawingTree = trees->operator[](i);
+
 
         program->setUniform(
                     "ModelMat",
-                    drawingTree->getMeshTree()->matrix()
+                    trees->at(i)->getMeshTree()->matrix()
         );
 
-        program->setUniform("ColorTexture", 1);
-
-        drawingTree->getMeshTree()->render();
+        trees->at(i)->getMeshTree()->render();
     }
     selTex->unbind();
 
@@ -132,17 +159,14 @@ void OpenGlWidget::paintGL() {
     selTex->bind(0);
     leavesProgram->use();
     for(size_t i=0; i< trees->size(); i++) {
-        drawingTree = trees->operator[](i);
         leavesProgram->setUniform(
                     "ModelMat",
-                    drawingTree->getMeshTwig()->matrix()
+                    trees->at(i)->getMeshTwig()->matrix()
         );
-
         leavesProgram->setUniform("leavesColor", leavesColor);
-        drawingTree->getMeshTwig()->render();
+        trees->at(i)->getMeshTwig()->render();
     }
     selTex->unbind();
-    program->use();
 
 }
 void OpenGlWidget::resizeGL(int w, int h) {

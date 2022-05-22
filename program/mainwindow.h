@@ -39,6 +39,9 @@ private slots:
 
     void on_actionOpen_building_texture_2_triggered();
 
+    void blockOpenGL();
+    void unblockOpenGL();
+
 private:
     std::vector<QSlider *> sliders;
     std::vector<Tree *> trees;

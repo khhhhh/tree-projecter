@@ -90,7 +90,6 @@ void Tree::setProps(json j)
 {
     this->props.update(j);
     this->propsCopy.update(j);
-    //Mesh::changeTree(*meshTree, *meshTwig, props);
 }
 
 json Tree::getProps()
@@ -153,7 +152,8 @@ void Tree::changeGrowth(int procent)
 void Tree::init()
 {
     meshTwig = new Mesh(GL_TRIANGLES);
-    meshTree = Mesh::generateTree(meshTwig);
+    meshTree = new Mesh(GL_TRIANGLES);
+    Mesh::generateTree(meshTree, meshTwig);
     meshTree->pos = {0, 0, 0};
     meshTwig->pos = {0, 0, 0};
 

@@ -82,6 +82,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->buttonGrow, SIGNAL(clicked()), this, SLOT(growTree()));
     connect(ui->btTexture, SIGNAL(clicked()), this, SLOT(loadTexWindow()));
     connect(ui->slGrowth, SIGNAL(valueChanged(int)), this, SLOT(changeGrowthTree(int)));
+    connect(ui->slGrowth, SIGNAL(sliderPressed()), this, SLOT(blockOpenGL()));
+    connect(ui->slGrowth, SIGNAL(sliderReleased()), this, SLOT(unblockOpenGL()));
     connect(ui->btDelete, SIGNAL(clicked()), this, SLOT(deleteTree()));
 }
 
@@ -127,6 +129,7 @@ void MainWindow::slider_valueChanged()
     j["mTrunkLength"] = ui->slTrunkLen->value() / 10.0f;
     j["mSeason"] = ui->slSeason->value();
 
+    openGlWidget->makeCurrent();
     setPropsAtIndex(ui->listWidget->currentRow(), j);
 }
 
@@ -237,6 +240,7 @@ void MainWindow::growTree()
     ui->buttonGrow->setEnabled(false);
 
     int seasonLvl = ui->slSeason->value();
+    openGlWidget->timerStop();
     for(int i = 0; i <= 100; i++)
     {
         if(ui->cbSeason->isChecked())
@@ -247,12 +251,17 @@ void MainWindow::growTree()
 
         if(ui->cbGrowAllTrees->isChecked())
         {
+            for(size_t j = 0; j < trees.size(); j++)
+                openGlWidget->growTree(j, i);
+            /*
             for(Tree* tree : trees)
                 tree->growTree(i);
+                */
         }
         else
-            trees[ui->listWidget->currentRow()]->growTree(i);
-        delay(50);
+            openGlWidget->growTree(ui->listWidget->currentRow(), i);
+        delay(10);
+        openGlWidget->updateOpenGl();
     }
 
     ui->buttonGrow->setEnabled(true);
@@ -261,23 +270,27 @@ void MainWindow::growTree()
         slider->setEnabled(true);
     }
     ui->slSeason->setEnabled(true);
+    openGlWidget->timerStart();
 }
 
 void MainWindow::changeGrowthTree(int procent)
 {
     int seasonLvl = 0;
 
+    if(ui->cbSeason->isChecked())
+        openGlWidget->loadSeasonValue(seasonLvl);
+
     if(ui->cbGrowAllTrees->isChecked()) {
-        for(Tree* tree : trees)
-            tree->growTree(procent);
+        for(size_t j = 0; j < trees.size(); j++)
+        openGlWidget->growTree(j, procent);
     }
     else
-        trees[ui->listWidget->currentRow()]->growTree(procent);
+        openGlWidget->growTree(ui->listWidget->currentRow(), procent);
 
     j["mSeason"] = seasonLvl;
 
-    if(ui->cbSeason->isChecked())
-        openGlWidget->loadSeasonValue(seasonLvl);
+
+    openGlWidget->update();
 }
 
 void MainWindow::loadTexWindow()
@@ -308,6 +321,7 @@ void MainWindow::delay(int miliseconds)
 
 void MainWindow::setPropsAtIndex(int index, json j)
 {
+    openGlWidget->makeCurrent();
     trees[index]->setProps(j);
     trees[index]->generate();
 }
@@ -329,6 +343,7 @@ void MainWindow::on_actionSaveAs_triggered()
 
 void MainWindow::on_slSeason_valueChanged(int value)
 {
+    openGlWidget->makeCurrent();
     openGlWidget->loadSeasonValue(value);
 }
 
@@ -370,5 +385,15 @@ void MainWindow::on_actionOpen_building_texture_2_triggered()
         const char *c_str2 = ba.data();
         openGlWidget->loadBuildingTexture(c_str2);
     }
+}
+
+void MainWindow::blockOpenGL()
+{
+    openGlWidget->timerStop();
+}
+
+void MainWindow::unblockOpenGL()
+{
+    openGlWidget->timerStart();
 }
 

@@ -78,5 +78,10 @@ public:
     void loadTexture(const char * path, TextureType type);
     void loadBuildingTexture(const char * path);
     ~OpenGlWidget();
+
+    void timerStop();
+    void timerStart();
+    void updateOpenGl();
+    void growTree(int index, int procent);
 };
 #endif // WIDGET_H
