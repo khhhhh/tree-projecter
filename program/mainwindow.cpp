@@ -253,10 +253,6 @@ void MainWindow::growTree()
         {
             for(size_t j = 0; j < trees.size(); j++)
                 openGlWidget->growTree(j, i);
-            /*
-            for(Tree* tree : trees)
-                tree->growTree(i);
-                */
         }
         else
             openGlWidget->growTree(ui->listWidget->currentRow(), i);

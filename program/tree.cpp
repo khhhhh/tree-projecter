@@ -102,12 +102,14 @@ void Tree::changeGrowth(int procent)
 {
     int growSteps = 100;
     float procentF = (float)procent/ growSteps;
+    /*
     if(procent < 10)
     {
         if(procent == 0)
             procent = 1;
-        procentF = 0.1 - ((float)procent / 1000.0f);
+        procentF = 0.1 - ((float)procent / 500.0f);
     }
+    */
 
     int seasonLvl = 0;
     float mInitialBranchLength = props["mInitialBranchLength"];

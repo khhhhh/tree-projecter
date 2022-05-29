@@ -57,7 +57,7 @@ void OpenGlWidget::initializeGL() {
 
     treeTex->loadFromImage(":/textures/trees/1.jpg");
     twigTex->loadFromImage(":/textures/twigs/twig1.png");
-    buildingTex->loadFromImage(":/textures/building/preview.jpg");
+    buildingTex->loadFromImage(":/textures/building/building.jpg");
 
     textures.push_back(treeTex);
     textures.push_back(twigTex);
@@ -73,11 +73,11 @@ void OpenGlWidget::initializeGL() {
     listWidget->setCurrentRow(0);
 
     // terrain and walls
-    building = Mesh::createBuilding(buildingTex->width(), buildingTex->height(), 15.0f);
-    building->pos = {-7.5, 0, -25};
+    building = Mesh::createBuilding(buildingTex->width(), buildingTex->height(), 100.0f);
+    building->pos = {-50, 0, -50};
 
     terrain = Mesh::createTerrain();
-    terrain->pos = {-150, 0, -150};
+    terrain->pos = {-50, 0, -50};
 
 
     phongProgram = new GLSLProgram();
@@ -201,6 +201,9 @@ void OpenGlWidget::createNewTree(int x, int y)
     float prod3 = prod1 / prod2;
     vec3 intersecPoint = camera->pos - dir_ray * prod3;
 
+    if(intersecPoint.x >= xPosMax || intersecPoint.x <= -xPosMax || intersecPoint.z >= zPosMax || intersecPoint.z <= -zPosMax)
+        return;
+
     makeCurrent();
 
     Tree *newTree = new Tree();
@@ -245,8 +248,8 @@ void OpenGlWidget::loadBuildingTexture(const char *path)
 {
     makeCurrent();
     textures[2]->loadFromImage(path);
-    building = Mesh::createBuilding(textures[2]->width(), textures[2]->height(), 15.0f);
-    building->pos = {-7.5f, 0, -25};
+    building = Mesh::createBuilding(textures[2]->width(), textures[2]->height(), 100.0f);
+    building->pos = {-50, 0, -50};
 }
 
 void OpenGlWidget::mousePressEvent(QMouseEvent * e) {
@@ -300,18 +303,18 @@ void OpenGlWidget::processCamera() {
 
     if(camera->pos.y < 0.1f)
         camera->pos.y = 0.1f;
-    else if(camera->pos.y > 20)
-        camera->pos.y = 20;
+    else if(camera->pos.y > yPosMax)
+        camera->pos.y = yPosMax;
 
-    if(camera->pos.x < -10)
-        camera->pos.x = -10;
-    else if(camera->pos.x > 10)
-        camera->pos.x = 10;
+    if(camera->pos.x < -xPosMax)
+        camera->pos.x = -xPosMax;
+    else if(camera->pos.x > xPosMax)
+        camera->pos.x = xPosMax;
 
-    if(camera->pos.z < -10)
-        camera->pos.z = -10;
-    else if(camera->pos.z > 9.9f)
-        camera->pos.z = 9.9f;
+    if(camera->pos.z < -zPosMax)
+        camera->pos.z = -zPosMax;
+    else if(camera->pos.z > zPosMax)
+        camera->pos.z = zPosMax;
 
     camera->forward = {0,0,-1};
     camera->forward = camera->forward * rotationMat(dax, 0, 1, 0);

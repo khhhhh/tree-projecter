@@ -15,5 +15,6 @@
         <file>textures/twigs/twig1.png</file>
         <file>clouds2.png</file>
         <file>textures/building/preview.jpg</file>
+        <file>textures/building/building.jpg</file>
     </qresource>
 </RCC>

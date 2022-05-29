@@ -57,6 +57,9 @@ class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     int width;
     int height;
 
+    const static int yPosMax = 30;
+    const static int zPosMax = 49;
+    const static int xPosMax = 49;
 
 protected:
     void initializeGL();
