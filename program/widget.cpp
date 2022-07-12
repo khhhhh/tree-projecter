@@ -206,7 +206,7 @@ void OpenGlWidget::createNewTree(int x, int y)
 
     makeCurrent();
 
-    Tree *newTree = new Tree();
+    Tree *newTree = new Tree(this->params);
     newTree->setPos(intersecPoint);
     trees->push_back(newTree);
 

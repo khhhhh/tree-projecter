@@ -49,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
     openGlWidget = new OpenGlWidget();
     openGlWidget->trees = &(this->trees);
     openGlWidget->listWidget = ui->listWidget;
+    openGlWidget->params = j;
     ui->horizontalLayout->addWidget(openGlWidget, 80);
 
     set_sliders();
@@ -130,6 +131,7 @@ void MainWindow::slider_valueChanged()
     j["mSeason"] = ui->slSeason->value();
 
     openGlWidget->makeCurrent();
+    openGlWidget->params = j;
     setPropsAtIndex(ui->listWidget->currentRow(), j);
 }
 

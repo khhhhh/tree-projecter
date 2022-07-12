@@ -1,20 +1,13 @@
 <RCC>
-    <qresource prefix="/shaders">
-        <file>phong.fsh</file>
-        <file>phong.vert</file>
-        <file>leavesShader.fsh</file>
-        <file>leavesShader.vert</file>
-        <file>terrainShader.fsh</file>
-        <file>terrainShader.vert</file>
-    </qresource>
-    <qresource prefix="/json">
-        <file>file.json</file>
-    </qresource>
     <qresource prefix="/">
         <file>textures/trees/1.jpg</file>
         <file>textures/twigs/twig1.png</file>
-        <file>clouds2.png</file>
-        <file>textures/building/preview.jpg</file>
         <file>textures/building/building.jpg</file>
+        <file>shaders/phong.fsh</file>
+        <file>shaders/phong.vert</file>
+        <file>shaders/leavesShader.fsh</file>
+        <file>shaders/leavesShader.vert</file>
+        <file>shaders/terrainShader.fsh</file>
+        <file>shaders/terrainShader.vert</file>
     </qresource>
 </RCC>

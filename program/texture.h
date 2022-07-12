@@ -32,17 +32,6 @@ public:
     {
         other.handle = 0; //Use the "null" texture for the old object.
     }
-
-    Texture &operator=(Texture &&other)
-    {
-        //ALWAYS check for self-assignment.
-        if(this != &other)
-        {
-            Release();
-            //obj_ is now 0.
-            std::swap(handle, other.handle);
-        }
-    }
 };
 
 #endif // TEXTURE_H

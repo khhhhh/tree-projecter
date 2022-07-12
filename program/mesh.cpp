@@ -305,17 +305,6 @@ Mesh *Mesh::createBuilding(int width, int height,float scale)
     };
 
     UVs = {
-        /*
-        {0.0f,0.0f},
-        {1.0f,0.0f},
-        {1.0f,1.0f},
-        {0.0f,1.0f},
-
-        {0.0f,0.0f},
-        {1.0f,0.0f},
-        {1.0f,1.0f},
-        {0.0f,1.0f}
-            */
         {0.0f,0.0f},
         {1.0f,0.0f},
         {1.0f,1.0f},
@@ -325,17 +314,6 @@ Mesh *Mesh::createBuilding(int width, int height,float scale)
         {0.0f,0.0f},
         {0.0f,1.0f},
         {1.0f,1.0f}
-        /*
-        {1.0f,1.0f},
-        {0.0f,1.0f},
-
-        {0.0f,0.0f},
-        {1.0f,0.0f},
-        {1.0f,1.0f},
-        {0.0f,1.0f},
-        {1.0f,1.0f},
-        {0.0f,1.0f},
-            */
     };
     for(int i = 0; i < 8; i++)
     {
@@ -345,44 +323,6 @@ Mesh *Mesh::createBuilding(int width, int height,float scale)
 
 
     uint vec[] =
-            /*
-        {1, 2, 6,
-         6, 5, 1,
-
-         0, 4, 7,
-         7, 3, 0,
-
-         4, 5, 6,
-         6, 7, 4,
-
-         0, 3, 2,
-         2, 1, 0,
-
-         0, 1, 5,
-         5, 4, 0,
-
-         3, 7, 6,
-         6, 2, 3 };
-                 */
-
-            /*
-    {
-        0, 1, 2,
-        0, 2, 3,
-
-        1, 5, 6,
-        1, 6, 2,
-
-        4, 0, 3,
-        4, 3, 7,
-
-        3, 2, 6,
-        3, 6, 7,
-
-        5, 4, 6,
-        4, 7, 6
-    };
-            */
     {
         0, 2, 1,
         0, 3, 2,
@@ -393,15 +333,10 @@ Mesh *Mesh::createBuilding(int width, int height,float scale)
         4, 3, 0,
         4, 7, 3,
 
-            /*
-        3, 6, 2,
-        3, 7, 6,
-                */
-
         5, 6, 4,
         4, 6, 7
     };
-    for(int i = 0; i < 30; i++)
+    for(int i = 0; i < 24; i++)
         indices.push_back(vec[i]);
 
     mesh->setVertices(vertices.data(), vertices.size());

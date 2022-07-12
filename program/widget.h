@@ -75,6 +75,7 @@ public:
     std::set<int> keys;
     std::vector<Tree *> *trees;
     QListWidget *listWidget;
+    json params;
 
     void loadSeasonValue(int val);
     void loadFromPath(QString path);

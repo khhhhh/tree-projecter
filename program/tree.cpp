@@ -155,7 +155,8 @@ void Tree::init()
 {
     meshTwig = new Mesh(GL_TRIANGLES);
     meshTree = new Mesh(GL_TRIANGLES);
-    Mesh::generateTree(meshTree, meshTwig);
+
+    this->generate();
     meshTree->pos = {0, 0, 0};
     meshTwig->pos = {0, 0, 0};
 
