@@ -296,9 +296,9 @@ void OpenGlWidget::processCamera() {
         camera->pos = camera->pos - camera->x()*dv;
     else if(keys.find(Qt::Key_D) != keys.end())
         camera->pos = camera->pos + camera->x()*dv;
-    if(keys.find(Qt::Key_Q) != keys.end())
+    if(keys.find(Qt::Key_Shift) != keys.end())
         camera->pos = camera->pos + camera->up*dv;
-    else if(keys.find(Qt::Key_Z) != keys.end())
+    else if(keys.find(Qt::Key_Alt) != keys.end())
         camera->pos = camera->pos - camera->up*dv;
 
     if(camera->pos.y < 0.1f)

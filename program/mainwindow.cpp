@@ -207,9 +207,13 @@ void MainWindow::set_sliders()
     TwistRate *= 100;
     TrunkLen *= 10;
 
-    ui->slider_seed->setValue(j["mSeed"]);
-    ui->slider_levels->setValue(j["mLevels"]);
-    ui->slider_treeSteps->setValue(j["mTreeSteps"]);
+    int treeSteps = j["mTreeSteps"];
+    int levels = j["mLevels"];
+    int seed = j["mSeed"];
+
+    ui->slider_seed->setValue(seed);
+    ui->slider_levels->setValue(levels);
+    ui->slider_treeSteps->setValue(treeSteps);
     ui->slVMul->setValue(VMul);
     ui->slTwigScale->setValue(TwigScale);
     ui->slInitBranch->setValue(InitBranch);
