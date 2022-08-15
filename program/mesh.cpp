@@ -96,52 +96,6 @@ void Mesh::render() {
 
 }
 
-Mesh *Mesh::loadFromObj(const char *filename) {
-    QFile file(filename);
-
-    Mesh *mesh = new Mesh(GL_TRIANGLES);
-
-    if(file.open(QFile::ReadOnly)) {
-        int currentIndex=0;
-        QTextStream stream(&file);
-        std::vector<vec3> vertices, normals,  resultVertices, resultNormals;
-        std::vector<vec2> uvs, resultUvs;
-        std::vector<uint> indices;
-        while(!stream.atEnd()) {
-            QString line = stream.readLine();
-            if(!line.isEmpty()) {
-                auto le = line.split(' ');
-                if(line[0]=='v') {
-                    if(line[1]=='n')
-                        normals.push_back(vec3{le[1].toFloat(), le[2].toFloat(), le[3].toFloat()});
-                    else if(line[1]=='t')
-                        uvs.push_back(vec2{le[1].toFloat(), le[2].toFloat()});
-                    else
-                        vertices.push_back(vec3{le[1].toFloat(), le[2].toFloat(), le[3].toFloat()});
-                }
-                else if(line[0]=='f') {
-                    for(int i=1; i<=3; i++) {
-                        auto faceData = le[i].split('/');
-                        resultVertices.push_back(vertices[faceData[0].toUInt()-1]);
-                        resultUvs.push_back(uvs[faceData[1].toUInt()-1]);
-                        resultNormals.push_back(normals[faceData[2].toUInt()-1]);
-                        indices.push_back(currentIndex++);
-                    }
-                }
-            }
-        }
-        mesh->setVertices(resultVertices.data(), resultVertices.size());
-        mesh->setAttribute(Mesh::Normals, resultNormals.data(), resultNormals.size());
-        mesh->setAttribute(Mesh::UV, resultUvs.data(), resultUvs.size());
-        mesh->setIndices(indices.data(), indices.size());
-        file.close();
-        qDebug() << filename << " loaded";
-    }
-    else
-        qDebug() << filename << " loading error";
-    return mesh;
-}
-
 
 Mesh *Mesh::createTerrain() {
     Mesh *mesh = new Mesh(GL_TRIANGLES);
@@ -173,7 +127,6 @@ Mesh *Mesh::createTerrain() {
     UVs.push_back({1, 1});
     UVs.push_back({0, 1});
 
-    //mesh->setAttribute(Mesh::UV, UVs.data(), UVs.size());
 
     colors.push_back({0.19, 0.61, 0.2});
     colors.push_back({0.19, 0.61, 0.2});
@@ -182,55 +135,6 @@ Mesh *Mesh::createTerrain() {
 
     mesh->setAttribute(Mesh::Colors, colors.data(), colors.size());
     return mesh;
-}
-
-void Mesh::generateTree(Mesh *mesh, Mesh *meshTwig) {
-    Proctree::Tree tree;
-    tree.generate();
-    std::vector<vec3> vertices, normals;
-    std::vector<vec2> UVs;
-    std::vector<uint> indices;
-
-    std::vector<vec3> verticesTwig, normalsTwig;
-    std::vector<vec2> UVsTwig;
-    std::vector<uint> indicesTwig;
-
-    for (int i = 0; i < tree.mVertCount; i++) {
-        vec3 vertex = {tree.mVert[i].x, tree.mVert[i].y, tree.mVert[i].z};
-        vec3 normal = {tree.mNormal[i].x, tree.mNormal[i].y, tree.mNormal[i].z};
-        vec2 UV = {tree.mUV[i].u, tree.mUV[i].v};
-        vertices.push_back(vertex);
-        normals.push_back(normal);
-        UVs.push_back(UV);
-    }
-    for(int i = 0; i < tree.mTwigVertCount; i++) {
-        vec3 vertexTwig = {tree.mTwigVert[i].x, tree.mTwigVert[i].y,tree.mTwigVert[i].z};
-        vec3 normalTwig = {tree.mTwigNormal[i].x, tree.mTwigNormal[i].y, tree.mTwigNormal[i].z};
-        vec2 UV = {tree.mTwigUV[i].u, tree.mTwigUV[i].v};
-        verticesTwig.push_back(vertexTwig);
-        normalsTwig.push_back(normalTwig);
-        UVsTwig.push_back(UV);
-    }
-    for (int i = 0; i < tree.mFaceCount; i++) {
-        indices.push_back(tree.mFace[i].x);
-        indices.push_back(tree.mFace[i].y);
-        indices.push_back(tree.mFace[i].z);
-    }
-    for (int i = 0; i < tree.mTwigFaceCount; i++) {
-        indicesTwig.push_back(tree.mTwigFace[i].x);
-        indicesTwig.push_back(tree.mTwigFace[i].y);
-        indicesTwig.push_back(tree.mTwigFace[i].z);
-    }
-
-    mesh->setVertices(vertices.data(), vertices.size());
-    mesh->setIndices(indices.data(), indices.size());
-    mesh->setAttribute(Mesh::Normals, normals.data(), normals.size());
-    mesh->setAttribute(Mesh::UV, UVs.data(), UVs.size());
-
-    meshTwig->setVertices(verticesTwig.data(), verticesTwig.size());
-    meshTwig->setIndices(indicesTwig.data(), indicesTwig.size());
-    meshTwig->setAttribute(Mesh::Normals, normalsTwig.data(), normals.size());
-    meshTwig->setAttribute(Mesh::UV, UVsTwig.data(), UVsTwig.size());
 }
 
 void Mesh::changeTree(Mesh &meshTree, Mesh &meshTwig, Proctree::Properties props) {

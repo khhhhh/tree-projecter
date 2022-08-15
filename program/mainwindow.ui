@@ -381,7 +381,7 @@ QSlider::sub-page:vertical {
         <item row="2" column="2">
          <widget class="QSlider" name="slider_treeSteps">
           <property name="minimum">
-           <number>1</number>
+           <number>0</number>
           </property>
           <property name="maximum">
            <number>10</number>
@@ -709,13 +709,16 @@ QSlider::sub-page:vertical {
         <item row="1" column="2">
          <widget class="QSlider" name="slider_levels">
           <property name="minimum">
-           <number>1</number>
+           <number>0</number>
           </property>
           <property name="maximum">
            <number>7</number>
           </property>
           <property name="value">
-           <number>1</number>
+           <number>0</number>
+          </property>
+          <property name="sliderPosition">
+           <number>0</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>

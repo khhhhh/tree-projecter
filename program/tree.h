@@ -21,10 +21,11 @@ public:
     textureIndex texture;
     Tree();
     Tree(json j);
+    ~Tree();
 
     void generate();
     void generate(json props);
-    void growTree(int procent);
+    void grow(int procent);
     vec3 getPos();
     void setPos(vec3 pos);
     void setProps(json props);

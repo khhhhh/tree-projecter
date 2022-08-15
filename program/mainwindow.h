@@ -56,7 +56,6 @@ private:
 protected:
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
-    //void mousePressEvent(QMouseEvent* event);
 };
 
 #endif // MAINWINDOW_H

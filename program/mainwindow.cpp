@@ -364,6 +364,7 @@ void MainWindow::deleteTree()
     if(index < 0)
         return;
 
+    delete trees[index];
     trees.erase(trees.begin() + index);
     delete ui->listWidget->takeItem(index);
 

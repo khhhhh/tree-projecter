@@ -10,17 +10,6 @@ class Mesh : public Frame, protected QOpenGLFunctions_3_3_Core{
 public:
     enum BufferType {Vertices=0, Indices=1, Colors=2, Normals=3, UV=4};
 
-    struct Material {
-        vec3 ambient, diffuse, specular;
-        float shiness;
-
-        Material() {
-            ambient = {0.5, 0.5, 0.5};
-            diffuse = {0.5, 0.5, 0.5};
-            specular = {0.5, 0.5, 0.5};
-            shiness = 50;
-        }
-    };
 
 private:
     QString name;
@@ -38,16 +27,12 @@ public:
     void setIndices(uint *data, uint n);
     void render();
 
-    static Mesh *loadFromObj(const char *filename);
-    static void generateTree(Mesh *mesh, Mesh *twigMesh);
     static void changeTree(Mesh& meshTree, Mesh &meshTwig, Proctree::Properties props);
     static Mesh *createBuilding(int x, int y, float scale);
 
     static Mesh *createTerrain(QImage img, vec3 scale);
     static Mesh *createTerrain();
 
-
-    Material material;
 };
 
 #endif // MESH_H

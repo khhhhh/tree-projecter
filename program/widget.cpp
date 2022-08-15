@@ -33,7 +33,7 @@ void OpenGlWidget::updateOpenGl()
 void OpenGlWidget::growTree(int index, int procent)
 {
     makeCurrent();
-    trees->at(index)->growTree(procent);
+    trees->at(index)->grow(procent);
 }
 
 void OpenGlWidget::initializeGL() {
@@ -217,19 +217,6 @@ void OpenGlWidget::createNewTree(int x, int y)
 }
 
 
-void OpenGlWidget::loadFromPath(QString path)
-{
-    QFile file(path);
-    if(file.open(QFile::ReadOnly)) {
-        QTextStream stream(&file);
-        std::string shader_src =  stream.readAll().toStdString();
-        json j;
-        j = json::parse(shader_src);
-        Proctree::Properties props(j);
-        Mesh::changeTree(*meshTree, *meshTwig, props);
-    }
-}
-
 void OpenGlWidget::loadTexture(const char * path, TextureType type)
 {
     switch(type)
@@ -296,9 +283,9 @@ void OpenGlWidget::processCamera() {
         camera->pos = camera->pos - camera->x()*dv;
     else if(keys.find(Qt::Key_D) != keys.end())
         camera->pos = camera->pos + camera->x()*dv;
-    if(keys.find(Qt::Key_Shift) != keys.end())
+    if(keys.find(Qt::Key_Q) != keys.end())
         camera->pos = camera->pos + camera->up*dv;
-    else if(keys.find(Qt::Key_Alt) != keys.end())
+    else if(keys.find(Qt::Key_Z) != keys.end())
         camera->pos = camera->pos - camera->up*dv;
 
     if(camera->pos.y < 0.1f)

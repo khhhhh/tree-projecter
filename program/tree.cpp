@@ -61,6 +61,12 @@ Tree::Tree(json j)
     init();
 }
 
+Tree::~Tree()
+{
+    delete meshTree;
+    delete meshTwig;
+}
+
 void Tree::generate() {
     Proctree::Properties props(this->props);
     Mesh::changeTree(*meshTree, *meshTwig, props);
@@ -71,7 +77,7 @@ void Tree::generate(json Props) {
     Mesh::changeTree(*meshTree, *meshTwig, props);
 }
 
-void Tree::growTree(int procent)
+void Tree::grow(int procent)
 {
     changeGrowth(procent);
     props.update(propsCopy);

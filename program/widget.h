@@ -21,23 +21,14 @@ class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 
     QTimer timer;
     Camera *camera;
-    std::vector<Mesh *> meshes;
     GLSLProgram *program, *phongProgram, *leavesProgram, *terrainShader;
     std::vector<Texture *> textures;
-    Mesh *meshTree, *meshTwig;
 
-
-    Tree *drawingTree;
     Texture *selTex;
-    Mesh *treeMesh;
-    Mesh *twigMesh;
 
     Mesh *terrain;
     Mesh *building;
     mat4 projMat;
-
-    QPoint refPoint;
-
 
     int de;
     float angle;
@@ -78,7 +69,6 @@ public:
     json params;
 
     void loadSeasonValue(int val);
-    void loadFromPath(QString path);
     void loadTexture(const char * path, TextureType type);
     void loadBuildingTexture(const char * path);
     ~OpenGlWidget();
